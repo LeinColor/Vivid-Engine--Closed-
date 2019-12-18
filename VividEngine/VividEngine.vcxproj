@@ -147,12 +147,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DirectX11Wrapper.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="VividEngine.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="Handle.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DirectX11Wrapper.cpp" />
+    <ClCompile Include="Handle.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

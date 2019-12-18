@@ -1,5 +1,14 @@
-﻿#include "stdafx.h"
-#include "VividEngine.h"
+﻿/**
+    main.cpp
+
+    Purpose: Create a window and instance handle
+
+    @author Lein
+    @version 1.0 12/18/19
+*/
+
+#include "stdafx.h"
+#include "main.h"
 
 #define MAX_LOADSTRING 100
 
@@ -8,7 +17,6 @@ HINSTANCE hInst;                                // Instance
 WCHAR szTitle[MAX_LOADSTRING];                  // Title name
 WCHAR szWindowClass[MAX_LOADSTRING];            // Name of window class
 
-// Forward declaration
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -50,13 +58,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     return (int) msg.wParam;
 }
 
+/**
+    Register a window class
 
-
-//
-//  Function: MyRegisterClass()
-//
-//  Purpose: regist a window class
-//
+    @param hInstance The instance handle of application.
+    @return If the function succeeds,
+        the return value is a class atom that uniquely identifies the class being registered
+*/
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
     WNDCLASSEXW wcex;
@@ -78,19 +86,16 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     return RegisterClassExW(&wcex);
 }
 
-//
-//   Function: InitInstance(HINSTANCE, int)
-//
-//   Purpose: store an instance handle and create window
-//
-//   Comment:
-//
-//        store instance handle to global variable
-//        create a window and show it
-//
+/**
+    Initialize the instance handle
+
+    @param hInstance The instance handle of application.
+    @param nCmdShow A hint to the application how it should show its main window.
+    @return If the Initializing succeeds, it returns true.
+*/
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
+   hInst = hInstance; // store instance handle to global variable
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
@@ -106,39 +111,18 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
-//
-//  Function: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  Purpose: processing messages
-//
-//
+/**
+    Message processing function invoked by windows
+
+    @param hWnd hInstance The instance handle of application.
+    @param message The message to be processed by this function
+    @param wParam word parameter. it provides additional information
+    @return lParam long parameter. it provides means additional information
+*/
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
-        }
-        break;
-    case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            EndPaint(hWnd, &ps);
-        }
-        break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
@@ -148,6 +132,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
+// Deprecated
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
     UNREFERENCED_PARAMETER(lParam);

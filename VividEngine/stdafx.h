@@ -9,3 +9,22 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+
+
+// DirectX link library
+#pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "d3dcompiler.lib")
+
+// DirectX header file and namespace
+#include <d3d11.h>
+#include <d3dcompiler.h>
+#include <DirectXMath.h>
+#include <DirectXPackedVector.h>
+using namespace DirectX;
+using namespace DirectX::PackedVector;
+
+#define ALIGNED_ALLOC_16 void* operator new(size_t size) { return _aligned_malloc(size, 16); } void operator delete(void* p) { _aligned_free(p); }
+#define SAFE_RELEASE(p) { if( (p) ) { (p)->Release(); (p) = 0; } }
+#define SAFE_DELETE(a) { delete(a); (a) = nullptr; }
+#define SAFE_DELETE_ARRAY(a) { delete[] (a); (a) = nullptr; }
