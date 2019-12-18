@@ -9,7 +9,7 @@
 
 #pragma once
 #include "stdafx.h"
-#include "Handle.h"
+#include "AppHandle.h"
 
 namespace vivid {
 	class DirectX11Wrapper {

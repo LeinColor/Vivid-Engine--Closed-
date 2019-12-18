@@ -31,8 +31,14 @@
     <ClInclude Include="DirectX11Wrapper.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Handle.h">
+    <ClInclude Include="AppHandle.h">
       <Filter>Entrance</Filter>
+    </ClInclude>
+    <ClInclude Include="VividEngine.h">
+      <Filter>Entrance</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -55,8 +61,14 @@
     <ClCompile Include="DirectX11Wrapper.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Handle.cpp">
+    <ClCompile Include="AppHandle.cpp">
       <Filter>Entrance</Filter>
+    </ClCompile>
+    <ClCompile Include="VividEngine.cpp">
+      <Filter>Entrance</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

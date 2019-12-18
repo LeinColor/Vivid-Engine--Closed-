@@ -9,6 +9,9 @@
 
 #include "stdafx.h"
 #include "main.h"
+#include "AppHandle.h"
+#include "VividEngine.h"
+using namespace vivid;
 
 #define MAX_LOADSTRING 100
 
@@ -16,6 +19,7 @@
 HINSTANCE hInst;                                // Instance
 WCHAR szTitle[MAX_LOADSTRING];                  // Title name
 WCHAR szWindowClass[MAX_LOADSTRING];            // Name of window class
+VividEngine vividEngine;
 
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -53,6 +57,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+        else {
+            vividEngine.Run();
+        }
     }
 
     return (int) msg.wParam;
@@ -63,7 +70,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     @param hInstance The instance handle of application.
     @return If the function succeeds,
-        the return value is a class atom that uniquely identifies the class being registered
+        the return value is a class atom that uniquely identifies the class being registered.
 */
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
@@ -105,6 +112,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
+   vividEngine.SetWindow(hWnd, hInstance);
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
