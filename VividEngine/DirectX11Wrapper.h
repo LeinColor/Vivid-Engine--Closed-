@@ -22,9 +22,14 @@ namespace vivid {
 		ID3D11Texture2D*		backBuffer;
 		ID3D11RenderTargetView* renderTargetView;
 
+		int screenWidth;
+		int screenHeight;
+		bool VSyncEnabled = false;
+		bool fullScreen = false;
+
 	public:
-		DirectX11Wrapper();
-		~DirectX11Wrapper();
+		DirectX11Wrapper(HWND hWnd, bool fullScreenFlag);
+		~DirectX11Wrapper() {}
 
 		HRESULT CreateBuffer(const D3D11_BUFFER_DESC *pDesc, const D3D11_SUBRESOURCE_DATA *pInitialData, ID3D11Buffer **ppBuffer);
 		HRESULT CreateTexture1D(const D3D11_TEXTURE1D_DESC* pDesc, const D3D11_SUBRESOURCE_DATA* pInitialData, ID3D11Texture1D** ppTexture1D);

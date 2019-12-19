@@ -14,6 +14,6 @@ namespace vivid {
 	private:
 		AppHandle appHandle;
 		Renderer renderer;
-		bool isInitialized = false;
+		bool initialized = false;
 	};
 }

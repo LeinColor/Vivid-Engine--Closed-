@@ -104,8 +104,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // store instance handle to global variable
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+   constexpr int screenWidth = 1280;
+   constexpr int screenHeight = 720;
+   int x = (GetSystemMetrics(SM_CXSCREEN) - screenWidth) / 2;
+   int y = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
+   HWND hWnd = CreateWindowEx(WS_EX_APPWINDOW, szWindowClass, szTitle, WS_POPUP, x, y, screenWidth, screenHeight, NULL, NULL, hInstance, NULL);
 
    if (!hWnd)
    {
@@ -131,12 +134,32 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-    }
+        case WM_KEYDOWN:
+        {
+            switch (wParam)
+            {
+            case VK_ESCAPE:
+                PostQuitMessage(0);
+                break;
+            default:
+                break;
+            }
+            break;
+        }
+        case WM_PAINT:
+        {
+            PAINTSTRUCT ps;
+            HDC hdc = BeginPaint(hWnd, &ps);
+            // TODO: Add any drawing code that uses hdc here...
+            EndPaint(hWnd, &ps);
+            break;
+        }
+        case WM_DESTROY:
+            PostQuitMessage(0);
+            break;
+        default:
+            return DefWindowProc(hWnd, message, wParam, lParam);
+        }
     return 0;
 }
 

@@ -5,14 +5,14 @@ using namespace vivid;
 void VividEngine::Initialize()
 {
 	if (renderer.GetDevice() == nullptr)
-		renderer.SetDevice(new DirectX11Wrapper());
+		renderer.SetDevice(new DirectX11Wrapper(appHandle.GetWindowHandle(), false));
 
-	isInitialized = true;
+	initialized = true;
 }
 
 void VividEngine::Run()
 {
-	if (!isInitialized) {
+	if (!initialized) {
 		Initialize();
 	}
 }
