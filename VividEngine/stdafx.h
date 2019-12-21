@@ -28,3 +28,23 @@ using namespace DirectX::PackedVector;
 #define SAFE_RELEASE(p) { if( (p) ) { (p)->Release(); (p) = 0; } }
 #define SAFE_DELETE(a) { delete(a); (a) = nullptr; }
 #define SAFE_DELETE_ARRAY(a) { delete[] (a); (a) = nullptr; }
+
+static const XMFLOAT4X4 IDENTITYMATRIX = XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+
+#define COMPONENTS Object, Component<Transform>, Component<Camera>
+
+namespace vivid {
+	struct Rect {
+		int32_t xMin;
+		int32_t xMax;
+		int32_t yMin;
+		int32_t yMax;
+	};
+
+	struct EventArgs {
+		XMFLOAT2 clickPos;
+		XMFLOAT2 startPos;
+		XMFLOAT2 deltaPos;
+		XMFLOAT2 endPos;
+	};
+}

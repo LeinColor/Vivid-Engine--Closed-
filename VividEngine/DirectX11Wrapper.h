@@ -14,13 +14,19 @@
 namespace vivid {
 	class DirectX11Wrapper {
 	private:
-		ID3D11Device*			device;
-		ID3D11DeviceContext*	deviceContext;
+		ID3D11Device*			device = nullptr;
+		ID3D11DeviceContext*	deviceContext = nullptr;
 		D3D_DRIVER_TYPE			driverType;
 		D3D_FEATURE_LEVEL		featureLevel;
-		IDXGISwapChain*			swapChain;
-		ID3D11Texture2D*		backBuffer;
-		ID3D11RenderTargetView* renderTargetView;
+		IDXGISwapChain*			swapChain = nullptr;
+		ID3D11Texture2D*		backBuffer = nullptr;
+		ID3D11RenderTargetView* renderTargetView = nullptr;
+
+		ID3D11Texture2D* depthStencilBuffer = nullptr;
+		ID3D11DepthStencilState* depthStencilState = nullptr;
+		ID3D11DepthStencilView* depthStencilView = nullptr;
+		ID3D11RasterizerState* rasterState = nullptr;
+		ID3D11DepthStencilState* depthDisabledStencilState = nullptr;
 
 		int screenWidth;
 		int screenHeight;
@@ -28,8 +34,12 @@ namespace vivid {
 		bool fullScreen = false;
 
 	public:
+		ALIGNED_ALLOC_16
 		DirectX11Wrapper(HWND hWnd, bool fullScreenFlag);
 		~DirectX11Wrapper() {}
+
+		inline int GetScreenWidth() const { return screenWidth; }
+		inline int GetScreenHeight() const { return screenHeight; }
 
 		HRESULT CreateBuffer(const D3D11_BUFFER_DESC *pDesc, const D3D11_SUBRESOURCE_DATA *pInitialData, ID3D11Buffer **ppBuffer);
 		HRESULT CreateTexture1D(const D3D11_TEXTURE1D_DESC* pDesc, const D3D11_SUBRESOURCE_DATA* pInitialData, ID3D11Texture1D** ppTexture1D);
@@ -53,5 +63,10 @@ namespace vivid {
 		HRESULT CreatePredicate(const D3D11_QUERY_DESC* pPredicateDesc, ID3D11Predicate** ppPredicate);
 		HRESULT CreateCounter(const D3D11_COUNTER_DESC* pCounterDesc, ID3D11Counter** ppCounter);
 		HRESULT CreateDeferredContext(UINT ContextFlags, ID3D11DeviceContext** ppDeferredContext);
+
+		void BeginScene(float, float, float, float);
+		void EndScene();
+		void TurnZBufferOn();
+		void TurnZBufferOff();
 	};
 }
