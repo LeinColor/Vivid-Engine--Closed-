@@ -85,16 +85,31 @@
     <ClInclude Include="Texture.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="TextureShader.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ID.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClInclude Include="DDSTextureLoader.h">
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="WICTextureLoader.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Graphics</Filter>
+    <ClInclude Include="Random.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="TextureShader.h">
+    <ClInclude Include="Global.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteRenderer.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderQueue.h">
       <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -154,16 +169,25 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="TextureShader.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
     <ClCompile Include="DDSTextureLoader.cpp">
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="WICTextureLoader.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Graphics</Filter>
+    <ClCompile Include="Random.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="TextureShader.cpp">
+    <ClCompile Include="SpriteRenderer.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderQueue.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>

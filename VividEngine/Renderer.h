@@ -9,6 +9,12 @@
 #pragma once
 #include "DirectX11Wrapper.h"
 #include "GUI.h"
+#include "Manager.h"
+#include "GameObject.h"
+#include "Sprite.h"
+#include "SpriteRenderer.h"
+#include "Camera.h"
+#include "Transform.h"
 
 namespace vivid {
 	class Renderer {
@@ -16,7 +22,12 @@ namespace vivid {
 		DirectX11Wrapper* device = nullptr;
 
 	public:
+		GameObject* mainCamera = nullptr;
 		DirectX11Wrapper* GetDevice();
 		void SetDevice(DirectX11Wrapper* value);
+
+		void Initialize(Manager<GameObject>& manager3D);
+		void Render2D(Manager<Sprite>& manager2D);
+		void Render3D(Manager<GameObject>& manager3D);
 	};
 }

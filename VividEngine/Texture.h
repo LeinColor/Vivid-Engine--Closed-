@@ -7,12 +7,11 @@ public:
 	Texture(const Texture&) {}
 	~Texture() {}
 
-	bool Initialize(ID3D11Device*, WCHAR*);
-	void Shutdown();
+	bool Initialize(ID3D11Device* device, WCHAR* fileName);
 
 	ID3D11ShaderResourceView* GetTexture();
 
 
 private:
-	ID3D11ShaderResourceView* m_texture = nullptr;
+	ID3D11ShaderResourceView* textureView = nullptr;
 };

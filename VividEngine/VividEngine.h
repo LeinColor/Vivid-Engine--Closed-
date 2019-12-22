@@ -9,24 +9,32 @@
 #pragma once
 #include "AppHandle.h"
 #include "Renderer.h"
+#include "Manager.h"
+#include "Component.h"
+#include "GameObject.h"
+#include "Transform.h"
+#include "Sprite.h"
+#include "SpriteRenderer.h"
 
-class TextureShader;
-
+using namespace vivid;
 namespace vivid {
 	class VividEngine {
 	private:
 		void Initialize();
 
 	public:
-		void Run();
+		void Run();	
 		void SetWindow(HWND hWnd, HINSTANCE hInstance);
-		void DrawScene();
+		void Update();
 
 	private:
 		AppHandle appHandle;
 		Renderer renderer;
 		bool initialized = false;
 
-		TextureShader ts;
+		Manager<GameObject> gameObjectManager;
+		Manager<Sprite> spriteManager;
+
+		//TextureShader ts;
 	};
 }

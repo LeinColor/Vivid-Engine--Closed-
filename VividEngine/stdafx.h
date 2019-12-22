@@ -15,6 +15,7 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
+#pragma comment(lib, "dxguid.lib")
 
 // DirectX header file and namespace
 #include <d3d11.h>
@@ -31,7 +32,7 @@ using namespace DirectX::PackedVector;
 
 static const XMFLOAT4X4 IDENTITYMATRIX = XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
-#define COMPONENTS Object, Component<Transform>, Component<Camera>
+#define COMPONENTS Object, Component<Transform>, Component<Camera>, Component<SpriteRenderer>
 
 namespace vivid {
 	struct Rect {

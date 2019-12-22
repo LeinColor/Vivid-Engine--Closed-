@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "MeshFilter.h"
+#include "SpriteRenderer.h"
 
 class GameObject : COMPONENTS {
 public:
