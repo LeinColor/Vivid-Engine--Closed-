@@ -1,7 +1,7 @@
 #pragma once
 
 class Texture;
-class Sprite;
+class GameObject;
 
 class SpriteRenderer
 {
@@ -21,7 +21,6 @@ public:
 	ID3D11ShaderResourceView* GetSprite();
 
 private:
-	Sprite* owner = nullptr;
 	bool Initialize(ID3D11Device* device);
 	void Shutdown();
 	bool Update(ID3D11DeviceContext* deviceContext, int positionX, int positionY, int screenWidth, int screenHeight);

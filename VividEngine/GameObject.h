@@ -6,17 +6,6 @@
 #include "MeshFilter.h"
 #include "SpriteRenderer.h"
 
-class GameObject : COMPONENTS {
+class GameObject {
 public:
-	template<typename T>
-	T& GetComponent()
-	{
-		return this->Component<T>::component;
-	}
-
-	template<typename T>
-	T& AddComponent() {
-		this->Component<T>::SetOwner(this);
-		return this->Component<T>::component;
-	}
 };

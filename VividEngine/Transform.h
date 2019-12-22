@@ -10,8 +10,6 @@ private:
 	XMFLOAT4X4	world;
 
 public:
-	GameObject* owner = nullptr;
-
 	Transform();
 
 	void SetPosition(const float x, const float y, const float z);

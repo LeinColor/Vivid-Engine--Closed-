@@ -32,8 +32,6 @@ using namespace DirectX::PackedVector;
 
 static const XMFLOAT4X4 IDENTITYMATRIX = XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
-#define COMPONENTS Object, Component<Transform>, Component<Camera>, Component<SpriteRenderer>
-
 namespace vivid {
 	struct Rect {
 		int32_t xMin;

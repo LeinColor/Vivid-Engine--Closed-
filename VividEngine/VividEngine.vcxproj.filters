@@ -91,9 +91,6 @@
     <ClInclude Include="Manager.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="ID.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="DDSTextureLoader.h">
       <Filter>Util</Filter>
     </ClInclude>

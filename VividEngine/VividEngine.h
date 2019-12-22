@@ -13,7 +13,6 @@
 #include "Component.h"
 #include "GameObject.h"
 #include "Transform.h"
-#include "Sprite.h"
 #include "SpriteRenderer.h"
 
 using namespace vivid;
@@ -32,8 +31,7 @@ namespace vivid {
 		Renderer renderer;
 		bool initialized = false;
 
-		Manager<GameObject> gameObjectManager;
-		Manager<Sprite> spriteManager;
+		Manager<GameObject> objectManager;
 
 		//TextureShader ts;
 	};

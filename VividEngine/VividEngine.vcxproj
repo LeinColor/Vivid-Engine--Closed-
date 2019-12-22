@@ -159,9 +159,6 @@
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DirectX11Wrapper.h" />
     <ClInclude Include="Global.h" />
-    <ClInclude Include="ID.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>

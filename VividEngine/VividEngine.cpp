@@ -2,27 +2,24 @@
 #include "GameObject.h"
 #include "Texture.h"
 #include "TextureShader.h"
-#include "Sprite.h"
 
 using namespace vivid;
 
-GameObject camera;
 void VividEngine::Initialize()
 {
 	if (renderer.GetDevice() == nullptr)
 		renderer.SetDevice(new DirectX11Wrapper(appHandle.GetWindowHandle(), false));
-
-	GameObject* camera = new GameObject();
-	camera->AddComponent<Transform>();
-	camera->AddComponent<Camera>();
-	gameObjectManager.Add(camera);
-
-	Sprite* sprite = new Sprite();
+	
+	GameObject camera;
+	//objectManager.Add(camera);
+	/*
+	GameObject* sprite = new GameObject();
 	sprite->AddComponent<Transform>();
 	sprite->AddComponent<SpriteRenderer>();
-	spriteManager.Add(sprite);
+	objectManager.Add(sprite);
 
-	renderer.Initialize(gameObjectManager);
+	renderer.Initialize(objectManager);
+	*/
 	initialized = true;
 }
 
@@ -45,7 +42,7 @@ void VividEngine::Update()
 		timer = 0;
 
 		// Render all of 2D objects
-		renderer.Render2D(spriteManager);
+	//	renderer.Render(objectManager);
 	}
 }
 
