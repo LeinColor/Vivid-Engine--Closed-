@@ -172,6 +172,8 @@ DirectX11Wrapper::DirectX11Wrapper(HWND hWnd, bool fullScreenFlag)
 	depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 	hr = device->CreateDepthStencilState(&depthDisabledStencilDesc, &depthDisabledStencilState);
+
+	MessageBox(hWnd, L"Device Created", L"Notice", MB_OK);
 }
 
 void DirectX11Wrapper::BeginScene(float red, float green, float blue, float alpha)

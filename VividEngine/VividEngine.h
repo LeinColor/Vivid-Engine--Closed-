@@ -27,7 +27,6 @@ namespace vivid {
 		void Update();
 
 	private:
-		AppHandle appHandle;
 		Renderer renderer;
 		bool initialized = false;
 

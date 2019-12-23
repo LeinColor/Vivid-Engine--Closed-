@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Component.h"
 #include "Transform.h"
 
 Transform::Transform()

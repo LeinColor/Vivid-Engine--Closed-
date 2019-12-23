@@ -22,6 +22,8 @@
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <DirectXPackedVector.h>
+#include "AppHandle.h"
+#include "Descriptor.h"
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 
@@ -30,9 +32,17 @@ using namespace DirectX::PackedVector;
 #define SAFE_DELETE(a) { delete(a); (a) = nullptr; }
 #define SAFE_DELETE_ARRAY(a) { delete[] (a); (a) = nullptr; }
 
+#define BD_CLASS(parent, child)							\
+bool child::IsSameType(const uint32_t value) const {	\
+	if (child::type == value)							\
+		return true;									\
+	return parent::IsSameType(value);					\
+}														\
+
 static const XMFLOAT4X4 IDENTITYMATRIX = XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
 namespace vivid {
+	// Define structs here
 	struct Rect {
 		int32_t xMin;
 		int32_t xMax;

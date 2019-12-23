@@ -1,8 +1,12 @@
 #pragma once
 
 class GameObject;
+class Component;
 
-class Transform {
+class Transform : public Component {
+public:
+	static const uint32_t type = TRANSFORM;
+	virtual bool IsSameType(const uint32_t value) const override;
 private:
 	XMFLOAT3	position;
 	XMFLOAT4	rotation;

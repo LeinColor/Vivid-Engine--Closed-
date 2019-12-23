@@ -1,7 +1,9 @@
+#include "stdafx.h"
 #include "VividEngine.h"
 #include "GameObject.h"
 #include "Texture.h"
 #include "TextureShader.h"
+#include "Global.h"
 
 using namespace vivid;
 
@@ -10,16 +12,20 @@ void VividEngine::Initialize()
 	if (renderer.GetDevice() == nullptr)
 		renderer.SetDevice(new DirectX11Wrapper(appHandle.GetWindowHandle(), false));
 	
-	GameObject camera;
-	//objectManager.Add(camera);
-	/*
+	// 3D
+	GameObject* camera = new GameObject();
+	camera->AddComponent<Transform>();
+	camera->AddComponent<Camera>();
+	objectManager.Add(camera);
+	
+	// 2D
 	GameObject* sprite = new GameObject();
 	sprite->AddComponent<Transform>();
 	sprite->AddComponent<SpriteRenderer>();
 	objectManager.Add(sprite);
 
 	renderer.Initialize(objectManager);
-	*/
+
 	initialized = true;
 }
 
@@ -28,7 +34,6 @@ void VividEngine::Run()
 	if (!initialized) {
 		Initialize();
 	}
-
 	Update();
 }
 
@@ -40,9 +45,8 @@ void VividEngine::Update()
 
 	if (timer >= 1.0f) {
 		timer = 0;
-
 		// Render all of 2D objects
-	//	renderer.Render(objectManager);
+		renderer.Render(objectManager);
 	}
 }
 

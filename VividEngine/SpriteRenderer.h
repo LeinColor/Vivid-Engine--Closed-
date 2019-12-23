@@ -2,9 +2,12 @@
 
 class Texture;
 class GameObject;
-
-class SpriteRenderer
+class Component;
+class SpriteRenderer : public Component
 {
+public:
+	static const uint32_t type = SPRITE_RENDERER;
+	virtual bool IsSameType(const uint32_t value) const override;
 private:
 	struct VertexType
 	{

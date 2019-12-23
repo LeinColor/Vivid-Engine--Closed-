@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Component.h"
 #include "Texture.h"
 #include "SpriteRenderer.h"
 #include "WICTextureLoader.h"

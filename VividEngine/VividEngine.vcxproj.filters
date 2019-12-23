@@ -52,9 +52,6 @@
     <ClInclude Include="VividEngine.h">
       <Filter>Entrance</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
@@ -79,9 +76,6 @@
     <ClInclude Include="Object.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="MeshFilter.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Graphics</Filter>
     </ClInclude>
@@ -100,14 +94,26 @@
     <ClInclude Include="Random.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Global.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="SpriteRenderer.h">
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="RenderQueue.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Descriptor.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -136,9 +142,6 @@
     <ClCompile Include="VividEngine.cpp">
       <Filter>Entrance</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
@@ -159,9 +162,6 @@
     </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshFilter.cpp">
-      <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Graphics</Filter>
@@ -186,6 +186,15 @@
     </ClCompile>
     <ClCompile Include="RenderQueue.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

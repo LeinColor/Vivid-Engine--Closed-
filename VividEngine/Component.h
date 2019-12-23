@@ -1,22 +1,11 @@
 #pragma once
-#include "stdafx.h"
-#include "ID.h"
-#include "Transform.h"
-#include "Camera.h"
-#include "SpriteRenderer.h"
 
-template<typename T>
 class Component {
-private:
-	ID id;
 public:
-	T component;
-
-	uint32_t GetInstanceID()
-	{
-		return id.Get();
+	static const uint32_t type = COMPONENT;
+	virtual bool IsSameType(const uint32_t value) const {
+		return type == value;
 	}
-	void SetOwner() {
-		component::owner = this;
-	}
+public:
+	virtual ~Component() = default;
 };
