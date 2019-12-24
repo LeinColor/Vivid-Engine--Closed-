@@ -3,14 +3,14 @@
 #include "GameObject.h"
 #include "Texture.h"
 #include "TextureShader.h"
-#include "Global.h"
+//#include "Global.h"
 
 using namespace vivid;
 
 void VividEngine::Initialize()
 {
 	if (renderer.GetDevice() == nullptr)
-		renderer.SetDevice(new DirectX11Wrapper(appHandle.GetWindowHandle(), false));
+		renderer.SetDevice(new DirectX11Wrapper(AppHandle::GetWindowHandle(), false));
 	
 	// 3D
 	GameObject* camera = new GameObject();
@@ -52,6 +52,6 @@ void VividEngine::Update()
 
 void VividEngine::SetWindow(HWND hWnd, HINSTANCE hInstance)
 {
-	appHandle.SetWindowHandle(hWnd);
-	appHandle.SetInstanceHandle(hInstance);
+	AppHandle::SetWindowHandle(hWnd);
+	AppHandle::SetInstanceHandle(hInstance);
 }

@@ -1,4 +1,3 @@
 #pragma once
-#include "AppHandle.h"
 
-vivid::AppHandle appHandle;
+// Declare global variables here.

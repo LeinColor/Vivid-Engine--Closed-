@@ -115,6 +115,9 @@
     <ClInclude Include="Renderer.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Converter.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VividEngine.rc">
@@ -194,6 +197,9 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Converter.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>

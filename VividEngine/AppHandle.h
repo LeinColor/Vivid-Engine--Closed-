@@ -13,12 +13,12 @@
 namespace vivid {
 	class AppHandle {
 	public:
-		HWND GetWindowHandle();
-		HINSTANCE GetInstanceHandle();
-		void SetWindowHandle(HWND handle);
-		void SetInstanceHandle(HINSTANCE handle);
+		static HWND GetWindowHandle();
+		static HINSTANCE GetInstanceHandle();
+		static void SetWindowHandle(HWND handle);
+		static void SetInstanceHandle(HINSTANCE handle);
 	private:
-		HWND hWnd;
-		HINSTANCE hInstance;
+		static HWND hWnd;
+		static HINSTANCE hInstance;
 	};
 }
