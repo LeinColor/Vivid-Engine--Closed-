@@ -67,6 +67,11 @@ namespace vivid {
 		HRESULT CreateCounter(const D3D11_COUNTER_DESC* pCounterDesc, ID3D11Counter** ppCounter);
 		HRESULT CreateDeferredContext(UINT ContextFlags, ID3D11DeviceContext** ppDeferredContext);
 
+		// IA Stage
+		void IASetVertexBuffers(UINT StartSlot, UINT NumBuffers, ID3D11Buffer* const* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets);
+		void IASetIndexBuffer(ID3D11Buffer* pIndexBuffer, DXGI_FORMAT Format, UINT Offset);
+		void IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY Topology);
+
 		void BeginScene(float, float, float, float);
 		void EndScene();
 		void TurnZBufferOn();

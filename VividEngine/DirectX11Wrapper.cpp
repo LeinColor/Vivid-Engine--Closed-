@@ -176,6 +176,30 @@ DirectX11Wrapper::DirectX11Wrapper(HWND hWnd, bool fullScreenFlag)
 	MessageBox(hWnd, L"Device Created", L"Notice", MB_OK);
 }
 
+HRESULT DirectX11Wrapper::CreateBuffer(const D3D11_BUFFER_DESC* pDesc, const D3D11_SUBRESOURCE_DATA* pInitialData, ID3D11Buffer** ppBuffer)
+{
+	device->CreateBuffer(pDesc, pInitialData, ppBuffer);
+}
+
+void DirectX11Wrapper::IASetVertexBuffers(UINT StartSlot, UINT NumBuffers, ID3D11Buffer* const* ppVertexBuffers, const UINT* pStrides, const UINT* pOffsets)
+{
+	deviceContext->IASetVertexBuffers(StartSlot, NumBuffers, ppVertexBuffers, pStrides, pOffsets);
+}
+
+void DirectX11Wrapper::IASetIndexBuffer(ID3D11Buffer* pIndexBuffer, DXGI_FORMAT Format, UINT Offset)
+{
+	deviceContext->IASetIndexBuffer(pIndexBuffer, Format, Offset);
+}
+
+void DirectX11Wrapper::IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY Topology)
+{
+	deviceContext->IASetPrimitiveTopology(Topology);
+}
+
+
+
+
+
 void DirectX11Wrapper::BeginScene(float red, float green, float blue, float alpha)
 {
 	float color[4] = { red, green, blue, alpha };
