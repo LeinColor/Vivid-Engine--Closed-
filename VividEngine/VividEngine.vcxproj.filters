@@ -221,4 +221,12 @@
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="color.vs">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="color.ps">
+      <Filter>HLSL</Filter>
+    </None>
+  </ItemGroup>
 </Project>

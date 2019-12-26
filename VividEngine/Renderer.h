@@ -30,7 +30,7 @@ namespace vivid {
 		void Initialize(Manager<GameObject>& manager);
 		void Render(Manager<GameObject>& manager);
 
-		void LoadMesh();
+		void LoadMesh(Manager<GameObject>& manager);
 		void LoadMaterial();
 	};
 }

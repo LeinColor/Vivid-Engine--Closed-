@@ -1,12 +1,13 @@
 #include "stdafx.h"
 #include "GameObject.h"
 #include "Component.h"
+#include "Transform.h"
 #include "Camera.h"
 #include "Object.h"
 
 // TODO: Refactoring
 void Camera::Render(int screenWidth, int screenHeight, float screenDepth, float screenNear)
-{/*
+{
 	XMFLOAT3 up, lookAt, position;
 	XMFLOAT4 rotation;
 	XMVECTOR upVector, positionVector, lookAtVector;
@@ -68,7 +69,7 @@ void Camera::Render(int screenWidth, int screenHeight, float screenDepth, float 
 
 	XMMATRIX orthoMatrix = XMMatrixOrthographicLH(screenWidth, screenHeight, screenNear, screenDepth);
 	XMStoreFloat4x4(&ortho, orthoMatrix);
-	*/
+	
 }
 
 XMMATRIX Camera::GetViewMatrix() const

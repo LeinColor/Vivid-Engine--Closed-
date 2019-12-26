@@ -16,11 +16,15 @@ void VividEngine::Initialize()
 	GameObject* camera = new GameObject();
 	camera->AddComponent<Transform>();
 	camera->AddComponent<Camera>();
+	camera->GetComponent<Transform>().SetPosition(0, 0, -5);
+	camera->GetComponent<Camera>().owner = camera;
 	objectManager.Add(camera);
 	
 	GameObject* cube = new GameObject();
 	cube->AddComponent<Transform>();
 	cube->AddComponent<Renderer3D>();
+	objectManager.Add(cube);
+
 	/*
 	// 2D
 	GameObject* sprite = new GameObject();
@@ -28,6 +32,7 @@ void VividEngine::Initialize()
 	sprite->AddComponent<SpriteRenderer>();
 	objectManager.Add(sprite);
 	*/
+
 	renderer.Initialize(objectManager);
 
 	initialized = true;
@@ -45,7 +50,7 @@ void VividEngine::Update()
 {
 	static float timer = 0.0f;
 
-	timer += 0.01f;
+	timer += 0.1f;
 
 	if (timer >= 1.0f) {
 		timer = 0;

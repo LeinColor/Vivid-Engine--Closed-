@@ -1,6 +1,7 @@
 #pragma once
+#include "stdafx.h"
 
-// Define enums here
+// Define enum here
 enum TYPE {
 	UNKNOWN,
 	OBJECT,
@@ -10,3 +11,4 @@ enum TYPE {
 	SPRITE_RENDERER,
 	RENDERER_3D
 };
+
