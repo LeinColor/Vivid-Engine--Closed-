@@ -14,6 +14,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "SpriteRenderer.h"
+#include "Renderer3D.h"
 
 using namespace vivid;
 namespace vivid {

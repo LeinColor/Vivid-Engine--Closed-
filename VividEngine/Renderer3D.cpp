@@ -1,0 +1,7 @@
+#include "stdafx.h"
+#include "GameObject.h"
+#include "Component.h"
+#include "Renderer3D.h"
+#include "Object.h"
+#include "Mesh.h"
+#include "Material.h"

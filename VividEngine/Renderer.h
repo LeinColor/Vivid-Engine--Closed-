@@ -14,11 +14,13 @@
 #include "SpriteRenderer.h"
 #include "Camera.h"
 #include "Transform.h"
+#include "Mesh.h"
+#include "Material.h"
 
 namespace vivid {
 	class Renderer {
 	private:
-		DirectX11Wrapper* device = nullptr;
+		DirectX11Wrapper* dxWrapper = nullptr;
 
 	public:
 		GameObject* mainCamera = nullptr;
@@ -29,6 +31,6 @@ namespace vivid {
 		void Render(Manager<GameObject>& manager);
 
 		void LoadMesh();
-		void LoadShader();
+		void LoadMaterial();
 	};
 }

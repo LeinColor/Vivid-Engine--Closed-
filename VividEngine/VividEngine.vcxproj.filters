@@ -121,6 +121,12 @@
     <ClInclude Include="Importer.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer3D.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VividEngine.rc">
@@ -206,6 +212,12 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Importer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer3D.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>

@@ -169,6 +169,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Importer.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Object.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -178,6 +179,7 @@
     </ClInclude>
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Renderer3D.h" />
     <ClInclude Include="RenderQueue.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="stdafx.h" />
@@ -224,6 +226,7 @@
     </ClCompile>
     <ClCompile Include="Importer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Object.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -233,6 +236,7 @@
     </ClCompile>
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Renderer3D.cpp" />
     <ClCompile Include="RenderQueue.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Texture.cpp">

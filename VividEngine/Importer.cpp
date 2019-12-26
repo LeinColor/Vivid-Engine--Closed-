@@ -7,16 +7,14 @@
 
 using namespace std;
 using namespace vivid;
-void Importer::LoadObjFile(const char* path,
+bool Importer::LoadObjFile(const char* path,
 	_Out_ vector<XMFLOAT3>& out_vertices,
 	_Out_ vector<XMFLOAT2>& out_uvs,
 	_Out_ vector<XMFLOAT3>& out_normals)
 {
 	FILE* file = fopen(path, "r");
-	if (file == NULL) {
-		Debug::Log("Obj File Loading Failed!");
-		return;
-	}
+	if (file == NULL)
+		return false;
 
 	vector<unsigned int> vertexIndices, uvIndices, normalIndices;
 	vector<XMFLOAT3> tempVertices;
@@ -48,19 +46,19 @@ void Importer::LoadObjFile(const char* path,
 			tempNormals.push_back(normal);
 		}
 		else if (strcmp(lineHeader, "f") == 0) {
-			unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+			unsigned int vertexIndex[4], uvIndex[4], normalIndex[4];
 			int matches =
-				fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n",
+				fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n",
 					&vertexIndex[0], &uvIndex[0], &normalIndex[0],
 					&vertexIndex[1], &uvIndex[1], &normalIndex[1],
-					&vertexIndex[2], &uvIndex[2], &normalIndex[2]);
+					&vertexIndex[2], &uvIndex[2], &normalIndex[2],
+					&vertexIndex[3], &uvIndex[3], &normalIndex[3]);
 
-			if (matches != 9) {
-				Debug::Log("This is unknown file format!");
-				return;
+			if (matches != 12) {
+				return false;
 			}
 
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 4; i++) {
 				vertexIndices.push_back(vertexIndex[i]);
 				uvIndices.push_back(uvIndex[i]);
 				normalIndices.push_back(normalIndex[i]);
@@ -82,4 +80,5 @@ void Importer::LoadObjFile(const char* path,
 		out_uvs.push_back(uv);
 		out_normals.push_back(normal);
 	}
+	return true;
 }

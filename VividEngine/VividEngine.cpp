@@ -18,12 +18,16 @@ void VividEngine::Initialize()
 	camera->AddComponent<Camera>();
 	objectManager.Add(camera);
 	
+	GameObject* cube = new GameObject();
+	cube->AddComponent<Transform>();
+	cube->AddComponent<Renderer3D>();
+	/*
 	// 2D
 	GameObject* sprite = new GameObject();
 	sprite->AddComponent<Transform>();
 	sprite->AddComponent<SpriteRenderer>();
 	objectManager.Add(sprite);
-
+	*/
 	renderer.Initialize(objectManager);
 
 	initialized = true;
