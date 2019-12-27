@@ -103,8 +103,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // store instance handle to global variable
 
-   constexpr int screenWidth = 1280;
-   constexpr int screenHeight = 720;
+   constexpr int screenWidth = 1024;
+   constexpr int screenHeight = 768;
    int x = (GetSystemMetrics(SM_CXSCREEN) - screenWidth) / 2;
    int y = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
    HWND hWnd = CreateWindowEx(WS_EX_APPWINDOW, szWindowClass, szTitle, WS_POPUP, x, y, screenWidth, screenHeight, NULL, NULL, hInstance, NULL);

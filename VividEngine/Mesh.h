@@ -5,9 +5,10 @@
 
 class Mesh {
 public:
-	std::vector<XMFLOAT3> vertices;
+	std::vector<XMFLOAT3> positions;
 	std::vector<XMFLOAT2> uvs;
 	std::vector<XMFLOAT3> normals;
+	unsigned int indexCount;
 
 private:
 };

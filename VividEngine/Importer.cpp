@@ -46,19 +46,18 @@ bool Importer::LoadObjFile(const char* path,
 			tempNormals.push_back(normal);
 		}
 		else if (strcmp(lineHeader, "f") == 0) {
-			unsigned int vertexIndex[4], uvIndex[4], normalIndex[4];
+			unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
 			int matches =
-				fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d\n",
+				fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n",
 					&vertexIndex[0], &uvIndex[0], &normalIndex[0],
 					&vertexIndex[1], &uvIndex[1], &normalIndex[1],
-					&vertexIndex[2], &uvIndex[2], &normalIndex[2],
-					&vertexIndex[3], &uvIndex[3], &normalIndex[3]);
+					&vertexIndex[2], &uvIndex[2], &normalIndex[2]);
 
-			if (matches != 12) {
+			if (matches != 9) {
 				return false;
 			}
 
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 3; i++) {
 				vertexIndices.push_back(vertexIndex[i]);
 				uvIndices.push_back(uvIndex[i]);
 				normalIndices.push_back(normalIndex[i]);
