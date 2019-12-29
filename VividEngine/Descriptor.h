@@ -13,6 +13,13 @@ enum TYPE {
 	RENDERER_3D
 };
 
+enum MESH_ENUM {
+	MESH_CUBE,
+	MESH_SPHERE,
+	MESH_CONE,
+	MESH_PLANE,
+};
+
 // Define struct here
 struct vertex_PC_t {	// Position,  Color
 	XMFLOAT3 position;

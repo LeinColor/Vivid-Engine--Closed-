@@ -16,7 +16,7 @@ void VividEngine::Initialize()
 	GameObject* camera = new GameObject();
 	camera->AddComponent<Transform>();
 	camera->AddComponent<Camera>();
-	camera->GetComponent<Transform>().SetPosition(0, 0, -300);
+	camera->GetComponent<Transform>().SetPosition(0, 0, -5);
 	camera->GetComponent<Camera>().owner = camera;
 	objectManager.Add(camera);
 	
@@ -42,7 +42,7 @@ void VividEngine::Update()
 {
 	static float timer = 0.0f;
 
-	timer += 0.01f;
+	timer += 0.001f;
 
 	if (timer >= 1.0f) {
 		timer = 0;

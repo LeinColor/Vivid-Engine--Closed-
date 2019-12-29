@@ -182,6 +182,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Renderer3D.h" />
     <ClInclude Include="RenderQueue.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Resource.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="TextureShader.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Transform.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
@@ -239,6 +241,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Renderer3D.cpp" />
     <ClCompile Include="RenderQueue.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Texture.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -246,6 +249,7 @@
     <ClCompile Include="TextureShader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="tiny_obj_loader.cc" />
     <ClCompile Include="Transform.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>

@@ -130,6 +130,12 @@
     <ClInclude Include="OBJ_Loader.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="tiny_obj_loader.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VividEngine.rc">
@@ -221,6 +227,12 @@
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="tiny_obj_loader.cc">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
