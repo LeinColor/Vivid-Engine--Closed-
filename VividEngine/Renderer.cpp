@@ -34,11 +34,6 @@ std::vector<ID3D11Buffer*> constantBuffers;
 std::vector<ID3D11Buffer*> resourceBuffers;
 std::vector<ID3D11SamplerState*> samplerStates;
 
-vector<GameObject*> Manager::gameObjects;
-vector<Mesh*> Manager::meshes;
-vector<Texture*> Manager::textures;
-vector<Shader*> Manager::shaders;
-
 void Renderer::Initialize()
 {
 	mainCamera = Manager::gameObjects[0];

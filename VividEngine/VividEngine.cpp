@@ -6,6 +6,7 @@
 //#include "Global.h"
 
 using namespace vivid;
+
 vector<GameObject*> Manager::gameObjects;
 vector<Mesh*> Manager::meshes;
 vector<Texture*> Manager::textures;

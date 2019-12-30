@@ -1,15 +1,16 @@
 #pragma once
 #include "stdafx.h"
-#include "Mesh.h"
-#include "Texture.h"
-#include "Shader.h"
-#include "GameObject.h"
+
 #include <vector>
 
+class GameObject;
+class Mesh;
+class Shader;
+class Texture;
 class Manager {
 public:
-	static vector<GameObject*> gameObjects;
-	static vector<Mesh*> meshes;
-	static vector<Shader*> shaders;
-	static vector<Texture*> textures;
+	static std::vector<GameObject*> gameObjects;
+	static std::vector<Mesh*> meshes;
+	static std::vector<Shader*> shaders;
+	static std::vector<Texture*> textures;
 };
