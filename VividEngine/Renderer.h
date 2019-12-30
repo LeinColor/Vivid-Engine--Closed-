@@ -27,8 +27,8 @@ namespace vivid {
 		DirectX11Wrapper* GetDevice();
 		void SetDevice(DirectX11Wrapper* value);
 
-		void Initialize(Manager<GameObject>& manager);
-		void Render(Manager<GameObject>& manager);
+		void Initialize();
+		void Render();
 
 		void LoadMesh(const char* fileName);
 		void LoadShader();

@@ -6,7 +6,10 @@
 //#include "Global.h"
 
 using namespace vivid;
-
+vector<GameObject*> Manager::gameObjects;
+vector<Mesh*> Manager::meshes;
+vector<Texture*> Manager::textures;
+vector<Shader*> Manager::shaders;
 void VividEngine::Initialize()
 {
 	if (renderer.GetDevice() == nullptr)
@@ -16,16 +19,21 @@ void VividEngine::Initialize()
 	GameObject* camera = new GameObject();
 	camera->AddComponent<Transform>();
 	camera->AddComponent<Camera>();
-	camera->GetComponent<Transform>().SetPosition(0, 0, -5);
+	camera->GetComponent<Transform>().SetPosition(0, 0, -15);
 	camera->GetComponent<Camera>().owner = camera;
-	objectManager.Add(camera);
+	Manager::gameObjects.push_back(camera);
 	
 	GameObject* cube = new GameObject();
 	cube->AddComponent<Transform>();
 	cube->AddComponent<Renderer3D>();
-	objectManager.Add(cube);
+	Manager::gameObjects.push_back(cube);
 
-	renderer.Initialize(objectManager);
+	GameObject* sphere = new GameObject();
+	sphere->AddComponent<Transform>();
+	sphere->AddComponent<Renderer3D>();
+	Manager::gameObjects.push_back(sphere);
+
+	renderer.Initialize();
 
 	initialized = true;
 }
@@ -47,7 +55,7 @@ void VividEngine::Update()
 	if (timer >= 1.0f) {
 		timer = 0;
 		// Render all of 2D objects
-		renderer.Render(objectManager);
+		renderer.Render();
 	}
 }
 

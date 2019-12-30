@@ -31,8 +31,6 @@ namespace vivid {
 		Renderer renderer;
 		bool initialized = false;
 
-		Manager<GameObject> objectManager;
-
 		//TextureShader ts;
 	};
 }

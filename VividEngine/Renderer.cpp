@@ -10,13 +10,13 @@
 #include "Renderer.h"
 #include "Descriptor.h"
 #include "Debug.h"
+#include "Material.h"
+#include "Shader.h"
+#include "Texture.h"
+#include "Renderer3D.h"
 #include "tiny_obj_loader.h"
 using namespace vivid;
 
-
-// Mesh and material conatiners
-std::vector<Mesh*> meshes;
-std::vector<Material*> materials;
 
 // Shader containers
 std::vector<ID3D11VertexShader*> vertexShaders;
@@ -25,6 +25,7 @@ std::vector<ID3D11GeometryShader*> geometryShaders;
 std::vector<ID3D11HullShader*> hullShaders;
 std::vector<ID3D11DomainShader*> domainShaders;
 std::vector<ID3D11ComputeShader*> computeShaders;
+std::vector<Shader*> shaders;
 
 // Layout container
 std::vector<ID3D11InputLayout*> inputLayouts;
@@ -33,13 +34,23 @@ std::vector<ID3D11Buffer*> constantBuffers;
 std::vector<ID3D11Buffer*> resourceBuffers;
 std::vector<ID3D11SamplerState*> samplerStates;
 
-void Renderer::Initialize(Manager<GameObject>& manager)
-{
-	mainCamera = manager.At(0);
+vector<GameObject*> Manager::gameObjects;
+vector<Mesh*> Manager::meshes;
+vector<Texture*> Manager::textures;
+vector<Shader*> Manager::shaders;
 
-	// Load order sensitive because of enum value.
+void Renderer::Initialize()
+{
+	mainCamera = Manager::gameObjects[0];
+
+	// Load order sensitive because of mesh enum value.
 	LoadMesh("../VividEngine/Obj/cube.obj");
+	LoadMesh("../VividEngine/Obj/uvsphere.obj");
 	LoadShader();
+
+	Manager::gameObjects[1]->GetComponent<Renderer3D>().mesh = Manager::meshes[MESH_CUBE];
+	Manager::gameObjects[2]->GetComponent<Renderer3D>().mesh = Manager::meshes[MESH_SPHERE];
+	Manager::gameObjects[2]->GetComponent<Transform>().SetPosition(3, 0, 0);
 }
 
 void Renderer::LoadMesh(const char* fileName)
@@ -57,7 +68,7 @@ void Renderer::LoadMesh(const char* fileName)
 	}
 	
 	Mesh* mesh = new Mesh();
-	meshes.push_back(mesh);
+	Manager::meshes.push_back(mesh);
 	
 	//TODO: Not showing so should fix this!
 	UINT indexCount = shapes[0].mesh.indices.size();
@@ -168,6 +179,7 @@ void Renderer::LoadMesh(const char* fileName)
 
 void Renderer::LoadShader()
 {
+	Shader* shader = new Shader();
 	//***********************************
 	//**       Vertex Shader           **
 	//***********************************
@@ -225,67 +237,75 @@ void Renderer::LoadShader()
 		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		bd.MiscFlags = 0;
 		bd.StructureByteStride = 0;
-		dxWrapper->GetDevice()->CreateBuffer(&bd, nullptr, meshes[0]->GetMatrixBuffer());
-//		constantBuffers.push_back(*meshes[0]->GetMatrixBuffer());
+		for (int i = 0; i < Manager::meshes.size(); i++) {
+			dxWrapper->GetDevice()->CreateBuffer(&bd, nullptr, Manager::meshes[i]->GetMatrixBuffer());
+		}
+		constantBuffers.push_back(*Manager::meshes[0]->GetMatrixBuffer());
 	}
+
+	shader->vertexShader = &vertexShader;
+	shader->pixelShader = &pixelShader;
+	shaders.push_back(shader);
 }
 
-void Renderer::Render(Manager<GameObject>& manager)
+void Renderer::Render()
 {
 	static float angle = 0.001f;
 
 	// Prepare to render
 	dxWrapper->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 	////////////////////////////////////////////////////////
-
-	manager.At(1)->GetComponent<Transform>().Rotate(XMFLOAT3(0, angle, 0));
 	mainCamera->GetComponent<Camera>().Render(dxWrapper->GetScreenWidth(), dxWrapper->GetScreenHeight(), SCREEN_DEPTH, SCREEN_NEAR);
 
+	for (int i = 1; i < Manager::gameObjects.size(); i++) {
+		Manager::gameObjects[i]->GetComponent<Transform>().Rotate(XMFLOAT3(0, angle, 0));
 
-	//*********************************
-	//**      Constant Buffer        **
-	//*********************************
-	auto worldMatrix = manager.At(1)->GetComponent<Transform>().GetWorldMatrix(); // Cube's world matrix
-	auto viewMatrix = mainCamera->GetComponent<Camera>().GetViewMatrix();
-	auto projectionMatrix = mainCamera->GetComponent<Camera>().GetProjectionMatrix();
 
-	// Transpose matrix to use within shader.
-	worldMatrix = XMMatrixTranspose(worldMatrix);
-	viewMatrix = XMMatrixTranspose(viewMatrix);
-	projectionMatrix = XMMatrixTranspose(projectionMatrix);
-	
-	// Lock constant buffer to write description.
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	dxWrapper->GetContext()->Map(*meshes[0]->GetMatrixBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		//*********************************
+		//**      Constant Buffer        **
+		//*********************************
+		auto mesh = Manager::gameObjects[i]->GetComponent<Renderer3D>().mesh;
+		auto worldMatrix = Manager::gameObjects[i]->GetComponent<Transform>().GetWorldMatrix(); // Cube's world matrix
+		auto viewMatrix = mainCamera->GetComponent<Camera>().GetViewMatrix();
+		auto projectionMatrix = mainCamera->GetComponent<Camera>().GetProjectionMatrix();
 
-	// Get constant buffer pointer
-	MatrixBufferType* dataPtr = (MatrixBufferType*)mappedResource.pData;
+		// Transpose matrix to use within shader.
+		worldMatrix = XMMatrixTranspose(worldMatrix);
+		viewMatrix = XMMatrixTranspose(viewMatrix);
+		projectionMatrix = XMMatrixTranspose(projectionMatrix);
+		
+		// Lock constant buffer to write description.
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+		dxWrapper->GetContext()->Map(*mesh->GetMatrixBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
-	// copy to constant buffer
-	dataPtr->world = worldMatrix;
-	dataPtr->view = viewMatrix;
-	dataPtr->projection = projectionMatrix;
+		// Get constant buffer pointer
+		MatrixBufferType* dataPtr = (MatrixBufferType*)mappedResource.pData;
 
-	dxWrapper->GetContext()->Unmap(*meshes[0]->GetMatrixBuffer(), 0);
+		// copy to constant buffer
+		dataPtr->world = worldMatrix;
+		dataPtr->view = viewMatrix;
+		dataPtr->projection = projectionMatrix;
 
-	unsigned bufferNumber = 0;
-	dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, meshes[0]->GetMatrixBuffer());
+		dxWrapper->GetContext()->Unmap(*mesh->GetMatrixBuffer(), 0);
 
-	
+		unsigned bufferNumber = 0;
+		dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, mesh->GetMatrixBuffer());
 
-	// Bind pipeline before drawing
-	unsigned int stride = sizeof(vertex_PC_t);
-	unsigned int offset = 0;
+		
 
-	dxWrapper->GetContext()->IASetVertexBuffers(0, 1, meshes[0]->GetVertexBuffer(), &stride, &offset);
-	dxWrapper->GetContext()->IASetIndexBuffer(*meshes[0]->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
-	dxWrapper->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	dxWrapper->GetContext()->IASetInputLayout(inputLayouts[0]);
-	dxWrapper->GetContext()->VSSetShader(vertexShaders[0], nullptr, 0);
-	dxWrapper->GetContext()->PSSetShader(pixelShaders[0], nullptr, 0);
-	
-	dxWrapper->GetContext()->DrawIndexed(meshes[0]->positions.size(), 0, 0);
-	
+		// Bind pipeline before drawing
+		unsigned int stride = sizeof(vertex_PC_t);
+		unsigned int offset = 0;
+
+		dxWrapper->GetContext()->IASetVertexBuffers(0, 1, mesh->GetVertexBuffer(), &stride, &offset);
+		dxWrapper->GetContext()->IASetIndexBuffer(*mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
+		dxWrapper->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		dxWrapper->GetContext()->IASetInputLayout(inputLayouts[0]);
+		dxWrapper->GetContext()->VSSetShader(vertexShaders[0], nullptr, 0);
+		dxWrapper->GetContext()->PSSetShader(pixelShaders[0], nullptr, 0);
+
+		dxWrapper->GetContext()->DrawIndexed(mesh->positions.size(), 0, 0);
+	}
 	/////////////////////////////////////////////////////
 	// Render end
 	dxWrapper->EndScene();
