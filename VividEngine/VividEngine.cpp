@@ -3,38 +3,35 @@
 #include "GameObject.h"
 #include "Texture.h"
 #include "TextureShader.h"
-//#include "Global.h"
-
 using namespace vivid;
 
-vector<GameObject*> Manager::gameObjects;
-vector<Mesh*> Manager::meshes;
-vector<Texture*> Manager::textures;
-vector<Shader*> Manager::shaders;
 void VividEngine::Initialize()
 {
 	if (renderer.GetDevice() == nullptr)
 		renderer.SetDevice(new DirectX11Wrapper(AppHandle::GetWindowHandle(), false));
 	
+	// initialize renderer to load mesh, shader
+	renderer.Initialize();
+
 	// 3D
 	GameObject* camera = new GameObject();
-	camera->AddComponent<Transform>();
 	camera->AddComponent<Camera>();
 	camera->GetComponent<Transform>().SetPosition(0, 0, -15);
-	camera->GetComponent<Camera>().owner = camera;
-	Manager::gameObjects.push_back(camera);
 	
 	GameObject* cube = new GameObject();
-	cube->AddComponent<Transform>();
 	cube->AddComponent<Renderer3D>();
-	Manager::gameObjects.push_back(cube);
 
 	GameObject* sphere = new GameObject();
-	sphere->AddComponent<Transform>();
 	sphere->AddComponent<Renderer3D>();
-	Manager::gameObjects.push_back(sphere);
+	sphere->GetComponent<Transform>().SetPosition(3, 0, 0);
 
-	renderer.Initialize();
+	GameObject* cone = new GameObject();
+	cone->AddComponent<Renderer3D>();
+	cone->GetComponent<Transform>().SetPosition(-0.9, 0, -2);
+
+	cube->GetComponent<Renderer3D>().mesh = Manager::meshes[MESH_CUBE];
+	sphere->GetComponent<Renderer3D>().mesh = Manager::meshes[MESH_SPHERE];
+	//cone->GetComponent<Renderer3D>().mesh = Manager::meshes[MESH_CONE];
 
 	initialized = true;
 }

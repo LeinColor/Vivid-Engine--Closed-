@@ -10,6 +10,8 @@ private:
 	std::vector<std::unique_ptr<Component> > components;
 
 public:
+	GameObject();
+
 	template<class ComponentType, typename... Args>
 	void AddComponent(Args&&... params);
 
@@ -20,7 +22,7 @@ public:
 template<class ComponentType, typename... Args>
 void GameObject::AddComponent(Args&&... params) {
 	components.emplace_back(std::make_unique<ComponentType>(std::forward<Args>(params)...));
-}
+	GetComponent<ComponentType>().owner = params;
 
 template<class ComponentType>
 ComponentType& GameObject::GetComponent() {

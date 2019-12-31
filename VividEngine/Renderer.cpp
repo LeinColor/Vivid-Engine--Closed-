@@ -36,16 +36,12 @@ std::vector<ID3D11SamplerState*> samplerStates;
 
 void Renderer::Initialize()
 {
-	mainCamera = Manager::gameObjects[0];
-
 	// Load order sensitive because of mesh enum value.
 	LoadMesh("../VividEngine/Obj/cube.obj");
 	LoadMesh("../VividEngine/Obj/uvsphere.obj");
+	LoadMesh("../VividEngine/Obj/cone.obj");
+	LoadMesh("../VividEngine/Obj/plane.obj");
 	LoadShader();
-
-	Manager::gameObjects[1]->GetComponent<Renderer3D>().mesh = Manager::meshes[MESH_CUBE];
-	Manager::gameObjects[2]->GetComponent<Renderer3D>().mesh = Manager::meshes[MESH_SPHERE];
-	Manager::gameObjects[2]->GetComponent<Transform>().SetPosition(3, 0, 0);
 }
 
 void Renderer::LoadMesh(const char* fileName)
@@ -247,19 +243,27 @@ void Renderer::Render()
 {
 	static float angle = 0.001f;
 
+	// Set Main Camera
+	mainCamera = Manager::gameObjects[0];
+
 	// Prepare to render
 	dxWrapper->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 	////////////////////////////////////////////////////////
 	mainCamera->GetComponent<Camera>().Render(dxWrapper->GetScreenWidth(), dxWrapper->GetScreenHeight(), SCREEN_DEPTH, SCREEN_NEAR);
 
 	for (int i = 1; i < Manager::gameObjects.size(); i++) {
+		auto mesh = Manager::gameObjects[i]->GetComponent<Renderer3D>().mesh;
+
+		// if object doesn't have mesh, skip rendering
+		if (mesh == nullptr)
+			continue;
+
 		Manager::gameObjects[i]->GetComponent<Transform>().Rotate(XMFLOAT3(0, angle, 0));
 
 
 		//*********************************
 		//**      Constant Buffer        **
 		//*********************************
-		auto mesh = Manager::gameObjects[i]->GetComponent<Renderer3D>().mesh;
 		auto worldMatrix = Manager::gameObjects[i]->GetComponent<Transform>().GetWorldMatrix(); // Cube's world matrix
 		auto viewMatrix = mainCamera->GetComponent<Camera>().GetViewMatrix();
 		auto projectionMatrix = mainCamera->GetComponent<Camera>().GetProjectionMatrix();
@@ -305,7 +309,6 @@ void Renderer::Render()
 	// Render end
 	dxWrapper->EndScene();
 }
-
 
 
 DirectX11Wrapper* Renderer::GetDevice()

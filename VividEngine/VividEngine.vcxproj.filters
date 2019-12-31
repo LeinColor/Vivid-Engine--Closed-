@@ -249,5 +249,11 @@
     <None Include="color.ps">
       <Filter>HLSL</Filter>
     </None>
+    <None Include="light.vs">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="light.ps">
+      <Filter>HLSL</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -20,7 +20,6 @@ private:
 public:
 	ALIGNED_ALLOC_16;
 
-	GameObject* owner = nullptr;
 	Camera() {}
 	Camera(const Camera&) {}
 	~Camera() {}

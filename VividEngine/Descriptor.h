@@ -10,7 +10,8 @@ enum TYPE {
 	TRANSFORM,
 	CAMERA,
 	SPRITE_RENDERER,
-	RENDERER_3D
+	RENDERER_3D,
+	LIGHT,
 };
 
 enum MESH_ENUM {
@@ -49,3 +50,8 @@ struct MatrixBufferType {
 	XMMATRIX projection;
 };
 
+struct LightBufferType {
+	XMFLOAT4 diffuseColor;
+	XMFLOAT3 lightDirection;
+	float padding;
+};
