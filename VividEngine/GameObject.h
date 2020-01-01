@@ -22,7 +22,8 @@ public:
 template<class ComponentType, typename... Args>
 void GameObject::AddComponent(Args&&... params) {
 	components.emplace_back(std::make_unique<ComponentType>(std::forward<Args>(params)...));
-	GetComponent<ComponentType>().owner = params;
+	GetComponent<ComponentType>().owner = this;
+}
 
 template<class ComponentType>
 ComponentType& GameObject::GetComponent() {

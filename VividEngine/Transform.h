@@ -24,6 +24,7 @@ public:
 	void Rotate(const XMFLOAT3&);
 
 	void UpdateWorldMatrix();
+
 	XMMATRIX GetWorldMatrix() const;
 
 	XMFLOAT3 GetPosition() const;
@@ -33,4 +34,5 @@ public:
 	XMVECTOR GetPositionVector() const;
 	XMVECTOR GetRotationVector() const;
 	XMVECTOR GetScaleVector() const;
+
 };

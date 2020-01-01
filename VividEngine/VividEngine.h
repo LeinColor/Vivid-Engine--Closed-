@@ -15,6 +15,8 @@
 #include "Transform.h"
 #include "SpriteRenderer.h"
 #include "Renderer3D.h"
+#include "Light.h"
+#include "EditorObject.h"
 
 using namespace vivid;
 namespace vivid {

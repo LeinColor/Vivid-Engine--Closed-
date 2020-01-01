@@ -15,6 +15,7 @@
 #include "Texture.h"
 #include "Renderer3D.h"
 #include "tiny_obj_loader.h"
+#include "EditorObject.h"
 using namespace vivid;
 
 
@@ -41,7 +42,11 @@ void Renderer::Initialize()
 	LoadMesh("../VividEngine/Obj/uvsphere.obj");
 	LoadMesh("../VividEngine/Obj/cone.obj");
 	LoadMesh("../VividEngine/Obj/plane.obj");
+	LoadMesh("../VividEngine/Obj/cylinder.obj");
 	LoadShader();
+
+
+
 }
 
 void Renderer::LoadMesh(const char* fileName)
@@ -63,7 +68,7 @@ void Renderer::LoadMesh(const char* fileName)
 	
 	//TODO: Not showing so should fix this!
 	UINT indexCount = shapes[0].mesh.indices.size();
-	vertex_PC_t* vertices = new vertex_PC_t[indexCount];	 // allocate vertex_t for vertex count
+	vertex_PCN_t* vertices = new vertex_PCN_t[indexCount];	 // allocate vertex_t for vertex count
 	unsigned long* indices = new unsigned long[indexCount];  // allocate unsigned long for indices count
 	
 	for (int i = 0; i < indexCount; i++) {
@@ -75,8 +80,9 @@ void Renderer::LoadMesh(const char* fileName)
 			attrib.vertices[index.vertex_index * 3 + 1],
 			attrib.vertices[index.vertex_index * 3 + 2]);
 
-		// vertex cp;pr
-		XMFLOAT4 color = XMFLOAT4(0.4, 0.4, 0.4, 0.6);
+		// vertex color
+		XMFLOAT4 color = XMFLOAT4(1.0, 0.0, 0.0, 1.0);
+		/*
 		if (index.texcoord_index >= 0) {
 			color = XMFLOAT4(
 				attrib.texcoords[index.texcoord_index * 2 + 0],
@@ -84,10 +90,21 @@ void Renderer::LoadMesh(const char* fileName)
 				attrib.texcoords[index.texcoord_index * 2 + 0],
 				1.0f);
 		}
+		*/
 		vertices[i].color = color;
+
+		XMFLOAT3 tmpNormal = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		if (index.normal_index >= 0) {
+			tmpNormal = XMFLOAT3(
+				attrib.normals[index.normal_index * 3 + 0],
+				attrib.normals[index.normal_index * 3 + 1],
+				attrib.normals[index.normal_index * 3 + 2]);
+		}
+		vertices[i].normal = tmpNormal;
 
 		indices[i] = i;
 		
+		// Below exist to caching
 		// assign position to mesh attribute's
 		XMFLOAT3 position = XMFLOAT3(0, 0, 0);
 		position = XMFLOAT3(
@@ -124,7 +141,7 @@ void Renderer::LoadMesh(const char* fileName)
 	{
 		D3D11_BUFFER_DESC bd;
 		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(vertex_PC_t) * indexCount;
+		bd.ByteWidth = sizeof(vertex_PCN_t) * indexCount;
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		bd.CPUAccessFlags = 0;
 		bd.MiscFlags = 0;
@@ -171,12 +188,17 @@ void Renderer::LoadMesh(const char* fileName)
 void Renderer::LoadShader()
 {
 	Shader* shader = new Shader();
+
+	// resize vector capacity
+	//constantBuffers.resize(CONSTANT_BUFFER_DEFAULT_COUNT);
+
+
 	//***********************************
 	//**       Vertex Shader           **
 	//***********************************
 	ID3D11VertexShader* vertexShader = nullptr;
 	ID3D10Blob* vertexShaderBuffer = nullptr;
-	if (FAILED(D3DCompileFromFile(L"../VividEngine/color.vs", nullptr, nullptr, "ColorVertexMain", "vs_5_0",
+	if (FAILED(D3DCompileFromFile(L"../VividEngine/BlinnPhong.vs", nullptr, nullptr, "LightVertexMain", "vs_5_0",
 		D3D10_SHADER_ENABLE_STRICTNESS, 0, &vertexShaderBuffer, nullptr)))
 	{
 		Debug::Log("Vertex Shader load failed!");
@@ -189,14 +211,27 @@ void Renderer::LoadShader()
 	//***********************************
 	//**      Input Layout             **
 	//***********************************
-	ID3D11InputLayout* inputLayout = nullptr;
-	D3D11_INPUT_ELEMENT_DESC layoutDesc[] =
 	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,	 0, 0,							  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-	dxWrapper->GetDevice()->CreateInputLayout(layoutDesc, ARRAYSIZE(layoutDesc), vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &inputLayout);
-	inputLayouts.push_back(inputLayout);
+		ID3D11InputLayout* inputLayout = nullptr;
+		D3D11_INPUT_ELEMENT_DESC layoutDesc[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,	 0, 0,							  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+		dxWrapper->GetDevice()->CreateInputLayout(layoutDesc, ARRAYSIZE(layoutDesc), vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &inputLayout);
+		inputLayouts.push_back(inputLayout);
+	}
+	{
+		ID3D11InputLayout* inputLayout = nullptr;
+		D3D11_INPUT_ELEMENT_DESC layoutDesc[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,	 0, 0,							  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL",	  0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+		dxWrapper->GetDevice()->CreateInputLayout(layoutDesc, ARRAYSIZE(layoutDesc), vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &inputLayout);
+		inputLayouts.push_back(inputLayout);
+	}
 
 
 
@@ -205,7 +240,7 @@ void Renderer::LoadShader()
 	//***********************************
 	ID3D11PixelShader* pixelShader = nullptr;
 	ID3D10Blob* pixelShaderBuffer = nullptr;
-	if (FAILED(D3DCompileFromFile(L"../VividEngine/color.ps", nullptr, nullptr, "ColorPixelMain", "ps_5_0",
+	if (FAILED(D3DCompileFromFile(L"../VividEngine/BlinnPhong.ps", nullptr, nullptr, "LightPixelMain", "ps_5_0",
 		D3D10_SHADER_ENABLE_STRICTNESS, 0, &pixelShaderBuffer, nullptr)))
 	{
 		Debug::Log("Pixel Shader load failed!");
@@ -220,7 +255,9 @@ void Renderer::LoadShader()
 	//***********************************
 	//**      Constant Buffer          **
 	//***********************************
+	// World, View, Projection (WVP) buffer
 	{
+		ID3D11Buffer* WVPBuffer = nullptr;
 		D3D11_BUFFER_DESC bd;
 		bd.Usage = D3D11_USAGE_DYNAMIC;
 		bd.ByteWidth = sizeof(MatrixBufferType);
@@ -228,10 +265,37 @@ void Renderer::LoadShader()
 		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		bd.MiscFlags = 0;
 		bd.StructureByteStride = 0;
-		for (int i = 0; i < Manager::meshes.size(); i++) {
-			dxWrapper->GetDevice()->CreateBuffer(&bd, nullptr, Manager::meshes[i]->GetMatrixBuffer());
-		}
-		constantBuffers.push_back(*Manager::meshes[0]->GetMatrixBuffer());
+		dxWrapper->GetDevice()->CreateBuffer(&bd, nullptr, &WVPBuffer);
+		constantBuffers.push_back(WVPBuffer);
+		//constantBuffers[CONSTANT_BUFFER_WVP] = WVPBuffer;
+	}
+	// Camera buffer
+	{
+		ID3D11Buffer* cameraBuffer = nullptr;
+		D3D11_BUFFER_DESC bd;
+		bd.Usage = D3D11_USAGE_DYNAMIC;
+		bd.ByteWidth = sizeof(CameraBufferType);
+		bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		bd.MiscFlags = 0;
+		bd.StructureByteStride = 0;
+		dxWrapper->GetDevice()->CreateBuffer(&bd, nullptr, &cameraBuffer);
+		constantBuffers.push_back(cameraBuffer);
+		//constantBuffers[CONSTANT_BUFFER_CAMERA] = cameraBuffer;
+	}
+	// Light buffer
+	{
+		ID3D11Buffer* lightBuffer = nullptr;
+		D3D11_BUFFER_DESC bd;
+		bd.Usage = D3D11_USAGE_DYNAMIC;
+		bd.ByteWidth = sizeof(LightBufferType);
+		bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		bd.MiscFlags = 0;
+		bd.StructureByteStride = 0;
+		dxWrapper->GetDevice()->CreateBuffer(&bd, nullptr, &lightBuffer);
+		constantBuffers.push_back(lightBuffer);
+		//constantBuffers[CONSTANT_BUFFER_LIGHT] = lightBuffer;
 	}
 
 	shader->vertexShader = &vertexShader;
@@ -242,6 +306,14 @@ void Renderer::LoadShader()
 void Renderer::Render()
 {
 	static float angle = 0.001f;
+	static float angle2 = 0.001f;
+	static float sign = 0.0005f;
+	static float cosAngle = 0;
+	angle2 += sign;
+	cosAngle += 0.001f;
+	if (angle2 >= 1.0f) sign *= -1;
+	if (angle2 <= -1.0f) sign *= -1;
+
 
 	// Set Main Camera
 	mainCamera = Manager::gameObjects[0];
@@ -251,14 +323,17 @@ void Renderer::Render()
 	////////////////////////////////////////////////////////
 	mainCamera->GetComponent<Camera>().Render(dxWrapper->GetScreenWidth(), dxWrapper->GetScreenHeight(), SCREEN_DEPTH, SCREEN_NEAR);
 
-	for (int i = 1; i < Manager::gameObjects.size(); i++) {
+	//Manager::gameObjects[4]->GetComponent<Light>().attrib.lightDirection = XMFLOAT3(angle2, angle2 * 0.5, angle2 * 0.33);
+	
+	for (int i = 1; i < Manager::gameObjects.size() - 1; i++) {
 		auto mesh = Manager::gameObjects[i]->GetComponent<Renderer3D>().mesh;
+		Manager::gameObjects[i]->GetComponent<Transform>().SetScale(1 + 0.5 * cos(cosAngle), 1 + 0.5 * cos(cosAngle), 1);
 
 		// if object doesn't have mesh, skip rendering
 		if (mesh == nullptr)
 			continue;
 
-		Manager::gameObjects[i]->GetComponent<Transform>().Rotate(XMFLOAT3(0, angle, 0));
+		//Manager::gameObjects[i]->GetComponent<Transform>().Rotate(XMFLOAT3(0, angle, 0));
 
 
 		//*********************************
@@ -275,31 +350,65 @@ void Renderer::Render()
 		
 		// Lock constant buffer to write description.
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		dxWrapper->GetContext()->Map(*mesh->GetMatrixBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_WVP], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 
 		// Get constant buffer pointer
-		MatrixBufferType* dataPtr = (MatrixBufferType*)mappedResource.pData;
+		MatrixBufferType* pMatrixBufferData = (MatrixBufferType*)mappedResource.pData;
 
 		// copy to constant buffer
-		dataPtr->world = worldMatrix;
-		dataPtr->view = viewMatrix;
-		dataPtr->projection = projectionMatrix;
+		pMatrixBufferData->world = worldMatrix;
+		pMatrixBufferData->view = viewMatrix;
+		pMatrixBufferData->projection = projectionMatrix;
 
-		dxWrapper->GetContext()->Unmap(*mesh->GetMatrixBuffer(), 0);
+		dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_WVP], 0);
 
 		unsigned bufferNumber = 0;
-		dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, mesh->GetMatrixBuffer());
+		dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_WVP]);
 
 		
 
+
+		dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_CAMERA], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		CameraBufferType* pCameraBufferData = (CameraBufferType*)mappedResource.pData;
+
+		// copy to constant buffer
+		pCameraBufferData->cameraPosition = mainCamera->GetComponent<Transform>().GetPosition();
+		pCameraBufferData->padding = 0.0f;
+
+		dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_CAMERA], 0);
+
+		bufferNumber = 1;
+		dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_CAMERA]);
+
+
+
+		
+		
+		dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_LIGHT], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+		LightBufferType* pLightBufferData = (LightBufferType*)mappedResource.pData;
+
+		// copy to constant buffer
+		auto light = Manager::gameObjects[4]->GetComponent<Light>();
+		pLightBufferData->ambientColor = light.attrib.ambientColor;
+		pLightBufferData->diffuseColor = light.attrib.diffuseColor;
+		pLightBufferData->lightDirection = light.attrib.lightDirection;
+		pLightBufferData->specularColor = light.attrib.specularColor;
+		pLightBufferData->specularPower = light.attrib.specularPower;
+
+		dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_LIGHT], 0);
+
+		bufferNumber = 0;
+		dxWrapper->GetContext()->PSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_LIGHT]);
+
+
 		// Bind pipeline before drawing
-		unsigned int stride = sizeof(vertex_PC_t);
+		unsigned int stride = sizeof(vertex_PCN_t);
 		unsigned int offset = 0;
 
 		dxWrapper->GetContext()->IASetVertexBuffers(0, 1, mesh->GetVertexBuffer(), &stride, &offset);
 		dxWrapper->GetContext()->IASetIndexBuffer(*mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 		dxWrapper->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		dxWrapper->GetContext()->IASetInputLayout(inputLayouts[0]);
+		dxWrapper->GetContext()->IASetInputLayout(inputLayouts[1]);
 		dxWrapper->GetContext()->VSSetShader(vertexShaders[0], nullptr, 0);
 		dxWrapper->GetContext()->PSSetShader(pixelShaders[0], nullptr, 0);
 

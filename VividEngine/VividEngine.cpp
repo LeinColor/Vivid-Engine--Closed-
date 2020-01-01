@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "VividEngine.h"
-#include "GameObject.h"
 #include "Texture.h"
 #include "TextureShader.h"
 using namespace vivid;
@@ -20,6 +19,7 @@ void VividEngine::Initialize()
 	
 	GameObject* cube = new GameObject();
 	cube->AddComponent<Renderer3D>();
+	cube->GetComponent<Transform>().Rotate(XMFLOAT3(0.3f, 0.2f, 0.1f));
 
 	GameObject* sphere = new GameObject();
 	sphere->AddComponent<Renderer3D>();
@@ -29,10 +29,23 @@ void VividEngine::Initialize()
 	cone->AddComponent<Renderer3D>();
 	cone->GetComponent<Transform>().SetPosition(-0.9, 0, -2);
 
+	GameObject* light = new GameObject();
+	light->AddComponent<Light>();
+	light->GetComponent<Light>().attrib.ambientColor = XMFLOAT4(0.15f, 0.15f, 0.15f, 1.0f);
+	light->GetComponent<Light>().attrib.diffuseColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	light->GetComponent<Light>().attrib.lightDirection = XMFLOAT3(1.0f, 1.0f, 0.5f);
+	light->GetComponent<Light>().attrib.specularColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	light->GetComponent<Light>().attrib.specularPower = 32.0f;
+
 	cube->GetComponent<Renderer3D>().mesh = Manager::meshes[MESH_CUBE];
 	sphere->GetComponent<Renderer3D>().mesh = Manager::meshes[MESH_SPHERE];
-	//cone->GetComponent<Renderer3D>().mesh = Manager::meshes[MESH_CONE];
 
+	EditorObject* axisX = new EditorObject();
+	EditorObject* axisY = new EditorObject();
+	EditorObject* axisZ = new EditorObject();
+	axisX->mesh = Manager::meshes[MESH_CYLINDER];
+	axisY->mesh = Manager::meshes[MESH_CYLINDER];
+	axisZ->mesh = Manager::meshes[MESH_CYLINDER];
 	initialized = true;
 }
 

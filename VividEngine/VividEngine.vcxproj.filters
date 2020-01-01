@@ -29,6 +29,9 @@
     <Filter Include="HLSL">
       <UniqueIdentifier>{fd06d863-286e-4a78-807e-51c10f4c0738}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Editor">
+      <UniqueIdentifier>{e8be538c-3af4-4002-8ac5-9904fccba108}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -139,6 +142,9 @@
     <ClInclude Include="Light.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="EditorObject.h">
+      <Filter>Core\Editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VividEngine.rc">
@@ -241,6 +247,9 @@
     <ClCompile Include="Light.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="EditorObject.cpp">
+      <Filter>Core\Editor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs">
@@ -249,10 +258,10 @@
     <None Include="color.ps">
       <Filter>HLSL</Filter>
     </None>
-    <None Include="light.vs">
+    <None Include="BlinnPhong.ps">
       <Filter>HLSL</Filter>
     </None>
-    <None Include="light.ps">
+    <None Include="BlinnPhong.vs">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>

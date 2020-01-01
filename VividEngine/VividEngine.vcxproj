@@ -161,6 +161,7 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Descriptor.h" />
     <ClInclude Include="DirectX11Wrapper.h" />
+    <ClInclude Include="EditorObject.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="GameObject.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -225,6 +226,7 @@
     <ClCompile Include="AppHandle.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="EditorObject.cpp" />
     <ClCompile Include="GameObject.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
@@ -271,8 +273,8 @@
   <ItemGroup>
     <None Include="color.ps" />
     <None Include="color.vs" />
-    <None Include="light.ps" />
-    <None Include="light.vs" />
+    <None Include="BlinnPhong.ps" />
+    <None Include="BlinnPhong.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

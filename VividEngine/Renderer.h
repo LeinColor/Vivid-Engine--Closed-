@@ -16,6 +16,7 @@
 #include "Transform.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "Light.h"
 
 namespace vivid {
 	class Renderer {
