@@ -14,6 +14,11 @@ enum TYPE {
 	LIGHT,
 };
 
+enum OBJECT_STATE {
+	DEFAULT,
+	DEBUG,
+};
+
 enum MESH_ENUM {
 	MESH_CUBE,
 	MESH_SPHERE,
@@ -27,10 +32,16 @@ enum CONSTANT_BUFFER_ENUM {
 	CONSTANT_BUFFER_WVP,
 	CONSTANT_BUFFER_CAMERA,
 	CONSTANT_BUFFER_LIGHT,
+	CONSTANT_BUFFER_COLOR,
 	CONSTANT_BUFFER_DEFAULT_COUNT
 };
 
+
 // Define struct here
+struct vertex_P_t {		// Position
+	XMFLOAT3 position;
+};
+
 struct vertex_PC_t {	// Position,  Color
 	XMFLOAT3 position;
 	XMFLOAT4 color;
@@ -70,4 +81,8 @@ struct LightBufferType {
 	XMFLOAT3 lightDirection;
 	float specularPower;
 	XMFLOAT4 specularColor;
+};
+
+struct ColorBufferType {
+	XMFLOAT4 color;
 };

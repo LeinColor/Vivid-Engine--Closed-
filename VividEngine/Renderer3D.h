@@ -1,6 +1,6 @@
 #pragma once
 
-class GameObject;
+class Object;
 class Component;
 class Mesh;
 class Material;
@@ -11,6 +11,7 @@ public:
 	virtual bool IsSameType(const uint32_t value) const override;
 
 public:
+	XMFLOAT4 color;
 	Mesh* mesh;
 	Material* material;
 private:

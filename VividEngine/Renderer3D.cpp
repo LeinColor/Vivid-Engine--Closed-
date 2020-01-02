@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "GameObject.h"
+#include "Object.h"
 #include "Component.h"
 #include "Renderer3D.h"
 #include "Object.h"

@@ -9,8 +9,8 @@
 #pragma once
 #include "DirectX11Wrapper.h"
 #include "GUI.h"
-#include "Manager.h"
-#include "GameObject.h"
+#include "Scene.h"
+#include "Object.h"
 #include "SpriteRenderer.h"
 #include "Camera.h"
 #include "Transform.h"
@@ -24,7 +24,7 @@ namespace vivid {
 		DirectX11Wrapper* dxWrapper = nullptr;
 
 	public:
-		GameObject* mainCamera = nullptr;
+		Object* mainCamera = nullptr;
 		DirectX11Wrapper* GetDevice();
 		void SetDevice(DirectX11Wrapper* value);
 
@@ -34,5 +34,6 @@ namespace vivid {
 		void LoadMesh(const char* fileName);
 		void LoadShader();
 		void LoadMaterial();
+		void DrawDebug();
 	};
 }

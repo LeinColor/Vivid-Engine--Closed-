@@ -50,3 +50,8 @@ float4 LightPixelMain(PixelInputType input) : SV_TARGET
     color = saturate(color + specular);
     return color;
 }
+
+float4 DebugPixelMain(PixelInputType input) : SV_TARGET
+{
+    return input.color;
+}

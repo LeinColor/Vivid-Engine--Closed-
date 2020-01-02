@@ -161,9 +161,8 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Descriptor.h" />
     <ClInclude Include="DirectX11Wrapper.h" />
-    <ClInclude Include="EditorObject.h" />
     <ClInclude Include="Global.h" />
-    <ClInclude Include="GameObject.h">
+    <ClInclude Include="Object.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="GUI.h">
@@ -173,10 +172,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Object.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="Manager.h">
+    <ClInclude Include="Scene.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="OBJ_Loader.h" />
@@ -226,8 +222,7 @@
     <ClCompile Include="AppHandle.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="EditorObject.cpp" />
-    <ClCompile Include="GameObject.cpp">
+    <ClCompile Include="Object.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Importer.cpp" />
@@ -235,10 +230,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="Object.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Manager.cpp">
+    <ClCompile Include="Scene.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Random.cpp" />
@@ -271,8 +263,6 @@
     <Image Include="VividEngine.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="color.ps" />
-    <None Include="color.vs" />
     <None Include="BlinnPhong.ps" />
     <None Include="BlinnPhong.vs" />
   </ItemGroup>

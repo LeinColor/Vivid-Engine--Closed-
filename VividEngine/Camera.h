@@ -1,5 +1,5 @@
 #pragma once
-class GameObject;
+class Object;
 class Component;
 
 constexpr float SCREEN_DEPTH = 1000.0f;

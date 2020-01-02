@@ -1,6 +1,6 @@
 #pragma once
 
-class GameObject;
+class Object;
 class Component {
 public:
 	static const uint32_t type = COMPONENT;
@@ -9,5 +9,5 @@ public:
 	}
 public:
 	virtual ~Component() = default;
-	GameObject* owner = nullptr;
+	Object* owner = nullptr;
 };

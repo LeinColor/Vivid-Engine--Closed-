@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "GameObject.h"
+#include "Object.h"
 #include "Component.h"
 #include "Transform.h"
 #include "Camera.h"
@@ -43,7 +43,7 @@ void Camera::Render(int screenWidth, int screenHeight, float screenDepth, float 
 	rotation = transform.GetRotation();
 
 	// yaw (Y axis), pitch (X axis), roll (Z axis)
-	// convert degree to radian
+	// convert degree to radian (pi / 180)
 	pitch = rotation.x * 0.0174532925f;
 	yaw = rotation.y * 0.0174532925f;
 	roll = rotation.z * 0.0174532925f;

@@ -64,7 +64,7 @@ void Renderer::LoadMesh(const char* fileName)
 	}
 	
 	Mesh* mesh = new Mesh();
-	Manager::meshes.push_back(mesh);
+	Scene::meshes.push_back(mesh);
 	
 	//TODO: Not showing so should fix this!
 	UINT indexCount = shapes[0].mesh.indices.size();
@@ -196,6 +196,17 @@ void Renderer::LoadShader()
 	//***********************************
 	//**       Vertex Shader           **
 	//***********************************
+	ID3D11VertexShader* vertexShaderDebug = nullptr;
+	ID3D10Blob* vertexShaderBufferDebug = nullptr;
+	if (FAILED(D3DCompileFromFile(L"../VividEngine/BlinnPhong.vs", nullptr, nullptr, "DebugVertexMain", "vs_5_0",
+		D3D10_SHADER_ENABLE_STRICTNESS, 0, &vertexShaderBufferDebug, nullptr)))
+	{
+		Debug::Log("Vertex Shader load failed!");
+		return;
+	}
+	dxWrapper->GetDevice()->CreateVertexShader(vertexShaderBufferDebug->GetBufferPointer(), vertexShaderBufferDebug->GetBufferSize(), nullptr, &vertexShaderDebug);
+	vertexShaders.push_back(vertexShaderDebug);
+
 	ID3D11VertexShader* vertexShader = nullptr;
 	ID3D10Blob* vertexShaderBuffer = nullptr;
 	if (FAILED(D3DCompileFromFile(L"../VividEngine/BlinnPhong.vs", nullptr, nullptr, "LightVertexMain", "vs_5_0",
@@ -217,8 +228,9 @@ void Renderer::LoadShader()
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,	 0, 0,							  D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMAL",	  0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
-		dxWrapper->GetDevice()->CreateInputLayout(layoutDesc, ARRAYSIZE(layoutDesc), vertexShaderBuffer->GetBufferPointer(), vertexShaderBuffer->GetBufferSize(), &inputLayout);
+		dxWrapper->GetDevice()->CreateInputLayout(layoutDesc, ARRAYSIZE(layoutDesc), vertexShaderBufferDebug->GetBufferPointer(), vertexShaderBufferDebug->GetBufferSize(), &inputLayout);
 		inputLayouts.push_back(inputLayout);
 	}
 	{
@@ -238,6 +250,17 @@ void Renderer::LoadShader()
 	//***********************************
 	//**       Pixel Shader            **
 	//***********************************
+	ID3D11PixelShader* pixelShaderDebug = nullptr;
+	ID3D10Blob* pixelShaderBufferDebug = nullptr;
+	if (FAILED(D3DCompileFromFile(L"../VividEngine/BlinnPhong.ps", nullptr, nullptr, "DebugPixelMain", "ps_5_0",
+		D3D10_SHADER_ENABLE_STRICTNESS, 0, &pixelShaderBufferDebug, nullptr)))
+	{
+		Debug::Log("Pixel Shader load failed!");
+		return;
+	}
+	dxWrapper->GetDevice()->CreatePixelShader(pixelShaderBufferDebug->GetBufferPointer(), pixelShaderBufferDebug->GetBufferSize(), nullptr, &pixelShaderDebug);
+	pixelShaders.push_back(pixelShaderDebug);
+
 	ID3D11PixelShader* pixelShader = nullptr;
 	ID3D10Blob* pixelShaderBuffer = nullptr;
 	if (FAILED(D3DCompileFromFile(L"../VividEngine/BlinnPhong.ps", nullptr, nullptr, "LightPixelMain", "ps_5_0",
@@ -251,6 +274,8 @@ void Renderer::LoadShader()
 
 	SAFE_RELEASE(vertexShaderBuffer);
 	SAFE_RELEASE(pixelShaderBuffer);
+	SAFE_RELEASE(vertexShaderBufferDebug);
+	SAFE_RELEASE(pixelShaderBufferDebug);
 
 	//***********************************
 	//**      Constant Buffer          **
@@ -297,6 +322,20 @@ void Renderer::LoadShader()
 		constantBuffers.push_back(lightBuffer);
 		//constantBuffers[CONSTANT_BUFFER_LIGHT] = lightBuffer;
 	}
+	// Color buffer
+	{
+		ID3D11Buffer* colorBuffer = nullptr;
+		D3D11_BUFFER_DESC bd;
+		bd.Usage = D3D11_USAGE_DYNAMIC;
+		bd.ByteWidth = sizeof(ColorBufferType);
+		bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		bd.MiscFlags = 0;
+		bd.StructureByteStride = 0;
+		dxWrapper->GetDevice()->CreateBuffer(&bd, nullptr, &colorBuffer);
+		constantBuffers.push_back(colorBuffer);
+		//constantBuffers[CONSTANT_BUFFER_LIGHT] = lightBuffer;
+	}
 
 	shader->vertexShader = &vertexShader;
 	shader->pixelShader = &pixelShader;
@@ -316,30 +355,32 @@ void Renderer::Render()
 
 
 	// Set Main Camera
-	mainCamera = Manager::gameObjects[0];
+	mainCamera = Scene::objects[0];
 
 	// Prepare to render
 	dxWrapper->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 	////////////////////////////////////////////////////////
+	//mainCamera->GetComponent<Transform>().SetRotation(0, 0, cos(cosAngle * 20.0f));
+	//Scene::objects[1]->GetComponent<Transform>().SetRotation(0, 0, (cos(cosAngle) + 1) * 90 / 180);
+	//Scene::objects[2]->GetComponent<Transform>().SetRotation(0, 0, (cos(cosAngle) + 1) * 90 / 180);
 	mainCamera->GetComponent<Camera>().Render(dxWrapper->GetScreenWidth(), dxWrapper->GetScreenHeight(), SCREEN_DEPTH, SCREEN_NEAR);
 
-	//Manager::gameObjects[4]->GetComponent<Light>().attrib.lightDirection = XMFLOAT3(angle2, angle2 * 0.5, angle2 * 0.33);
+	//Scene::objects[4]->GetComponent<Light>().attrib.lightDirection = XMFLOAT3(angle2, angle2 * 0.5, angle2 * 0.33);
 	
-	for (int i = 1; i < Manager::gameObjects.size() - 1; i++) {
-		auto mesh = Manager::gameObjects[i]->GetComponent<Renderer3D>().mesh;
-		Manager::gameObjects[i]->GetComponent<Transform>().SetScale(1 + 0.5 * cos(cosAngle), 1 + 0.5 * cos(cosAngle), 1);
+	for (int i = 1; i < Scene::objects.size() - 1; i++) {
+		auto mesh = Scene::objects[i]->GetComponent<Renderer3D>().mesh;
 
 		// if object doesn't have mesh, skip rendering
 		if (mesh == nullptr)
 			continue;
 
-		//Manager::gameObjects[i]->GetComponent<Transform>().Rotate(XMFLOAT3(0, angle, 0));
+		//Scene::objects[i]->GetComponent<Transform>().Rotate(XMFLOAT3(0, angle, 0));
 
 
 		//*********************************
 		//**      Constant Buffer        **
 		//*********************************
-		auto worldMatrix = Manager::gameObjects[i]->GetComponent<Transform>().GetWorldMatrix(); // Cube's world matrix
+		auto worldMatrix = Scene::objects[i]->GetComponent<Transform>().GetWorldMatrix(); // Cube's world matrix
 		auto viewMatrix = mainCamera->GetComponent<Camera>().GetViewMatrix();
 		auto projectionMatrix = mainCamera->GetComponent<Camera>().GetProjectionMatrix();
 
@@ -366,52 +407,75 @@ void Renderer::Render()
 		dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_WVP]);
 
 		
-
-
-		dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_CAMERA], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		CameraBufferType* pCameraBufferData = (CameraBufferType*)mappedResource.pData;
-
-		// copy to constant buffer
-		pCameraBufferData->cameraPosition = mainCamera->GetComponent<Transform>().GetPosition();
-		pCameraBufferData->padding = 0.0f;
-
-		dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_CAMERA], 0);
-
-		bufferNumber = 1;
-		dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_CAMERA]);
-
-
-
-		
-		
-		dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_LIGHT], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		LightBufferType* pLightBufferData = (LightBufferType*)mappedResource.pData;
-
-		// copy to constant buffer
-		auto light = Manager::gameObjects[4]->GetComponent<Light>();
-		pLightBufferData->ambientColor = light.attrib.ambientColor;
-		pLightBufferData->diffuseColor = light.attrib.diffuseColor;
-		pLightBufferData->lightDirection = light.attrib.lightDirection;
-		pLightBufferData->specularColor = light.attrib.specularColor;
-		pLightBufferData->specularPower = light.attrib.specularPower;
-
-		dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_LIGHT], 0);
-
-		bufferNumber = 0;
-		dxWrapper->GetContext()->PSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_LIGHT]);
-
-
-		// Bind pipeline before drawing
-		unsigned int stride = sizeof(vertex_PCN_t);
+		unsigned int stride = 0;
 		unsigned int offset = 0;
+		if (Scene::objects[i]->state == DEFAULT) {
+			Scene::objects[i]->GetComponent<Transform>().SetScale(1 + 0.5 * cos(cosAngle), 1 + 0.5 * cos(cosAngle), 1);
+
+			dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_CAMERA], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+			CameraBufferType* pCameraBufferData = (CameraBufferType*)mappedResource.pData;
+
+			// copy to constant buffer
+			pCameraBufferData->cameraPosition = mainCamera->GetComponent<Transform>().GetPosition();
+			pCameraBufferData->padding = 0.0f;
+
+			dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_CAMERA], 0);
+
+			bufferNumber = 1;
+			dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_CAMERA]);
+
+
+
+
+
+			dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_LIGHT], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+			LightBufferType* pLightBufferData = (LightBufferType*)mappedResource.pData;
+
+			// copy to constant buffer
+			auto light = Scene::objects[7]->GetComponent<Light>();
+			pLightBufferData->ambientColor = light.attrib.ambientColor;
+			pLightBufferData->diffuseColor = light.attrib.diffuseColor;
+			pLightBufferData->lightDirection = light.attrib.lightDirection;
+			pLightBufferData->specularColor = light.attrib.specularColor;
+			pLightBufferData->specularPower = light.attrib.specularPower;
+
+			dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_LIGHT], 0);
+
+			bufferNumber = 0;
+			dxWrapper->GetContext()->PSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_LIGHT]);
+
+
+			// Bind pipeline before drawing
+			stride = sizeof(vertex_PCN_t);
+			offset = 0;
+			dxWrapper->GetContext()->IASetInputLayout(inputLayouts[1]);
+			dxWrapper->GetContext()->VSSetShader(vertexShaders[1], nullptr, 0);
+			dxWrapper->GetContext()->PSSetShader(pixelShaders[1], nullptr, 0);
+		}
+		else if (Scene::objects[i]->state == DEBUG)
+		{
+			dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_COLOR], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+			ColorBufferType* pColorBufferData = (ColorBufferType*)mappedResource.pData;
+
+			// copy to constant buffer
+			pColorBufferData->color = Scene::objects[i]->GetComponent<Renderer3D>().color;
+
+			dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_COLOR], 0);
+
+			bufferNumber = 1;
+			dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_COLOR]);
+
+			// Bind pipeline before drawing
+			stride = sizeof(vertex_PCN_t);
+			offset = 0;
+			dxWrapper->GetContext()->IASetInputLayout(inputLayouts[1]);
+			dxWrapper->GetContext()->VSSetShader(vertexShaders[0], nullptr, 0);
+			dxWrapper->GetContext()->PSSetShader(pixelShaders[0], nullptr, 0);
+		}
 
 		dxWrapper->GetContext()->IASetVertexBuffers(0, 1, mesh->GetVertexBuffer(), &stride, &offset);
 		dxWrapper->GetContext()->IASetIndexBuffer(*mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 		dxWrapper->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		dxWrapper->GetContext()->IASetInputLayout(inputLayouts[1]);
-		dxWrapper->GetContext()->VSSetShader(vertexShaders[0], nullptr, 0);
-		dxWrapper->GetContext()->PSSetShader(pixelShaders[0], nullptr, 0);
-
 		dxWrapper->GetContext()->DrawIndexed(mesh->positions.size(), 0, 0);
 	}
 	/////////////////////////////////////////////////////

@@ -19,6 +19,11 @@ cbuffer CameraBuffer
     float padding;
 };
 
+cbuffer ColorBuffer
+{
+    float4 debugColor;
+}
+
 
 //////////////
 // TYPEDEFS //
@@ -61,6 +66,21 @@ PixelInputType LightVertexMain(VertexInputType input)
     float4 worldPosition = mul(input.position, worldMatrix);
     output.viewDirection = cameraPosition.xyz - worldPosition.xyz;
     output.viewDirection = normalize(output.viewDirection);
+    
+    return output;
+}
+
+PixelInputType DebugVertexMain(VertexInputType input)
+{
+    PixelInputType output;
+    
+    input.position.w = 1.0f;
+
+    output.position = mul(input.position, worldMatrix);
+    output.position = mul(output.position, viewMatrix);
+    output.position = mul(output.position, projectionMatrix);
+
+    output.color = debugColor;
     
     return output;
 }

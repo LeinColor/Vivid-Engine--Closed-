@@ -29,9 +29,6 @@
     <Filter Include="HLSL">
       <UniqueIdentifier>{fd06d863-286e-4a78-807e-51c10f4c0738}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Editor">
-      <UniqueIdentifier>{e8be538c-3af4-4002-8ac5-9904fccba108}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -73,20 +70,11 @@
     <ClInclude Include="Component.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="TextureShader.h">
       <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Manager.h">
-      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="DDSTextureLoader.h">
       <Filter>Util</Filter>
@@ -142,8 +130,11 @@
     <ClInclude Include="Light.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="EditorObject.h">
-      <Filter>Core\Editor</Filter>
+    <ClInclude Include="Scene.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -187,20 +178,11 @@
     <ClCompile Include="Component.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="TextureShader.cpp">
       <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="Manager.cpp">
-      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="DDSTextureLoader.cpp">
       <Filter>Util</Filter>
@@ -247,17 +229,14 @@
     <ClCompile Include="Light.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="EditorObject.cpp">
-      <Filter>Core\Editor</Filter>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="color.vs">
-      <Filter>HLSL</Filter>
-    </None>
-    <None Include="color.ps">
-      <Filter>HLSL</Filter>
-    </None>
     <None Include="BlinnPhong.ps">
       <Filter>HLSL</Filter>
     </None>

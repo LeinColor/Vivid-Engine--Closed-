@@ -9,14 +9,13 @@
 #pragma once
 #include "AppHandle.h"
 #include "Renderer.h"
-#include "Manager.h"
+#include "Scene.h"
 #include "Component.h"
-#include "GameObject.h"
+#include "Object.h"
 #include "Transform.h"
 #include "SpriteRenderer.h"
 #include "Renderer3D.h"
 #include "Light.h"
-#include "EditorObject.h"
 
 using namespace vivid;
 namespace vivid {

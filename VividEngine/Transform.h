@@ -1,6 +1,6 @@
 #pragma once
 
-class GameObject;
+class Object;
 class Component;
 
 class Transform : public Component {

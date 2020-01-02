@@ -1,7 +1,7 @@
 #pragma once
 
 class Texture;
-class GameObject;
+class Object;
 class Component;
 class SpriteRenderer : public Component
 {

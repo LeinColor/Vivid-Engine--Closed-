@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "Importer.h"
 #include <vector>
+#include <string>
 
 class Mesh {
 public:
