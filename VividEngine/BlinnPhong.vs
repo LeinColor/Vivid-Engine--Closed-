@@ -80,7 +80,7 @@ PixelInputType DebugVertexMain(VertexInputType input)
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
 
-    output.color = debugColor;
+    output.color = input.color;
     
     return output;
 }

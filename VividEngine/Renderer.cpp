@@ -45,6 +45,7 @@ void Renderer::Initialize()
 	LoadMesh("../VividEngine/Obj/cylinder.obj");
 	LoadShader();
 
+	LoadLine();
 
 
 }
@@ -341,14 +342,18 @@ void Renderer::LoadShader()
 	shader->pixelShader = &pixelShader;
 	shaders.push_back(shader);
 }
-
+auto DefaultForward = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+auto DefaultRight = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+auto DefaultUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 void Renderer::Render()
 {
 	static float angle = 0.001f;
 	static float angle2 = 0.001f;
+	static float angle3 = 0.0001f;
 	static float sign = 0.0005f;
 	static float cosAngle = 0;
 	angle2 += sign;
+	angle += 0.0001f;
 	cosAngle += 0.001f;
 	if (angle2 >= 1.0f) sign *= -1;
 	if (angle2 <= -1.0f) sign *= -1;
@@ -360,11 +365,11 @@ void Renderer::Render()
 	// Prepare to render
 	dxWrapper->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 	////////////////////////////////////////////////////////
-	//mainCamera->GetComponent<Transform>().SetRotation(0, 0, cos(cosAngle * 20.0f));
-	//Scene::objects[1]->GetComponent<Transform>().SetRotation(0, 0, (cos(cosAngle) + 1) * 90 / 180);
-	//Scene::objects[2]->GetComponent<Transform>().SetRotation(0, 0, (cos(cosAngle) + 1) * 90 / 180);
+	Scene::objects[4]->GetComponent<Transform>().Translate(0, angle3, 0);
+	//Scene::objects[4]->GetComponent<Transform>().Rotate(XMFLOAT3(XMConvertToRadians(0.1f), XMConvertToRadians(0.1f), 0));
+	//Scene::objects[2]->GetComponent<Transform>().Rotate(XMFLOAT3(0, 0, angle));
 	mainCamera->GetComponent<Camera>().Render(dxWrapper->GetScreenWidth(), dxWrapper->GetScreenHeight(), SCREEN_DEPTH, SCREEN_NEAR);
-
+	
 	//Scene::objects[4]->GetComponent<Light>().attrib.lightDirection = XMFLOAT3(angle2, angle2 * 0.5, angle2 * 0.33);
 	
 	for (int i = 1; i < Scene::objects.size() - 1; i++) {
@@ -410,7 +415,7 @@ void Renderer::Render()
 		unsigned int stride = 0;
 		unsigned int offset = 0;
 		if (Scene::objects[i]->state == DEFAULT) {
-			Scene::objects[i]->GetComponent<Transform>().SetScale(1 + 0.5 * cos(cosAngle), 1 + 0.5 * cos(cosAngle), 1);
+		//	Scene::objects[i]->GetComponent<Transform>().SetScale(1 + 0.5 * cos(cosAngle), 1 + 0.5 * cos(cosAngle), 1);
 
 			dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_CAMERA], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 			CameraBufferType* pCameraBufferData = (CameraBufferType*)mappedResource.pData;
@@ -451,6 +456,7 @@ void Renderer::Render()
 			dxWrapper->GetContext()->IASetInputLayout(inputLayouts[1]);
 			dxWrapper->GetContext()->VSSetShader(vertexShaders[1], nullptr, 0);
 			dxWrapper->GetContext()->PSSetShader(pixelShaders[1], nullptr, 0);
+			dxWrapper->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		}
 		else if (Scene::objects[i]->state == DEBUG)
 		{
@@ -471,16 +477,163 @@ void Renderer::Render()
 			dxWrapper->GetContext()->IASetInputLayout(inputLayouts[1]);
 			dxWrapper->GetContext()->VSSetShader(vertexShaders[0], nullptr, 0);
 			dxWrapper->GetContext()->PSSetShader(pixelShaders[0], nullptr, 0);
+			dxWrapper->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		}
 
 		dxWrapper->GetContext()->IASetVertexBuffers(0, 1, mesh->GetVertexBuffer(), &stride, &offset);
 		dxWrapper->GetContext()->IASetIndexBuffer(*mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
-		dxWrapper->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		dxWrapper->GetContext()->DrawIndexed(mesh->positions.size(), 0, 0);
 	}
+
+	auto p = Scene::objects[4]->GetComponent<Transform>().GetRotation();
+	auto m = XMMatrixRotationRollPitchYaw(XMConvertToRadians(p.x), XMConvertToRadians(p.y), XMConvertToRadians(p.z));
+	auto right = XMVector3TransformCoord(DefaultRight, m);
+	auto forward = XMVector3TransformCoord(DefaultForward, m);
+	auto up = XMVector3TransformCoord(DefaultUp, m);
+	right = XMVector3Normalize(right);
+	forward = XMVector3Normalize(forward);
+	up = XMVector3Normalize(up);
+	DefaultRight = right;
+	DefaultForward = forward;
+	DefaultUp = up;
+	XMFLOAT3 d;
+	XMStoreFloat3(&d, right);
+	XMFLOAT3 d2;
+	XMStoreFloat3(&d2, up);
+	XMFLOAT3 d3;
+	XMStoreFloat3(&d3, forward);
+	DrawLine(Scene::objects[4]->GetComponent<Transform>().GetPosition(), d, XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	DrawLine(Scene::objects[4]->GetComponent<Transform>().GetPosition(),d2, XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+	DrawLine(Scene::objects[4]->GetComponent<Transform>().GetPosition(),d3, XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
 	/////////////////////////////////////////////////////
 	// Render end
 	dxWrapper->EndScene();
+	
+}
+
+ID3D11Buffer* lineVertexBuffer = nullptr;
+ID3D11Buffer* lineIndexBuffer = nullptr;
+void Renderer::LoadLine()
+{
+	//TODO: Not showing so should fix this!
+	UINT indexCount = 2;
+	vertex_PCN_t* vertices = new vertex_PCN_t[indexCount];	 // allocate vertex_t for vertex count
+	unsigned long* indices = new unsigned long[indexCount];  // allocate unsigned long for indices count
+
+	for (int i = 0; i < indexCount; i++) {
+		// vertex position
+		vertices[i].position = XMFLOAT3(0, 0, 0);
+		vertices[i].color = XMFLOAT4(0.0, 0.0, 0.0, 1.0);
+		vertices[i].normal = XMFLOAT3(0, 0, 0);
+		indices[i] = i;
+	}
+
+	//*************************************
+	//**        Vertex Buffer            **
+	//*************************************
+	// Vertex buffer description definition
+	{
+		D3D11_BUFFER_DESC bd;
+		bd.Usage = D3D11_USAGE_DYNAMIC;
+		bd.ByteWidth = sizeof(vertex_PCN_t) * indexCount;
+		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		bd.MiscFlags = 0;
+		bd.StructureByteStride = 0;
+
+		// Vertex subresource data definition
+		D3D11_SUBRESOURCE_DATA sd;
+		sd.pSysMem = vertices;
+		sd.SysMemPitch = 0;
+		sd.SysMemSlicePitch = 0;
+
+		// Create vertex buffer
+		dxWrapper->GetDevice()->CreateBuffer(&bd, &sd, &lineVertexBuffer);
+	}
+
+
+	//*************************************
+	//**        Index Buffer             **
+	//*************************************
+	// Index buffer description definition
+	{
+		D3D11_BUFFER_DESC bd;
+		bd.Usage = D3D11_USAGE_DEFAULT;
+		bd.ByteWidth = sizeof(unsigned long) * indexCount;
+		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		bd.CPUAccessFlags = 0;
+		bd.MiscFlags = 0;
+		bd.StructureByteStride = 0;
+
+		// Index subresource data definition
+		D3D11_SUBRESOURCE_DATA sd;
+		sd.pSysMem = indices;
+		sd.SysMemPitch = 0;
+		sd.SysMemSlicePitch = 0;
+
+		// Create index buffer
+		dxWrapper->GetDevice()->CreateBuffer(&bd, &sd, &lineIndexBuffer);
+	}
+
+	SAFE_DELETE_ARRAY(vertices);
+	SAFE_DELETE_ARRAY(indices);
+}
+
+void Renderer::DrawLine(XMFLOAT3 startPoint, XMFLOAT3 endPoint, XMFLOAT4 color)
+{
+	vertex_PCN_t* vertices = new vertex_PCN_t[2];
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	vertex_PCN_t* verticesPtr;
+
+	vertices[0].position = startPoint;
+	vertices[0].color = color;
+
+	vertices[1].position = endPoint;
+	vertices[1].color = color;
+
+	//*********************************
+	//**      Constant Buffer        **
+	//*********************************
+	auto worldMatrix = XMLoadFloat4x4(&IDENTITYMATRIX);
+	auto viewMatrix = mainCamera->GetComponent<Camera>().GetViewMatrix();
+	auto projectionMatrix = mainCamera->GetComponent<Camera>().GetProjectionMatrix();
+
+	// Transpose matrix to use within shader.
+	worldMatrix = XMMatrixTranspose(worldMatrix);
+	viewMatrix = XMMatrixTranspose(viewMatrix);
+	projectionMatrix = XMMatrixTranspose(projectionMatrix);
+
+	// Lock constant buffer to write description.
+	dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_WVP], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+
+	// Get constant buffer pointer
+	MatrixBufferType* pMatrixBufferData = (MatrixBufferType*)mappedResource.pData;
+
+	// copy to constant buffer
+	pMatrixBufferData->world = worldMatrix;
+	pMatrixBufferData->view = viewMatrix;
+	pMatrixBufferData->projection = projectionMatrix;
+
+	dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_WVP], 0);
+
+	unsigned bufferNumber = 0;
+	dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_WVP]);
+
+	dxWrapper->GetContext()->Map(lineVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	verticesPtr = (vertex_PCN_t*)mappedResource.pData;
+	memcpy(verticesPtr, (void*)vertices, (sizeof(vertex_PCN_t) * 2));
+	dxWrapper->GetContext()->Unmap(lineVertexBuffer, 0);
+	
+	unsigned int stride = sizeof(vertex_PCN_t);
+	unsigned int offset = 0;
+	dxWrapper->GetContext()->IASetInputLayout(inputLayouts[1]);
+	dxWrapper->GetContext()->VSSetShader(vertexShaders[0], nullptr, 0);
+	dxWrapper->GetContext()->PSSetShader(pixelShaders[0], nullptr, 0);
+
+	dxWrapper->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	dxWrapper->GetContext()->IASetVertexBuffers(0, 1, &lineVertexBuffer, &stride, &offset);
+	dxWrapper->GetContext()->IASetIndexBuffer(lineIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	dxWrapper->GetContext()->DrawIndexed(2, 0, 0);
 }
 
 

@@ -35,5 +35,7 @@ namespace vivid {
 		void LoadShader();
 		void LoadMaterial();
 		void DrawDebug();
+		void LoadLine();
+		void DrawLine(XMFLOAT3 startPoint, XMFLOAT3 endPoint, XMFLOAT4 color);
 	};
 }
