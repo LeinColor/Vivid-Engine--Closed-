@@ -107,7 +107,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    constexpr int screenHeight = 768;
    int x = (GetSystemMetrics(SM_CXSCREEN) - screenWidth) / 2;
    int y = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
-   HWND hWnd = CreateWindowEx(WS_EX_APPWINDOW, szWindowClass, szTitle, WS_POPUP, x, y, screenWidth, screenHeight, NULL, NULL, hInstance, NULL);
+   HWND hWnd = CreateWindowEx(WS_EX_APPWINDOW, szWindowClass, szTitle, WS_OVERLAPPEDWINDOW, x, y, screenWidth, screenHeight, NULL, NULL, hInstance, NULL);
 
    if (!hWnd)
    {

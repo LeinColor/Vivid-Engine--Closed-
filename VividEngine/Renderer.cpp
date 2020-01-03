@@ -35,6 +35,10 @@ std::vector<ID3D11Buffer*> constantBuffers;
 std::vector<ID3D11Buffer*> resourceBuffers;
 std::vector<ID3D11SamplerState*> samplerStates;
 
+XMVECTOR axisX = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+XMVECTOR axisY = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+XMVECTOR axisZ = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+
 void Renderer::Initialize()
 {
 	// Load order sensitive because of mesh enum value.
@@ -342,9 +346,7 @@ void Renderer::LoadShader()
 	shader->pixelShader = &pixelShader;
 	shaders.push_back(shader);
 }
-auto DefaultForward = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
-auto DefaultRight = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
-auto DefaultUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+
 void Renderer::Render()
 {
 	static float angle = 0.001f;
@@ -365,12 +367,25 @@ void Renderer::Render()
 	// Prepare to render
 	dxWrapper->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 	////////////////////////////////////////////////////////
-	Scene::objects[4]->GetComponent<Transform>().Translate(0, angle3, 0);
-	//Scene::objects[4]->GetComponent<Transform>().Rotate(XMFLOAT3(XMConvertToRadians(0.1f), XMConvertToRadians(0.1f), 0));
+	//Scene::objects[4]->GetComponent<Transform>().Translate(0, angle3, 0);
+	Scene::objects[4]->GetComponent<Transform>().Rotate(XMFLOAT3(0, XMConvertToRadians(0.1f), XMConvertToRadians(0.1f)));
 	//Scene::objects[2]->GetComponent<Transform>().Rotate(XMFLOAT3(0, 0, angle));
 	mainCamera->GetComponent<Camera>().Render(dxWrapper->GetScreenWidth(), dxWrapper->GetScreenHeight(), SCREEN_DEPTH, SCREEN_NEAR);
 	
 	//Scene::objects[4]->GetComponent<Light>().attrib.lightDirection = XMFLOAT3(angle2, angle2 * 0.5, angle2 * 0.33);
+
+
+	auto p = Scene::objects[4]->GetComponent<Transform>().GetRotation();
+	XMVECTOR quat = XMLoadFloat4(&p);
+	XMMATRIX m = XMMatrixRotationQuaternion(quat);
+	auto right = XMVector3TransformCoord(axisX, m);
+	auto up = XMVector3TransformCoord(axisY, m);
+	auto forward = XMVector3TransformCoord(axisZ, m);
+
+	XMFLOAT3 endPointX, endPointY, endPointZ;
+	XMStoreFloat3(&endPointX, right);
+	XMStoreFloat3(&endPointY, up);
+	XMStoreFloat3(&endPointZ, forward);
 	
 	for (int i = 1; i < Scene::objects.size() - 1; i++) {
 		auto mesh = Scene::objects[i]->GetComponent<Renderer3D>().mesh;
@@ -460,11 +475,25 @@ void Renderer::Render()
 		}
 		else if (Scene::objects[i]->state == DEBUG)
 		{
+			if (i == 1) {
+				Scene::objects[i]->GetComponent<Transform>().SetPosition(endPointX.x, endPointX.y, endPointX.z);
+			}
+			else if (i == 2) {
+				Scene::objects[i]->GetComponent<Transform>().SetPosition(endPointY.x, endPointY.y, endPointY.z);
+			}
+			else if (i == 3) {
+				Scene::objects[i]->GetComponent<Transform>().SetPosition(endPointZ.x, endPointZ.y, endPointZ.z);
+			}
 			dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_COLOR], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 			ColorBufferType* pColorBufferData = (ColorBufferType*)mappedResource.pData;
 
 			// copy to constant buffer
-			pColorBufferData->color = Scene::objects[i]->GetComponent<Renderer3D>().color;
+			XMFLOAT4 color;
+			if (i == 1) color = XMFLOAT4(1, 0, 0, 1);
+			else if (i == 2) color = XMFLOAT4(0, 1, 0, 1);
+			else if (i == 3) color = XMFLOAT4(0, 0, 1, 1);
+			pColorBufferData->color = color;
+			//pColorBufferData->color = Scene::objects[i]->GetComponent<Renderer3D>().color;
 
 			dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_COLOR], 0);
 
@@ -485,26 +514,15 @@ void Renderer::Render()
 		dxWrapper->GetContext()->DrawIndexed(mesh->positions.size(), 0, 0);
 	}
 
-	auto p = Scene::objects[4]->GetComponent<Transform>().GetRotation();
-	auto m = XMMatrixRotationRollPitchYaw(XMConvertToRadians(p.x), XMConvertToRadians(p.y), XMConvertToRadians(p.z));
-	auto right = XMVector3TransformCoord(DefaultRight, m);
-	auto forward = XMVector3TransformCoord(DefaultForward, m);
-	auto up = XMVector3TransformCoord(DefaultUp, m);
-	right = XMVector3Normalize(right);
-	forward = XMVector3Normalize(forward);
-	up = XMVector3Normalize(up);
-	DefaultRight = right;
-	DefaultForward = forward;
-	DefaultUp = up;
-	XMFLOAT3 d;
-	XMStoreFloat3(&d, right);
-	XMFLOAT3 d2;
-	XMStoreFloat3(&d2, up);
-	XMFLOAT3 d3;
-	XMStoreFloat3(&d3, forward);
-	DrawLine(Scene::objects[4]->GetComponent<Transform>().GetPosition(), d, XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-	DrawLine(Scene::objects[4]->GetComponent<Transform>().GetPosition(),d2, XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
-	DrawLine(Scene::objects[4]->GetComponent<Transform>().GetPosition(),d3, XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
+
+
+	auto startPoint = Scene::objects[4]->GetComponent<Transform>().GetPosition();
+	DrawLine(startPoint, endPointX, XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+	DrawLine(startPoint, endPointY, XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+	DrawLine(startPoint, endPointZ, XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
+	char debugBuffer[100];
+	sprintf_s(debugBuffer, "%f %f %f", p.x, p.y, p.z);
+	SetWindowTextA(AppHandle::GetWindowHandle(), debugBuffer);
 	/////////////////////////////////////////////////////
 	// Render end
 	dxWrapper->EndScene();

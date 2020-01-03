@@ -22,6 +22,7 @@ public:
 
 	void Translate(const float x, const float y, const float z);
 	void Rotate(const XMFLOAT3&);
+	void RotateQuaternion(const XMFLOAT4&);
 
 	void UpdateWorldMatrix();
 

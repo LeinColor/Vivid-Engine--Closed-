@@ -18,7 +18,7 @@ void VividEngine::Initialize()
 	// 3D
 	GameObject* camera = new GameObject();
 	camera->AddComponent<Camera>();
-	camera->GetComponent<Transform>().SetPosition(0, 0, -10);
+	camera->GetComponent<Transform>().SetPosition(0, 0, -4);
 
 	// Editor Object
 	EditorObject* axisX = new EditorObject();
@@ -30,18 +30,15 @@ void VividEngine::Initialize()
 	axisX->AddComponent<Renderer3D>();
 	axisY->AddComponent<Renderer3D>();
 	axisZ->AddComponent<Renderer3D>();
-	//axisX->GetComponent<Renderer3D>().mesh = Scene::meshes[MESH_CUBE];
-	//axisY->GetComponent<Renderer3D>().mesh = Scene::meshes[MESH_CUBE];
-	//axisZ->GetComponent<Renderer3D>().mesh = Scene::meshes[MESH_CUBE];
+	axisX->GetComponent<Renderer3D>().mesh = Scene::meshes[MESH_CONE];
+	axisY->GetComponent<Renderer3D>().mesh = Scene::meshes[MESH_CONE];
+	axisZ->GetComponent<Renderer3D>().mesh = Scene::meshes[MESH_CONE];
 	axisX->GetComponent<Renderer3D>().color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 	axisY->GetComponent<Renderer3D>().color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
 	axisZ->GetComponent<Renderer3D>().color = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
-	axisX->GetComponent<Transform>().Rotate(XMFLOAT3(0.0f, 45.0f, 45.0f));
-	axisY->GetComponent<Transform>().Rotate(XMFLOAT3(45.0f, 0.0f, 45.0f));
-	axisZ->GetComponent<Transform>().Rotate(XMFLOAT3(45.0f, 45.0f, 0.0f));
-	axisX->GetComponent<Transform>().SetScale(0.1f, 0.001f, 0.001f);
-	axisY->GetComponent<Transform>().SetScale(0.001f, 0.1f, 0.001f);
-	axisZ->GetComponent<Transform>().SetScale(0.001f, 0.001f, 0.1f);
+	axisX->GetComponent<Transform>().SetScale(0.1f, 0.1f, 0.1f);
+	axisY->GetComponent<Transform>().SetScale(0.1f, 0.1f, 0.1f);
+	axisZ->GetComponent<Transform>().SetScale(0.1f, 0.1f, 0.1f);
 
 
 	

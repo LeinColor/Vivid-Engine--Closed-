@@ -58,6 +58,13 @@ void Transform::Rotate(const XMFLOAT3& value)
 	UpdateWorldMatrix();
 }
 
+void Transform::RotateQuaternion(const XMFLOAT4& quaternion)
+{
+	XMVECTOR result = XMQuaternionMultiply(XMLoadFloat4(&rotation), XMLoadFloat4(&quaternion));
+	result = XMQuaternionNormalize(result);
+	XMStoreFloat4(&rotation, result);
+}
+
 void Transform::UpdateWorldMatrix()
 {
 	XMVECTOR S_local = XMLoadFloat3(&scale);
@@ -70,11 +77,11 @@ void Transform::UpdateWorldMatrix()
 
 	XMStoreFloat4x4(&world, W);
 
-	XMVECTOR S, R, T;
-	XMMatrixDecompose(&S, &R, &T, XMLoadFloat4x4(&world));
-	XMStoreFloat3(&scale, S);
-	XMStoreFloat4(&rotation, R);
-	XMStoreFloat3(&position, T);
+	//XMVECTOR S, R, T;
+	//XMMatrixDecompose(&S, &R, &T, XMLoadFloat4x4(&world));
+	//XMStoreFloat3(&scale, S);
+	//XMStoreFloat4(&rotation, R);
+	//XMStoreFloat3(&position, T);
 
 }
 
