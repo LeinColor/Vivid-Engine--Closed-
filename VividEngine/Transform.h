@@ -9,7 +9,7 @@ public:
 	virtual bool IsSameType(const uint32_t value) const override;
 private:
 	XMFLOAT3	position;
-	XMFLOAT4	rotation;
+	XMFLOAT4	rotation;		// this is quaternion so it has 4 values (x,y,z,w)
 	XMFLOAT3	scale;
 	XMFLOAT4X4	world;
 
@@ -17,12 +17,22 @@ public:
 	Transform();
 
 	void SetPosition(const float x, const float y, const float z);
-	void SetRotation(float, float, float);
+	void SetRotation(float, float, float, float);
 	void SetScale(float, float, float);
 
 	void Translate(const float x, const float y, const float z);
-	void Rotate(const XMFLOAT3&);
-	void RotateQuaternion(const XMFLOAT4&);
+	void Rotate(const float x, const float y, const float z);		// Rotate by eulor angle
+	void RotateQuaternion(const XMFLOAT4&);							// Rotate by quaternion angle
+
+	void LookAt(const XMVECTOR& origin, const XMVECTOR& target, const XMVECTOR& up)
+	{
+		XMVECTOR quat = XMLoadFloat4(&rotation);
+		auto m = XMMatrixLookAtLH(origin, target, up);
+		auto qv = XMQuaternionRotationMatrix(m);
+		XMVECTOR result = XMQuaternionMultiply(XMLoadFloat4(&rotation), qv);
+		result = XMQuaternionNormalize(result);
+		XMStoreFloat4(&rotation, result);
+	}
 
 	void UpdateWorldMatrix();
 
@@ -35,5 +45,6 @@ public:
 	XMVECTOR GetPositionVector() const;
 	XMVECTOR GetRotationVector() const;
 	XMVECTOR GetScaleVector() const;
+
 
 };

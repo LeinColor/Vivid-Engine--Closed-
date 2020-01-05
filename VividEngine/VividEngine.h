@@ -16,22 +16,26 @@
 #include "SpriteRenderer.h"
 #include "Renderer3D.h"
 #include "Light.h"
+#include "Debug.h"
 
 using namespace vivid;
-namespace vivid {
+
 	class VividEngine {
 	private:
 		void Initialize();
 
 	public:
-		void Run();	
+		void Run();
+		void Start();
 		void SetWindow(HWND hWnd, HINSTANCE hInstance);
 		void Update();
+		void FixedUpdate();
 
 	private:
 		Renderer renderer;
 		bool initialized = false;
 
+		float deltaTimeAccumulator = 0;
+
 		//TextureShader ts;
 	};
-}

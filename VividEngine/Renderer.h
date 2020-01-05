@@ -36,6 +36,8 @@ namespace vivid {
 		void LoadMaterial();
 		void DrawDebug();
 		void LoadLine();
+		void AddGizmoLine(const GizmoLine& line);
+		void AddGizmoCone();
 		void DrawLine(XMFLOAT3 startPoint, XMFLOAT3 endPoint, XMFLOAT4 color);
 	};
 }

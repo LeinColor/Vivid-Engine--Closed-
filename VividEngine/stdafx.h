@@ -2,14 +2,15 @@
 
 #include "targetver.h"
 #define WIN32_LEAN_AND_MEAN
-// Windows header file
-#include <windows.h>
+#define NOMINMAX
 // C runtime header file
 #include <stdlib.h>
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
-
+#include <algorithm>
+// Windows header file
+#include <windows.h>
 
 // DirectX link library
 #pragma comment(lib, "d3d11.lib")
@@ -31,6 +32,7 @@ using namespace DirectX::PackedVector;
 #define SAFE_RELEASE(p) { if( (p) ) { (p)->Release(); (p) = 0; } }
 #define SAFE_DELETE(a) { delete(a); (a) = nullptr; }
 #define SAFE_DELETE_ARRAY(a) { delete[] (a); (a) = nullptr; }
+#define NOMINMAX
 
 #define BD_CLASS(parent, child)							\
 bool child::IsSameType(const uint32_t value) const {	\
@@ -40,6 +42,9 @@ bool child::IsSameType(const uint32_t value) const {	\
 }														\
 
 static const XMFLOAT4X4 IDENTITYMATRIX = XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+static const XMVECTOR axisX = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+static const XMVECTOR axisY = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+static const XMVECTOR axisZ = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 
 namespace vivid {
 	// Define structs here

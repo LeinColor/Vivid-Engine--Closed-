@@ -8,6 +8,7 @@
 */
 
 #include "DirectX11Wrapper.h"
+#include "Debug.h"
 using namespace vivid;
 
 DirectX11Wrapper::DirectX11Wrapper(HWND hWnd, bool fullScreenFlag)
@@ -174,6 +175,18 @@ DirectX11Wrapper::DirectX11Wrapper(HWND hWnd, bool fullScreenFlag)
 	hr = device->CreateDepthStencilState(&depthDisabledStencilDesc, &depthDisabledStencilState);
 
 	MessageBox(hWnd, L"Device Created", L"Notice", MB_OK);
+}
+
+void DirectX11Wrapper::UpdateBuffer(const ID3D11Buffer* buffer, const void* data, int dataLength)
+{
+	// Lock constant buffer to write description.
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	HRESULT hr = deviceContext->Map((ID3D11Resource*)buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	if (!SUCCEEDED(hr)) {
+		Debug::Log("problem occured while updating buffer!");
+	}
+	memcpy(mappedResource.pData, data, dataLength);
+	deviceContext->Unmap((ID3D11Resource*)buffer, 0);
 }
 
 void DirectX11Wrapper::BeginScene(float red, float green, float blue, float alpha)

@@ -14,8 +14,8 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Renderer3D.h"
+#include "Time.h"
 #include "tiny_obj_loader.h"
-#include "EditorObject.h"
 using namespace vivid;
 
 
@@ -35,9 +35,7 @@ std::vector<ID3D11Buffer*> constantBuffers;
 std::vector<ID3D11Buffer*> resourceBuffers;
 std::vector<ID3D11SamplerState*> samplerStates;
 
-XMVECTOR axisX = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
-XMVECTOR axisY = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-XMVECTOR axisZ = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+std::vector<GizmoLine> gizmoLines;
 
 void Renderer::Initialize()
 {
@@ -52,6 +50,10 @@ void Renderer::Initialize()
 	LoadLine();
 
 
+}
+
+void Renderer::AddGizmoLine(const GizmoLine& line) {
+	gizmoLines.push_back(line);
 }
 
 void Renderer::LoadMesh(const char* fileName)
@@ -203,7 +205,7 @@ void Renderer::LoadShader()
 	//***********************************
 	ID3D11VertexShader* vertexShaderDebug = nullptr;
 	ID3D10Blob* vertexShaderBufferDebug = nullptr;
-	if (FAILED(D3DCompileFromFile(L"../VividEngine/BlinnPhong.vs", nullptr, nullptr, "DebugVertexMain", "vs_5_0",
+	if (FAILED(D3DCompileFromFile(L"../VividEngine/Debug.vs", nullptr, nullptr, "DebugVertexMain", "vs_5_0",
 		D3D10_SHADER_ENABLE_STRICTNESS, 0, &vertexShaderBufferDebug, nullptr)))
 	{
 		Debug::Log("Vertex Shader load failed!");
@@ -232,8 +234,6 @@ void Renderer::LoadShader()
 		D3D11_INPUT_ELEMENT_DESC layoutDesc[] =
 		{
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,	 0, 0,							  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "NORMAL",	  0, DXGI_FORMAT_R32G32B32_FLOAT,    0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 		dxWrapper->GetDevice()->CreateInputLayout(layoutDesc, ARRAYSIZE(layoutDesc), vertexShaderBufferDebug->GetBufferPointer(), vertexShaderBufferDebug->GetBufferSize(), &inputLayout);
 		inputLayouts.push_back(inputLayout);
@@ -257,7 +257,7 @@ void Renderer::LoadShader()
 	//***********************************
 	ID3D11PixelShader* pixelShaderDebug = nullptr;
 	ID3D10Blob* pixelShaderBufferDebug = nullptr;
-	if (FAILED(D3DCompileFromFile(L"../VividEngine/BlinnPhong.ps", nullptr, nullptr, "DebugPixelMain", "ps_5_0",
+	if (FAILED(D3DCompileFromFile(L"../VividEngine/Debug.ps", nullptr, nullptr, "DebugPixelMain", "ps_5_0",
 		D3D10_SHADER_ENABLE_STRICTNESS, 0, &pixelShaderBufferDebug, nullptr)))
 	{
 		Debug::Log("Pixel Shader load failed!");
@@ -349,44 +349,18 @@ void Renderer::LoadShader()
 
 void Renderer::Render()
 {
-	static float angle = 0.001f;
-	static float angle2 = 0.001f;
-	static float angle3 = 0.0001f;
-	static float sign = 0.0005f;
-	static float cosAngle = 0;
-	angle2 += sign;
-	angle += 0.0001f;
-	cosAngle += 0.001f;
-	if (angle2 >= 1.0f) sign *= -1;
-	if (angle2 <= -1.0f) sign *= -1;
-
-
 	// Set Main Camera
 	mainCamera = Scene::objects[0];
 
 	// Prepare to render
 	dxWrapper->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 	////////////////////////////////////////////////////////
-	//Scene::objects[4]->GetComponent<Transform>().Translate(0, angle3, 0);
-	Scene::objects[4]->GetComponent<Transform>().Rotate(XMFLOAT3(0, XMConvertToRadians(0.1f), XMConvertToRadians(0.1f)));
-	//Scene::objects[2]->GetComponent<Transform>().Rotate(XMFLOAT3(0, 0, angle));
 	mainCamera->GetComponent<Camera>().Render(dxWrapper->GetScreenWidth(), dxWrapper->GetScreenHeight(), SCREEN_DEPTH, SCREEN_NEAR);
-	
-	//Scene::objects[4]->GetComponent<Light>().attrib.lightDirection = XMFLOAT3(angle2, angle2 * 0.5, angle2 * 0.33);
+	auto viewMatrix = mainCamera->GetComponent<Camera>().GetViewMatrix();
+	auto projectionMatrix = mainCamera->GetComponent<Camera>().GetProjectionMatrix();
+	viewMatrix = XMMatrixTranspose(viewMatrix);
+	projectionMatrix = XMMatrixTranspose(projectionMatrix);
 
-
-	auto p = Scene::objects[4]->GetComponent<Transform>().GetRotation();
-	XMVECTOR quat = XMLoadFloat4(&p);
-	XMMATRIX m = XMMatrixRotationQuaternion(quat);
-	auto right = XMVector3TransformCoord(axisX, m);
-	auto up = XMVector3TransformCoord(axisY, m);
-	auto forward = XMVector3TransformCoord(axisZ, m);
-
-	XMFLOAT3 endPointX, endPointY, endPointZ;
-	XMStoreFloat3(&endPointX, right);
-	XMStoreFloat3(&endPointY, up);
-	XMStoreFloat3(&endPointZ, forward);
-	
 	for (int i = 1; i < Scene::objects.size() - 1; i++) {
 		auto mesh = Scene::objects[i]->GetComponent<Renderer3D>().mesh;
 
@@ -394,80 +368,32 @@ void Renderer::Render()
 		if (mesh == nullptr)
 			continue;
 
-		//Scene::objects[i]->GetComponent<Transform>().Rotate(XMFLOAT3(0, angle, 0));
-
-
-		//*********************************
-		//**      Constant Buffer        **
-		//*********************************
-		auto worldMatrix = Scene::objects[i]->GetComponent<Transform>().GetWorldMatrix(); // Cube's world matrix
-		auto viewMatrix = mainCamera->GetComponent<Camera>().GetViewMatrix();
-		auto projectionMatrix = mainCamera->GetComponent<Camera>().GetProjectionMatrix();
-
-		// Transpose matrix to use within shader.
+		// Get object's world matrix and transpose it to render.
+		auto worldMatrix = Scene::objects[i]->GetComponent<Transform>().GetWorldMatrix();
 		worldMatrix = XMMatrixTranspose(worldMatrix);
-		viewMatrix = XMMatrixTranspose(viewMatrix);
-		projectionMatrix = XMMatrixTranspose(projectionMatrix);
+
 		
 		// Lock constant buffer to write description.
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_WVP], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-
-		// Get constant buffer pointer
-		MatrixBufferType* pMatrixBufferData = (MatrixBufferType*)mappedResource.pData;
-
-		// copy to constant buffer
-		pMatrixBufferData->world = worldMatrix;
-		pMatrixBufferData->view = viewMatrix;
-		pMatrixBufferData->projection = projectionMatrix;
-
-		dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_WVP], 0);
-
-		unsigned bufferNumber = 0;
-		dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_WVP]);
+		MatrixBufferType cbMatrix = { worldMatrix, viewMatrix, projectionMatrix };
+		dxWrapper->UpdateBuffer(constantBuffers[CONSTANT_BUFFER_WVP], &cbMatrix, sizeof(MatrixBufferType));
+		dxWrapper->GetContext()->VSSetConstantBuffers(0, 1, &constantBuffers[CONSTANT_BUFFER_WVP]);
 
 		
-		unsigned int stride = 0;
+		unsigned int stride = sizeof(vertex_PCN_t);
 		unsigned int offset = 0;
 		if (Scene::objects[i]->state == DEFAULT) {
-		//	Scene::objects[i]->GetComponent<Transform>().SetScale(1 + 0.5 * cos(cosAngle), 1 + 0.5 * cos(cosAngle), 1);
+			CameraBufferType cbCamera = { mainCamera->GetComponent<Transform>().GetPosition(), 0.0f };
+			dxWrapper->UpdateBuffer(constantBuffers[CONSTANT_BUFFER_CAMERA], &cbCamera, sizeof(cbCamera));
+			dxWrapper->GetContext()->VSSetConstantBuffers(1, 1, &constantBuffers[CONSTANT_BUFFER_CAMERA]);
 
-			dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_CAMERA], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-			CameraBufferType* pCameraBufferData = (CameraBufferType*)mappedResource.pData;
-
-			// copy to constant buffer
-			pCameraBufferData->cameraPosition = mainCamera->GetComponent<Transform>().GetPosition();
-			pCameraBufferData->padding = 0.0f;
-
-			dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_CAMERA], 0);
-
-			bufferNumber = 1;
-			dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_CAMERA]);
-
-
-
-
-
-			dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_LIGHT], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-			LightBufferType* pLightBufferData = (LightBufferType*)mappedResource.pData;
-
-			// copy to constant buffer
-			auto light = Scene::objects[7]->GetComponent<Light>();
-			pLightBufferData->ambientColor = light.attrib.ambientColor;
-			pLightBufferData->diffuseColor = light.attrib.diffuseColor;
-			pLightBufferData->lightDirection = light.attrib.lightDirection;
-			pLightBufferData->specularColor = light.attrib.specularColor;
-			pLightBufferData->specularPower = light.attrib.specularPower;
-
-			dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_LIGHT], 0);
-
-			bufferNumber = 0;
-			dxWrapper->GetContext()->PSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_LIGHT]);
-
+			LightBufferType cbLight;
+			auto attrib = Scene::objects[7]->GetComponent<Light>().attrib;
+			cbLight = { attrib.ambientColor, attrib.diffuseColor, attrib.lightDirection, attrib.specularPower, attrib.specularColor };
+			dxWrapper->UpdateBuffer(constantBuffers[CONSTANT_BUFFER_LIGHT], &cbLight, sizeof(cbLight));
+			dxWrapper->GetContext()->PSSetConstantBuffers(0, 1, &constantBuffers[CONSTANT_BUFFER_LIGHT]);
 
 			// Bind pipeline before drawing
-			stride = sizeof(vertex_PCN_t);
-			offset = 0;
 			dxWrapper->GetContext()->IASetInputLayout(inputLayouts[1]);
 			dxWrapper->GetContext()->VSSetShader(vertexShaders[1], nullptr, 0);
 			dxWrapper->GetContext()->PSSetShader(pixelShaders[1], nullptr, 0);
@@ -475,35 +401,12 @@ void Renderer::Render()
 		}
 		else if (Scene::objects[i]->state == DEBUG)
 		{
-			if (i == 1) {
-				Scene::objects[i]->GetComponent<Transform>().SetPosition(endPointX.x, endPointX.y, endPointX.z);
-			}
-			else if (i == 2) {
-				Scene::objects[i]->GetComponent<Transform>().SetPosition(endPointY.x, endPointY.y, endPointY.z);
-			}
-			else if (i == 3) {
-				Scene::objects[i]->GetComponent<Transform>().SetPosition(endPointZ.x, endPointZ.y, endPointZ.z);
-			}
-			dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_COLOR], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-			ColorBufferType* pColorBufferData = (ColorBufferType*)mappedResource.pData;
-
-			// copy to constant buffer
-			XMFLOAT4 color;
-			if (i == 1) color = XMFLOAT4(1, 0, 0, 1);
-			else if (i == 2) color = XMFLOAT4(0, 1, 0, 1);
-			else if (i == 3) color = XMFLOAT4(0, 0, 1, 1);
-			pColorBufferData->color = color;
-			//pColorBufferData->color = Scene::objects[i]->GetComponent<Renderer3D>().color;
-
-			dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_COLOR], 0);
-
-			bufferNumber = 1;
-			dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_COLOR]);
+			ColorBufferType cbColor = { Scene::objects[i]->GetComponent<Renderer3D>().color };
+			dxWrapper->UpdateBuffer(constantBuffers[CONSTANT_BUFFER_COLOR], &cbColor, sizeof(cbColor));
+			dxWrapper->GetContext()->VSSetConstantBuffers(1, 1, &constantBuffers[CONSTANT_BUFFER_COLOR]);
 
 			// Bind pipeline before drawing
-			stride = sizeof(vertex_PCN_t);
-			offset = 0;
-			dxWrapper->GetContext()->IASetInputLayout(inputLayouts[1]);
+			dxWrapper->GetContext()->IASetInputLayout(inputLayouts[0]);
 			dxWrapper->GetContext()->VSSetShader(vertexShaders[0], nullptr, 0);
 			dxWrapper->GetContext()->PSSetShader(pixelShaders[0], nullptr, 0);
 			dxWrapper->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -514,15 +417,14 @@ void Renderer::Render()
 		dxWrapper->GetContext()->DrawIndexed(mesh->positions.size(), 0, 0);
 	}
 
+	// Render gizmo lines
+	for (auto& line : gizmoLines) {
+		DrawLine(line.startPoint, line.endPoint, line.color);
+	}
 
+	// Clear gizmo line queue
+	gizmoLines.clear();
 
-	auto startPoint = Scene::objects[4]->GetComponent<Transform>().GetPosition();
-	DrawLine(startPoint, endPointX, XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-	DrawLine(startPoint, endPointY, XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
-	DrawLine(startPoint, endPointZ, XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
-	char debugBuffer[100];
-	sprintf_s(debugBuffer, "%f %f %f", p.x, p.y, p.z);
-	SetWindowTextA(AppHandle::GetWindowHandle(), debugBuffer);
 	/////////////////////////////////////////////////////
 	// Render end
 	dxWrapper->EndScene();
@@ -585,7 +487,7 @@ void Renderer::LoadLine()
 
 		// Index subresource data definition
 		D3D11_SUBRESOURCE_DATA sd;
-		sd.pSysMem = indices;
+		sd.pSysMem = indices;	
 		sd.SysMemPitch = 0;
 		sd.SysMemSlicePitch = 0;
 
@@ -642,6 +544,22 @@ void Renderer::DrawLine(XMFLOAT3 startPoint, XMFLOAT3 endPoint, XMFLOAT4 color)
 	memcpy(verticesPtr, (void*)vertices, (sizeof(vertex_PCN_t) * 2));
 	dxWrapper->GetContext()->Unmap(lineVertexBuffer, 0);
 	
+
+
+
+	dxWrapper->GetContext()->Map(constantBuffers[CONSTANT_BUFFER_COLOR], 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	ColorBufferType* pColorBufferData = (ColorBufferType*)mappedResource.pData;
+
+	// copy to constant buffer
+	pColorBufferData->color = color;
+	//pColorBufferData->color = Scene::objects[i]->GetComponent<Renderer3D>().color;
+
+	dxWrapper->GetContext()->Unmap(constantBuffers[CONSTANT_BUFFER_COLOR], 0);
+
+	bufferNumber = 1;
+	dxWrapper->GetContext()->VSSetConstantBuffers(bufferNumber, 1, &constantBuffers[CONSTANT_BUFFER_COLOR]);
+
+
 	unsigned int stride = sizeof(vertex_PCN_t);
 	unsigned int offset = 0;
 	dxWrapper->GetContext()->IASetInputLayout(inputLayouts[1]);

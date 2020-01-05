@@ -70,12 +70,6 @@
     <ClInclude Include="Component.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureShader.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="DDSTextureLoader.h">
       <Filter>Util</Filter>
     </ClInclude>
@@ -87,9 +81,6 @@
     </ClInclude>
     <ClInclude Include="SpriteRenderer.h">
       <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderQueue.h">
-      <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Descriptor.h">
       <Filter>Core</Filter>
@@ -136,6 +127,21 @@
     <ClInclude Include="Object.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Maths.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="AABB.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderQueue.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VividEngine.rc">
@@ -178,12 +184,6 @@
     <ClCompile Include="Component.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureShader.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="DDSTextureLoader.cpp">
       <Filter>Util</Filter>
     </ClCompile>
@@ -195,9 +195,6 @@
     </ClCompile>
     <ClCompile Include="SpriteRenderer.cpp">
       <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderQueue.cpp">
-      <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Debug.cpp">
       <Filter>Core</Filter>
@@ -235,12 +232,33 @@
     <ClCompile Include="Object.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Maths.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="AABB.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderQueue.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="BlinnPhong.ps">
       <Filter>HLSL</Filter>
     </None>
     <None Include="BlinnPhong.vs">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="Debug.vs">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="Debug.ps">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Component.h"
 #include "Transform.h"
+#include "Time.h"
 
 Transform::Transform()
 {
@@ -18,11 +19,12 @@ void Transform::SetPosition(const float x, const float y, const float z)
 	UpdateWorldMatrix();
 }
 
-void Transform::SetRotation(float x, float y, float z)
+void Transform::SetRotation(float x, float y, float z, float w)
 {
 	rotation.x = x;
 	rotation.y = y;
 	rotation.z = z;
+	rotation.w = w;
 	UpdateWorldMatrix();
 }
 
@@ -42,20 +44,16 @@ void Transform::Translate(const float x, const float y, const float z)
 	UpdateWorldMatrix();
 }
 
-void Transform::Rotate(const XMFLOAT3& value)
+void Transform::Rotate(const float x, const float y, const float z)
 {
-	XMVECTOR quat = XMLoadFloat4(&rotation);
-	XMVECTOR x = XMQuaternionRotationRollPitchYaw(value.x, 0, 0);
-	XMVECTOR y = XMQuaternionRotationRollPitchYaw(0, value.y, 0);
-	XMVECTOR z = XMQuaternionRotationRollPitchYaw(0, 0, value.z);
+	XMVECTOR eulorToQuat = XMQuaternionRotationRollPitchYaw(
+		XMConvertToRadians(x),
+		XMConvertToRadians(y),
+		XMConvertToRadians(z));
 
-	quat = XMQuaternionMultiply(x, quat);
-	quat = XMQuaternionMultiply(quat, y);
-	quat = XMQuaternionMultiply(z, quat);
-	quat = XMQuaternionNormalize(quat);
-
-	XMStoreFloat4(&rotation, quat);
-	UpdateWorldMatrix();
+	XMFLOAT4 result;
+	XMStoreFloat4(&result, eulorToQuat);
+	RotateQuaternion(result);
 }
 
 void Transform::RotateQuaternion(const XMFLOAT4& quaternion)
@@ -63,6 +61,7 @@ void Transform::RotateQuaternion(const XMFLOAT4& quaternion)
 	XMVECTOR result = XMQuaternionMultiply(XMLoadFloat4(&rotation), XMLoadFloat4(&quaternion));
 	result = XMQuaternionNormalize(result);
 	XMStoreFloat4(&rotation, result);
+	UpdateWorldMatrix();
 }
 
 void Transform::UpdateWorldMatrix()

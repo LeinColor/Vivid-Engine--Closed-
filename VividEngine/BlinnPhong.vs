@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Filename: light.vs
+// Filename: BlinnPhong.vs
 ////////////////////////////////////////////////////////////////////////////////
 
 
@@ -80,7 +80,7 @@ PixelInputType DebugVertexMain(VertexInputType input)
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
 
-    output.color = input.color;
+    output.color = debugColor;
     
     return output;
 }
