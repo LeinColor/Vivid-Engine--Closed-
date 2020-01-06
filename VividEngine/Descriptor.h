@@ -58,6 +58,10 @@ struct GizmoLine {
 	XMFLOAT4 color = XMFLOAT4(1, 1, 1, 1);
 };
 
+struct MousePos {
+	int x, y;
+};
+
 
 // Define struct here
 struct vertex_P_t {		// Position

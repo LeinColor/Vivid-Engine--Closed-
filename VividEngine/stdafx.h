@@ -17,12 +17,13 @@
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "dxguid.lib")
-
+#pragma comment(lib, "dinput8.lib")
 // DirectX header file and namespace
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <DirectXPackedVector.h>
+#include <dinput.h>
 #include "AppHandle.h"
 #include "Descriptor.h"
 using namespace DirectX;

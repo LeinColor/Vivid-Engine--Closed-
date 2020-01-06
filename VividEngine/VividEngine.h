@@ -16,6 +16,7 @@
 #include "SpriteRenderer.h"
 #include "Renderer3D.h"
 #include "Light.h"
+#include "Input.h"
 #include "Debug.h"
 
 using namespace vivid;
@@ -32,9 +33,10 @@ using namespace vivid;
 		void FixedUpdate();
 
 	private:
+		Input input;
 		Renderer renderer;
 		bool initialized = false;
-
+		
 		float deltaTimeAccumulator = 0;
 
 		//TextureShader ts;

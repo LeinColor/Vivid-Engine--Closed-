@@ -258,8 +258,6 @@ void Renderer::LoadShader()
 		inputLayouts.push_back(inputLayout);
 	}
 
-
-
 	//***********************************
 	//**       Pixel Shader            **
 	//***********************************

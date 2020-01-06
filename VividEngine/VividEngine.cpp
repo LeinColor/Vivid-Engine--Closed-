@@ -13,7 +13,7 @@ void VividEngine::Start()
 	// 3D
 	GameObject* camera = new GameObject();
 	camera->AddComponent<Camera>();
-	camera->GetComponent<Transform>().SetPosition(0, 0, -4);
+	camera->GetComponent<Transform>().SetPosition(0, 0, -3);
 
 	// Editor Object
 	EditorObject* axisX = new EditorObject();
@@ -67,6 +67,7 @@ void VividEngine::Initialize()
 	
 	// initialize renderer to load mesh, shader
 	Time::Initialize();
+	input.Initialize();
 	renderer.Initialize();
 	initialized = true;
 }
@@ -110,10 +111,33 @@ void VividEngine::FixedUpdate()
 
 void VividEngine::Update()
 {
-	// Animate cube
-//	Scene::objects[4]->GetComponent<Transform>().Translate(-0.000001f, 0, -0.000008f);
-	Scene::objects[4]->GetComponent<Transform>().Rotate(0, 20 * Time::deltaTime, 20 * Time::deltaTime);
-	Scene::objects[0]->GetComponent<Transform>().Rotate(3 * Time::deltaTime, 0, 0);
+	// Read Input
+	input.ReadInput();
+
+	if (input.GetKeyDown(DIK_LEFTARROW)) {
+		Scene::objects[4]->GetComponent<Transform>().Translate(-0.5 * Time::deltaTime, 0, 0);
+	}
+	if (input.GetKeyDown(DIK_RIGHTARROW)) {
+		Scene::objects[4]->GetComponent<Transform>().Translate(0.5 * Time::deltaTime, 0, 0);
+	}
+	if (input.GetKeyDown(DIK_UPARROW)) {
+		Scene::objects[4]->GetComponent<Transform>().Translate(0, 0, -0.5 * Time::deltaTime);
+	}
+	if (input.GetKeyDown(DIK_DOWNARROW)) {
+		Scene::objects[4]->GetComponent<Transform>().Translate(0, 0, +0.5 * Time::deltaTime);
+	}
+
+	// Input animate example
+	if (input.GetKeyDown(DIK_A)) {
+		Scene::objects[4]->GetComponent<Transform>().Rotate(0, 50 * Time::deltaTime, 50 * Time::deltaTime);
+	}
+	if (input.GetKeyDown(DIK_D)) {
+		Scene::objects[4]->GetComponent<Transform>().Rotate(0, -50 * Time::deltaTime, -50 * Time::deltaTime);
+	}
+	if (input.GetKeyDown(DIK_ESCAPE)) {
+		exit(0);
+	}
+
 
 	// Get object's position and rotation
 	auto origin = Scene::objects[4]->GetComponent<Transform>().GetPosition();
