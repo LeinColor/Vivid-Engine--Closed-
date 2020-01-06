@@ -31,12 +31,13 @@ void VividEngine::Start()
 	axisX->GetComponent<Renderer3D>().color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);
 	axisY->GetComponent<Renderer3D>().color = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);
 	axisZ->GetComponent<Renderer3D>().color = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);
-	axisX->GetComponent<Transform>().SetScale(0.02f, 0.05f, 0.02f);
-	axisY->GetComponent<Transform>().SetScale(0.02f, 0.05f, 0.02f);
-	axisZ->GetComponent<Transform>().SetScale(0.02f, 0.05f, 0.02f);
+	axisX->GetComponent<Transform>().SetScale(0.015f, 0.033f, 0.015f);
+	axisY->GetComponent<Transform>().SetScale(0.015f, 0.033f, 0.015f);
+	axisZ->GetComponent<Transform>().SetScale(0.015f, 0.033f, 0.015f);
 
 	GameObject* cube = new GameObject();
 	cube->AddComponent<Renderer3D>();
+	cube->GetComponent<Transform>().SetPosition(0.11, 0.22, -0.21);
 	cube->GetComponent<Transform>().SetScale(0.1f, 0.1f, 0.1f);
 
 	GameObject* sphere = new GameObject();
@@ -87,11 +88,16 @@ void VividEngine::Run()
 	}
 
 	const float targetFrameRateInv = 1.0f / 60.0f;
+
+	// call function for frame per second
+	if (deltaTimeAccumulator >= targetFrameRateInv)
+	{
+		renderer.Render();
+	}
+	// call function for frame per second, but if lag occurred it will be calculated for skipped time line.
 	while (deltaTimeAccumulator >= targetFrameRateInv)
 	{
 		FixedUpdate();	// calculate physics here
-
-		renderer.Render();
 		deltaTimeAccumulator -= targetFrameRateInv;
 	}
 	Update();
@@ -104,57 +110,59 @@ void VividEngine::FixedUpdate()
 
 void VividEngine::Update()
 {
-	Scene::objects[4]->GetComponent<Transform>().Rotate(20 * Time::deltaTime, 20 * Time::deltaTime, 20 * Time::deltaTime);
+	// Animate cube
+//	Scene::objects[4]->GetComponent<Transform>().Translate(-0.000001f, 0, -0.000008f);
+	Scene::objects[4]->GetComponent<Transform>().Rotate(0, 20 * Time::deltaTime, 20 * Time::deltaTime);
+	Scene::objects[0]->GetComponent<Transform>().Rotate(3 * Time::deltaTime, 0, 0);
 
-	auto p = Scene::objects[4]->GetComponent<Transform>().GetRotation();
-	XMVECTOR quat = XMLoadFloat4(&p);
-	XMMATRIX m = XMMatrixRotationQuaternion(quat);
-	auto right = XMVector3TransformCoord(axisX, m);
-	auto up = XMVector3TransformCoord(axisY, m);
-	auto forward = XMVector3TransformCoord(axisZ, m);
+	// Get object's position and rotation
+	auto origin = Scene::objects[4]->GetComponent<Transform>().GetPosition();
+	auto rotation = Scene::objects[4]->GetComponent<Transform>().GetRotation();
 
+	// Calculate axis matrix
+	XMFLOAT3 scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
+	XMMATRIX W =
+		XMMatrixScalingFromVector(XMLoadFloat3(&scale)) *
+		XMMatrixRotationQuaternion(XMLoadFloat4(&rotation)) *
+		XMMatrixTranslationFromVector(XMLoadFloat3(&origin));
+
+	// Transform each axis point by matrix
+	XMVECTOR right = XMVector3Transform(axisX, W);
+	XMVECTOR up = XMVector3Transform(axisY, W);
+	XMVECTOR forward = XMVector3Transform(axisZ, W);
 	XMFLOAT3 endPointX, endPointY, endPointZ;
 	XMStoreFloat3(&endPointX, right);
 	XMStoreFloat3(&endPointY, up);
 	XMStoreFloat3(&endPointZ, forward);
 
-	float xx, yy, zz, ww;
-	auto aa = Scene::objects[4]->GetComponent<Transform>().GetRotation();
-	xx = aa.x;
-	yy = aa.y;
-	zz = aa.z;
-	ww = aa.w;
-
-	XMVECTOR vx = XMQuaternionRotationRollPitchYaw(0, 0, XMConvertToRadians(270.0f));
-	XMVECTOR vy = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(90.0f), 0, 0);
-
-	// Axis X rotation
-	XMFLOAT4 k1;
-	float gx = XMVectorGetX(vx);
-	float gy = XMVectorGetY(vx);
-	float gz = XMVectorGetZ(vx);
-	float gw = XMVectorGetW(vx);
-	XMStoreFloat4(&k1, vx);
-	Scene::objects[1]->GetComponent<Transform>().SetRotation(gx, gy, gz, gw);
-	Scene::objects[1]->GetComponent<Transform>().RotateQuaternion(p);
-
-	// Axis Y rotation
-	Scene::objects[2]->GetComponent<Transform>().SetRotation(xx, yy, zz, ww);
-
-	// Axis Z rotation
-	XMFLOAT4 k2;
-	float hx = XMVectorGetX(vy);
-	float hy = XMVectorGetY(vy);
-	float hz = XMVectorGetZ(vy);
-	float hw = XMVectorGetW(vy);
-	XMStoreFloat4(&k2, vy);
-	Scene::objects[3]->GetComponent<Transform>().SetRotation(hx, hy, hz, hw);
-	Scene::objects[3]->GetComponent<Transform>().RotateQuaternion(p);
-
-	// Cone Position
+	// Set position of axis X, Y, Z
 	Scene::objects[1]->GetComponent<Transform>().SetPosition(endPointX.x, endPointX.y, endPointX.z);
 	Scene::objects[2]->GetComponent<Transform>().SetPosition(endPointY.x, endPointY.y, endPointY.z);
 	Scene::objects[3]->GetComponent<Transform>().SetPosition(endPointZ.x, endPointZ.y, endPointZ.z);
+
+	// Axis X cone rotation (rotate Z for 270 degress)
+	{
+		XMFLOAT4 axisRot;
+		XMVECTOR eulorToQuat = XMQuaternionRotationRollPitchYaw(0, 0, XMConvertToRadians(270.0f));
+		XMVECTOR result = XMQuaternionNormalize(XMQuaternionMultiply(eulorToQuat, XMLoadFloat4(&rotation)));
+		XMStoreFloat4(&axisRot, result);
+		Scene::objects[1]->GetComponent<Transform>().SetRotation(axisRot.x, axisRot.y, axisRot.z, axisRot.w);
+	}
+
+	// Axis Y cone rotation (rotation is same with object's)
+	{
+		XMFLOAT4 axisRot = Scene::objects[4]->GetComponent<Transform>().GetRotation();
+		Scene::objects[2]->GetComponent<Transform>().SetRotation(axisRot.x, axisRot.y, axisRot.z, axisRot.w);
+	}
+
+	// Axis Z cone rotation (rotate X for 90 degrees)
+	{
+		XMFLOAT4 axisRot;
+		XMVECTOR eulorToQuat = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(90.0f), 0, 0);
+		XMVECTOR result = XMQuaternionNormalize(XMQuaternionMultiply(eulorToQuat, XMLoadFloat4(&rotation)));
+		XMStoreFloat4(&axisRot, result);
+		Scene::objects[3]->GetComponent<Transform>().SetRotation(axisRot.x, axisRot.y, axisRot.z, axisRot.w);
+	}
 
 	GizmoLine gizmoAxisX, gizmoAxisY, gizmoAxisZ;
 	gizmoAxisX.startPoint = gizmoAxisY.startPoint = gizmoAxisZ.startPoint = Scene::objects[4]->GetComponent<Transform>().GetPosition();

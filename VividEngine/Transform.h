@@ -12,7 +12,6 @@ private:
 	XMFLOAT4	rotation;		// this is quaternion so it has 4 values (x,y,z,w)
 	XMFLOAT3	scale;
 	XMFLOAT4X4	world;
-
 public:
 	Transform();
 

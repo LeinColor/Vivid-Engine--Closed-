@@ -14,9 +14,11 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Renderer3D.h"
+#include "Maths.h"
 #include "Time.h"
 #include "tiny_obj_loader.h"
 using namespace vivid;
+using namespace std;
 
 
 // Shader containers
@@ -78,6 +80,8 @@ void Renderer::LoadMesh(const char* fileName)
 	vertex_PCN_t* vertices = new vertex_PCN_t[indexCount];	 // allocate vertex_t for vertex count
 	unsigned long* indices = new unsigned long[indexCount];  // allocate unsigned long for indices count
 	
+	XMFLOAT3 min = XMFLOAT3(FLT_MAX, FLT_MAX, FLT_MAX);
+	XMFLOAT3 max = XMFLOAT3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 	for (int i = 0; i < indexCount; i++) {
 		auto& index = shapes[0].mesh.indices[i];
 
@@ -86,6 +90,9 @@ void Renderer::LoadMesh(const char* fileName)
 			attrib.vertices[index.vertex_index * 3 + 0],
 			attrib.vertices[index.vertex_index * 3 + 1],
 			attrib.vertices[index.vertex_index * 3 + 2]);
+
+		min = vivid::Min(min, vertices[i].position);
+		max = vivid::Max(max, vertices[i].position);
 
 		// vertex color
 		XMFLOAT4 color = XMFLOAT4(1.0, 0.0, 0.0, 1.0);
@@ -140,6 +147,7 @@ void Renderer::LoadMesh(const char* fileName)
 		mesh->texcoords.push_back(texcoord);
 		mesh->normals.push_back(normal);
 	}
+	mesh->aabb = AABB(min, max);
 	
 	//*************************************
 	//**        Vertex Buffer            **
@@ -372,9 +380,35 @@ void Renderer::Render()
 		auto worldMatrix = Scene::objects[i]->GetComponent<Transform>().GetWorldMatrix();
 		worldMatrix = XMMatrixTranspose(worldMatrix);
 
+		// Draw AABB box
+		if (Scene::objects[i]->state == DEFAULT) {
+			// AABB transformation by each object matrix
+			AABB aabb = mesh->aabb.Transform(Scene::objects[i]->GetComponent<Transform>().GetWorldMatrix());
+			XMFLOAT3 aabbVertices[8];
+			for (int i = 0; i < 8; i++) {
+				aabbVertices[i] = aabb.GetVertex(i);
+			}
+			XMFLOAT4 color{ 1,1,1,1 };
+			char buff[256];
+			XMFLOAT3& a = mesh->aabb.minPos;
+			XMFLOAT3& b = mesh->aabb.maxPos;
+			sprintf_s(buff, "%f %f %f / %f %f %f", a.x, a.y, a.z, b.x, b.y, b.z);
+			SetWindowTextA(AppHandle::GetWindowHandle(), buff);
+			DrawLine(aabbVertices[0], aabbVertices[1], color);
+			DrawLine(aabbVertices[0], aabbVertices[4], color);
+			DrawLine(aabbVertices[1], aabbVertices[5], color);
+			DrawLine(aabbVertices[4], aabbVertices[5], color);
+			DrawLine(aabbVertices[0], aabbVertices[3], color);
+			DrawLine(aabbVertices[1], aabbVertices[2], color);
+			DrawLine(aabbVertices[2], aabbVertices[3], color);
+			DrawLine(aabbVertices[4], aabbVertices[7], color);
+			DrawLine(aabbVertices[5], aabbVertices[6], color);
+			DrawLine(aabbVertices[6], aabbVertices[7], color);
+			DrawLine(aabbVertices[3], aabbVertices[7], color);
+			DrawLine(aabbVertices[2], aabbVertices[6], color);
+		}
 		
 		// Lock constant buffer to write description.
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		MatrixBufferType cbMatrix = { worldMatrix, viewMatrix, projectionMatrix };
 		dxWrapper->UpdateBuffer(constantBuffers[CONSTANT_BUFFER_WVP], &cbMatrix, sizeof(MatrixBufferType));
 		dxWrapper->GetContext()->VSSetConstantBuffers(0, 1, &constantBuffers[CONSTANT_BUFFER_WVP]);

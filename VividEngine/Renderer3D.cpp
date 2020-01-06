@@ -5,3 +5,12 @@
 #include "Object.h"
 #include "Mesh.h"
 #include "Material.h"
+
+void Renderer3D::SetMesh(Mesh* other)
+{
+	mesh = other;
+
+	// Update AABB from changed mesh
+	
+
+}

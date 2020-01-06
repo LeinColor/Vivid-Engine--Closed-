@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Component.h"
 #include "Transform.h"
+#include "AABB.h"
 #include "Time.h"
 
 Transform::Transform()
