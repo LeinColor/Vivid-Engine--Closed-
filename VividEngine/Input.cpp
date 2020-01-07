@@ -5,6 +5,7 @@
 
 using namespace vivid;
 
+float Input::lZ;
 void Input::Initialize()
 {
 	HWND hWnd = AppHandle::GetWindowHandle();
@@ -40,11 +41,13 @@ void Input::ReadInput()
 		vivid::Debug::Log("Input mouse error occured!");
 		return;
 	}
+
+	ProcessInput();
 }
 
 bool Input::ReadKeyboard()
 {
-	HRESULT hr = keyboard->GetDeviceState(sizeof(key), (LPVOID)&key);
+	HRESULT hr = keyboard->GetDeviceState(sizeof(keys), (LPVOID)&keys);
 	if (FAILED(hr))
 	{
 		if ((hr == DIERR_INPUTLOST) || (hr == DIERR_NOTACQUIRED))
@@ -78,32 +81,100 @@ void Input::ProcessInput()
 {
 	mouseX += mouseState.lX;
 	mouseY += mouseState.lY;
-
-	if (mouseX < 0) mouseX = 0;
-	if (mouseY < 0) mouseY = 0;
-
-	if (mouseX > screenWidth) mouseX = screenWidth;
-	if (mouseY > screenHeight) mouseY = screenHeight;
 }
 
-bool Input::GetKeyDown(BYTE code)
+LONG Input::GetMouseDx()
 {
-	if (key[code] & 0x80)
+	return mouseState.lX;
+}
+
+LONG Input::GetMouseDy()
+{
+	return mouseState.lY;
+}
+
+LONG Input::GetMouseDz()
+{
+	return mouseState.lZ;
+}
+
+// calls once when mouse button is pressed
+bool Input::GetMouseButtonDown(BYTE code)
+{
+	if (!isMousePressed[code] && (mouseState.rgbButtons[code] & 0x80)) {
+		isMousePressed[code] = true;
 		return true;
+	}
+	if (isMousePressed[code] && !(mouseState.rgbButtons[code] & 0x80))
+		isMousePressed[code] = false;
 
 	return false;
 }
 
-bool Input::IsEscapePressed()
+// calls every frame while holding the button 
+bool Input::GetMouseButton(BYTE code)
 {
-	if (key[DIK_ESCAPE] & 0x80)
-	{
+	if (mouseState.rgbButtons[code] & 0x80) {
+		isMousePressed[code] = true;
 		return true;
 	}
+	isMousePressed[code] = false;
+
+	return false;
+}
+
+// calls once when mouse button is released
+bool Input::GetMouseButtonUp(BYTE code)
+{
+	if (isMousePressed[code] && !(mouseState.rgbButtons[code] & 0x80)) {
+		isMousePressed[code] = false;
+		return true;
+	}
+	if (!isMousePressed[code] && (mouseState.rgbButtons[code] & 0x80))
+		isMousePressed[code] = true;
+
+	return false;
+}
+
+// calls once when key button is pressed
+bool Input::GetKeyDown(BYTE code)
+{
+	if (!isKeyPressed[code] && (keys[code] & 0x80)) {
+		isKeyPressed[code] = true;
+		return true;
+	}
+	if (isKeyPressed[code] && !(keys[code] & 0x80))
+		isKeyPressed[code] = false;
+
+	return false;
+}
+
+// calls every frame while holding key
+bool Input::GetKey(BYTE code)
+{
+	if (keys[code] & 0x80) {
+		isKeyPressed[code] = true;
+		return true;
+	}
+	isKeyPressed[code] = false;
+
+	return false;
+}
+
+// calls once when key button is released
+bool Input::GetKeyUp(BYTE code)
+{
+	if (isKeyPressed[code] && !(keys[code] & 0x80)) {
+		isKeyPressed[code] = false;
+		return true;
+	}
+	if (!isKeyPressed[code] && (keys[code] & 0x80))
+		isKeyPressed[code] = true;
+
 	return false;
 }
 
 MousePos Input::GetMouseLocation()
 {
-	return MousePos{ mouseX, mouseY };
+	return MousePos{ mouseX,mouseY };
 }

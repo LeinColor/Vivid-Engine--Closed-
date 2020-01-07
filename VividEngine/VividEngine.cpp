@@ -37,16 +37,16 @@ void VividEngine::Start()
 
 	GameObject* cube = new GameObject();
 	cube->AddComponent<Renderer3D>();
-	cube->GetComponent<Transform>().SetPosition(0.11, 0.22, -0.21);
+	cube->GetComponent<Transform>().SetPosition(0.11f, 0.22f, -0.21f);
 	cube->GetComponent<Transform>().SetScale(0.1f, 0.1f, 0.1f);
 
 	GameObject* sphere = new GameObject();
 	sphere->AddComponent<Renderer3D>();
-	sphere->GetComponent<Transform>().SetPosition(3, 0, 0);
+	sphere->GetComponent<Transform>().SetPosition(3.0f, 0.0f, 0.0f);
 
 	GameObject* cone = new GameObject();
 	cone->AddComponent<Renderer3D>();
-	cone->GetComponent<Transform>().SetPosition(-0.9, 0, -2);
+	cone->GetComponent<Transform>().SetPosition(-0.9f, 0.0f, -2.0f);
 
 	GameObject* light = new GameObject();
 	light->AddComponent<Light>();
@@ -106,7 +106,13 @@ void VividEngine::Run()
 
 void VividEngine::FixedUpdate()
 {
-
+	MousePos pos;
+	pos.x = input.GetMouseDx();
+	pos.y = input.GetMouseDy();
+	float z = input.lZ;
+	char buff[64];
+	sprintf_s(buff, "x:%ld y:%ld z:%f", pos.x, pos.y, z);
+	SetWindowTextA(AppHandle::GetWindowHandle(), buff);
 }
 
 void VividEngine::Update()
@@ -114,27 +120,44 @@ void VividEngine::Update()
 	// Read Input
 	input.ReadInput();
 
-	if (input.GetKeyDown(DIK_LEFTARROW)) {
-		Scene::objects[4]->GetComponent<Transform>().Translate(-0.5 * Time::deltaTime, 0, 0);
+	if (input.GetKey(DIK_LEFTARROW)) {
+		Scene::objects[4]->GetComponent<Transform>().Translate(-0.5f * Time::deltaTime, 0, 0);
 	}
-	if (input.GetKeyDown(DIK_RIGHTARROW)) {
-		Scene::objects[4]->GetComponent<Transform>().Translate(0.5 * Time::deltaTime, 0, 0);
+	if (input.GetKey(DIK_RIGHTARROW)) {
+		Scene::objects[4]->GetComponent<Transform>().Translate(0.5f * Time::deltaTime, 0, 0);
 	}
-	if (input.GetKeyDown(DIK_UPARROW)) {
-		Scene::objects[4]->GetComponent<Transform>().Translate(0, 0, -0.5 * Time::deltaTime);
+	if (input.GetKey(DIK_UPARROW)) {
+		Scene::objects[4]->GetComponent<Transform>().Translate(0, 0, -0.5f * Time::deltaTime);
 	}
-	if (input.GetKeyDown(DIK_DOWNARROW)) {
-		Scene::objects[4]->GetComponent<Transform>().Translate(0, 0, +0.5 * Time::deltaTime);
+	if (input.GetKey(DIK_DOWNARROW)) {
+		Scene::objects[4]->GetComponent<Transform>().Translate(0, 0, +0.5f * Time::deltaTime);
 	}
 
 	// Input animate example
-	if (input.GetKeyDown(DIK_A)) {
-		Scene::objects[4]->GetComponent<Transform>().Rotate(0, 50 * Time::deltaTime, 50 * Time::deltaTime);
+	if (input.GetMouseButton(0)) {
+		Scene::objects[0]->GetComponent<Transform>().Translate(-input.GetMouseDx() * 0.003f, input.GetMouseDy() * 0.003f, 0);
 	}
-	if (input.GetKeyDown(DIK_D)) {
+
+	if (input.GetMouseButton(1)) {
+		Scene::objects[0]->GetComponent<Transform>().Rotate(input.GetMouseDy() * 0.2f, input.GetMouseDx() * 0.2f, 0);
+		//Scene::objects[4]->GetComponent<Transform>().Rotate(input.GetMouseDy() * 0.5f, input.GetMouseDx() * 0.5f, 0);
+	}
+
+	Scene::objects[0]->GetComponent<Transform>().Translate(0, 0, Input::lZ * 0.3f);
+	Input::lZ = 0;
+	
+	//if (abs(input.lZ) < 1e-6)
+	//	input.lZ = 0;
+
+	//if (input.lZ > 0)
+	//	input.lZ -= Time::deltaTime;
+	//else if (input.lZ < 0)
+	//	input.lZ += Time::deltaTime;
+
+	if (input.GetKey(DIK_D)) {
 		Scene::objects[4]->GetComponent<Transform>().Rotate(0, -50 * Time::deltaTime, -50 * Time::deltaTime);
 	}
-	if (input.GetKeyDown(DIK_ESCAPE)) {
+	if (input.GetKey(DIK_ESCAPE)) {
 		exit(0);
 	}
 
@@ -142,7 +165,7 @@ void VividEngine::Update()
 	// Get object's position and rotation
 	auto origin = Scene::objects[4]->GetComponent<Transform>().GetPosition();
 	auto rotation = Scene::objects[4]->GetComponent<Transform>().GetRotation();
-
+	auto camPos = Scene::objects[0]->GetComponent<Transform>().GetPosition();
 	// Calculate axis matrix
 	XMFLOAT3 scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
 	XMMATRIX W =

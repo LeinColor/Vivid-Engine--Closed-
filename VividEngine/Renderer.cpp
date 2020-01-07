@@ -387,11 +387,8 @@ void Renderer::Render()
 				aabbVertices[i] = aabb.GetVertex(i);
 			}
 			XMFLOAT4 color{ 1,1,1,1 };
-			char buff[256];
 			XMFLOAT3& a = mesh->aabb.minPos;
 			XMFLOAT3& b = mesh->aabb.maxPos;
-			sprintf_s(buff, "%f %f %f / %f %f %f", a.x, a.y, a.z, b.x, b.y, b.z);
-			SetWindowTextA(AppHandle::GetWindowHandle(), buff);
 			DrawLine(aabbVertices[0], aabbVertices[1], color);
 			DrawLine(aabbVertices[0], aabbVertices[4], color);
 			DrawLine(aabbVertices[1], aabbVertices[5], color);
