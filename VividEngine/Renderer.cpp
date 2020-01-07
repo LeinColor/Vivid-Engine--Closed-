@@ -360,8 +360,9 @@ void Renderer::Render()
 
 	// Prepare to render
 	dxWrapper->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+
 	////////////////////////////////////////////////////////
-	mainCamera->GetComponent<Camera>().Render(dxWrapper->GetScreenWidth(), dxWrapper->GetScreenHeight(), SCREEN_DEPTH, SCREEN_NEAR);
+	XMFLOAT3 target = mainCamera->GetComponent<Camera>().Render(dxWrapper->GetScreenWidth(), dxWrapper->GetScreenHeight(), SCREEN_DEPTH, SCREEN_NEAR);
 	auto viewMatrix = mainCamera->GetComponent<Camera>().GetViewMatrix();
 	auto projectionMatrix = mainCamera->GetComponent<Camera>().GetProjectionMatrix();
 	viewMatrix = XMMatrixTranspose(viewMatrix);
@@ -430,6 +431,13 @@ void Renderer::Render()
 		}
 		else if (Scene::objects[i]->state == DEBUG)
 		{
+			// gizmo drawing (absolute scale)
+			XMVECTOR vk = XMLoadFloat3(&Scene::objects[i]->GetComponent<Transform>().GetPosition());
+			XMVECTOR result = XMVector3Transform(vk, mainCamera->GetComponent<Camera>().GetViewProjectionMatrix());
+			float w = XMVectorGetW(result) / 64;
+			Scene::objects[i]->GetComponent<Transform>().SetScale(w / 2, w, w / 2);
+
+
 			ColorBufferType cbColor = { Scene::objects[i]->GetComponent<Renderer3D>().color };
 			dxWrapper->UpdateBuffer(constantBuffers[CONSTANT_BUFFER_COLOR], &cbColor, sizeof(cbColor));
 			dxWrapper->GetContext()->VSSetConstantBuffers(1, 1, &constantBuffers[CONSTANT_BUFFER_COLOR]);
@@ -450,6 +458,9 @@ void Renderer::Render()
 	for (auto& line : gizmoLines) {
 		DrawLine(line.startPoint, line.endPoint, line.color);
 	}
+
+	auto ppp = mainCamera->GetComponent<Transform>().GetPosition();
+	//DrawLine(XMFLOAT3(ppp.x,ppp.y,ppp.z+1), XMFLOAT3(target.x, target.y, target.z + 2), XMFLOAT4(0, 1, 0, 1));
 
 	// Clear gizmo line queue
 	gizmoLines.clear();

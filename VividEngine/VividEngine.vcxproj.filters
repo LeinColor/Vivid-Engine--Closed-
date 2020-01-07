@@ -145,6 +145,9 @@
     <ClInclude Include="Input.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Gizmo.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VividEngine.rc">
@@ -251,6 +254,9 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Gizmo.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>

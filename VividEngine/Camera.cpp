@@ -6,7 +6,7 @@
 #include "Object.h"
 
 // TODO: Refactoring
-void Camera::Render(int screenWidth, int screenHeight, float screenDepth, float screenNear)
+XMFLOAT3 Camera::Render(int screenWidth, int screenHeight, float screenDepth, float screenNear)
 {
 	// get transform component to get position and rotation
 	auto transform = owner->GetComponent<Transform>();
@@ -17,8 +17,8 @@ void Camera::Render(int screenWidth, int screenHeight, float screenDepth, float 
 	XMVECTOR focusPos = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 
 	// transform coordinate to lookAtVector, upVector
-	up = XMVector3TransformCoord(up, mat);
-	focusPos = XMVector3TransformCoord(focusPos, mat);
+	up = XMVector3TransformNormal(up, mat);
+	focusPos = XMVector3TransformNormal(focusPos, mat);
 
 	// convert position to viewer(lookAtVector)
 	XMVECTOR eyePos = XMLoadFloat3(&transform.GetPosition());
@@ -35,6 +35,10 @@ void Camera::Render(int screenWidth, int screenHeight, float screenDepth, float 
 
 	XMMATRIX orthoMatrix = XMMatrixOrthographicLH(screenWidth, screenHeight, screenNear, screenDepth);
 	XMStoreFloat4x4(&ortho, orthoMatrix);
+
+	XMFLOAT3 ret;
+	XMStoreFloat3(&ret, focusPos);
+	return ret;
 	
 }
 
@@ -46,6 +50,11 @@ XMMATRIX Camera::GetViewMatrix() const
 XMMATRIX Camera::GetProjectionMatrix() const
 {
 	return XMLoadFloat4x4(&projection);
+}
+
+XMMATRIX Camera::GetViewProjectionMatrix() const
+{
+	return XMMatrixMultiply(XMLoadFloat4x4(&view), XMLoadFloat4x4(&projection));
 }
 
 XMMATRIX Camera::GetOrthoMatrix() const

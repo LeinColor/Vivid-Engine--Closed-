@@ -110,9 +110,9 @@ void VividEngine::FixedUpdate()
 	pos.x = input.GetMouseDx();
 	pos.y = input.GetMouseDy();
 	float z = input.lZ;
-	char buff[64];
-	sprintf_s(buff, "x:%ld y:%ld z:%f", pos.x, pos.y, z);
-	SetWindowTextA(AppHandle::GetWindowHandle(), buff);
+	//char buff[64];
+	//sprintf_s(buff, "x:%ld y:%ld z:%f", pos.x, pos.y, z);
+	//SetWindowTextA(AppHandle::GetWindowHandle(), buff);
 }
 
 void VividEngine::Update()

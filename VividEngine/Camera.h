@@ -2,8 +2,8 @@
 class Object;
 class Component;
 
-constexpr float SCREEN_DEPTH = 1000.0f;
-constexpr float SCREEN_NEAR = 0.1f;
+constexpr float SCREEN_DEPTH = 800.0f;
+constexpr float SCREEN_NEAR = 0.001f;
 constexpr float FIELD_OF_VIEW = 3.141592654f / 4.0f;
 
 class Camera : public Component
@@ -24,9 +24,10 @@ public:
 	Camera(const Camera&) {}
 	~Camera() {}
 
-	void Render(int screenWidth, int screenHeight, float screenDepth, float screenNear);
+	XMFLOAT3 Render(int screenWidth, int screenHeight, float screenDepth, float screenNear);
 
 	XMMATRIX GetViewMatrix() const;
 	XMMATRIX GetProjectionMatrix() const;
+	XMMATRIX GetViewProjectionMatrix() const;
 	XMMATRIX GetOrthoMatrix() const;
 };

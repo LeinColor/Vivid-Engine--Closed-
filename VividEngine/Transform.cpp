@@ -47,14 +47,18 @@ void Transform::Translate(const float x, const float y, const float z)
 
 void Transform::Rotate(const float x, const float y, const float z)
 {
-	XMVECTOR eulorToQuat = XMQuaternionRotationRollPitchYaw(
-		XMConvertToRadians(x),
-		XMConvertToRadians(y),
-		XMConvertToRadians(z));
+	XMVECTOR quat = XMLoadFloat4(&rotation);
+	XMVECTOR xx = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(x), 0, 0);
+	XMVECTOR yy = XMQuaternionRotationRollPitchYaw(0, XMConvertToRadians(y), 0);
+	XMVECTOR zz = XMQuaternionRotationRollPitchYaw(0, 0, XMConvertToRadians(z));
 
-	XMFLOAT4 result;
-	XMStoreFloat4(&result, eulorToQuat);
-	RotateQuaternion(result);
+	quat = XMQuaternionMultiply(xx, quat);
+	quat = XMQuaternionMultiply(quat, yy);
+	quat = XMQuaternionMultiply(zz, quat);
+	quat = XMQuaternionNormalize(quat);
+
+	XMStoreFloat4(&rotation, quat);
+	UpdateWorldMatrix();
 }
 
 void Transform::RotateQuaternion(const XMFLOAT4& quaternion)
