@@ -162,6 +162,7 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Descriptor.h" />
     <ClInclude Include="DirectX11Wrapper.h" />
+    <ClInclude Include="Frustum.h" />
     <ClInclude Include="Gizmo.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Input.h" />
@@ -176,6 +177,8 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Physics.h" />
+    <ClInclude Include="Ray.h" />
     <ClInclude Include="Scene.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
@@ -225,6 +228,7 @@
     <ClCompile Include="AppHandle.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Gizmo.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Maths.cpp" />
@@ -236,6 +240,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Scene.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>

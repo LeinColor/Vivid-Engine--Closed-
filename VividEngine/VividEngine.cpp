@@ -140,10 +140,13 @@ void VividEngine::Update()
 
 	if (input.GetMouseButton(1)) {
 		Scene::objects[0]->GetComponent<Transform>().Rotate(input.GetMouseDy() * 0.2f, input.GetMouseDx() * 0.2f, 0);
-		//Scene::objects[4]->GetComponent<Transform>().Rotate(input.GetMouseDy() * 0.5f, input.GetMouseDx() * 0.5f, 0);
 	}
 
-	Scene::objects[0]->GetComponent<Transform>().Translate(0, 0, Input::lZ * 0.3f);
+	XMVECTOR vDir = Scene::objects[0]->GetComponent<Camera>().GetFocus() - Scene::objects[0]->GetComponent<Camera>().GetEye();
+	vDir = XMVector3Normalize(vDir);
+	XMFLOAT3 dir;
+	XMStoreFloat3(&dir, vDir);
+	Scene::objects[0]->GetComponent<Transform>().Translate(Input::lZ * dir.x * 0.3f, Input::lZ * dir.y * 0.3f, Input::lZ * dir.z * 0.3f);
 	Input::lZ = 0;
 	
 	//if (abs(input.lZ) < 1e-6)

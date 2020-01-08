@@ -6,40 +6,43 @@
 #include "Object.h"
 
 // TODO: Refactoring
-XMFLOAT3 Camera::Render(int screenWidth, int screenHeight, float screenDepth, float screenNear)
+void Camera::Update(int screenWidth, int screenHeight)
 {
-	// get transform component to get position and rotation
 	auto transform = owner->GetComponent<Transform>();
 
-	// make rotation matrix with yaw, pitch, roll
-	XMMATRIX mat = XMMatrixRotationQuaternion(XMLoadFloat4(&transform.GetRotation()));
-	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	XMVECTOR focusPos = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	XMMATRIX rot = XMMatrixRotationQuaternion(XMLoadFloat4(&transform.GetRotation()));
+	XMVECTOR vEye = XMLoadFloat3(&transform.GetPosition());
+	XMVECTOR vFocus = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	XMVECTOR vUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
-	// transform coordinate to lookAtVector, upVector
-	up = XMVector3TransformNormal(up, mat);
-	focusPos = XMVector3TransformNormal(focusPos, mat);
+	vUp = XMVector3TransformNormal(vUp, rot);
+	vFocus = XMVector3TransformNormal(vFocus, rot);
+	vFocus = XMVectorAdd(vEye, vFocus);
+	XMStoreFloat3(&eye, vEye);
+	XMStoreFloat3(&focus, vFocus);
+	XMStoreFloat3(&up, vUp);
 
-	// convert position to viewer(lookAtVector)
-	XMVECTOR eyePos = XMLoadFloat3(&transform.GetPosition());
-	focusPos = XMVectorAdd(eyePos, focusPos);
-
-	XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, focusPos, up);
+	XMMATRIX viewMatrix = XMMatrixLookAtLH(vEye, vFocus, vUp);
+	XMMATRIX projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenWidth / screenHeight, nearZ, farZ);
+	XMMATRIX orthoMatrix = XMMatrixOrthographicLH(screenWidth, screenHeight, nearZ, farZ);
 	XMStoreFloat4x4(&view, viewMatrix);
-
-	fieldOfView = FIELD_OF_VIEW;
-	float screenAspect = screenWidth / screenHeight;
-
-	XMMATRIX projectionMatrix = XMMatrixPerspectiveFovLH(fieldOfView, screenAspect, screenNear, screenDepth);
 	XMStoreFloat4x4(&projection, projectionMatrix);
-
-	XMMATRIX orthoMatrix = XMMatrixOrthographicLH(screenWidth, screenHeight, screenNear, screenDepth);
 	XMStoreFloat4x4(&ortho, orthoMatrix);
+}
 
-	XMFLOAT3 ret;
-	XMStoreFloat3(&ret, focusPos);
-	return ret;
-	
+XMVECTOR Camera::GetEye() const
+{
+	return XMLoadFloat3(&eye);
+}
+
+XMVECTOR Camera::GetFocus() const
+{
+	return XMLoadFloat3(&focus);
+}
+
+XMVECTOR Camera::GetUp() const
+{
+	return XMLoadFloat3(&up);
 }
 
 XMMATRIX Camera::GetViewMatrix() const

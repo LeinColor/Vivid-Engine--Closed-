@@ -362,7 +362,7 @@ void Renderer::Render()
 	dxWrapper->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 	////////////////////////////////////////////////////////
-	XMFLOAT3 target = mainCamera->GetComponent<Camera>().Render(dxWrapper->GetScreenWidth(), dxWrapper->GetScreenHeight(), SCREEN_DEPTH, SCREEN_NEAR);
+	mainCamera->GetComponent<Camera>().Update(dxWrapper->GetScreenWidth(), dxWrapper->GetScreenHeight());
 	auto viewMatrix = mainCamera->GetComponent<Camera>().GetViewMatrix();
 	auto projectionMatrix = mainCamera->GetComponent<Camera>().GetProjectionMatrix();
 	viewMatrix = XMMatrixTranspose(viewMatrix);

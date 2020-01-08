@@ -148,6 +148,15 @@
     <ClInclude Include="Gizmo.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VividEngine.rc">
@@ -257,6 +266,15 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Gizmo.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Ray.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
