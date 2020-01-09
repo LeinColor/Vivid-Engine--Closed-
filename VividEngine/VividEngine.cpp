@@ -141,8 +141,8 @@ void VividEngine::Update()
 	if (input.GetMouseButton(1)) {
 		Scene::objects[0]->GetComponent<Transform>().Rotate(input.GetMouseDy() * 0.2f, input.GetMouseDx() * 0.2f, 0);
 	}
-
-	XMVECTOR vDir = Scene::objects[0]->GetComponent<Camera>().GetFocus() - Scene::objects[0]->GetComponent<Camera>().GetEye();
+	
+	XMVECTOR vDir = XMVectorSubtract(Scene::objects[0]->GetComponent<Camera>().GetFocus(), Scene::objects[0]->GetComponent<Camera>().GetEye());
 	vDir = XMVector3Normalize(vDir);
 	XMFLOAT3 dir;
 	XMStoreFloat3(&dir, vDir);

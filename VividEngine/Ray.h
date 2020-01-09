@@ -10,5 +10,7 @@ private:
 };
 
 class RaycastHit {
-
+public:
+	RaycastHit() {}
+private:
 };
