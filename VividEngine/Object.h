@@ -7,18 +7,20 @@
 #include "Component.h"
 class Object {
 private:
+	uint32_t entity = 0;
 	std::vector<std::unique_ptr<Component> > components;
 
 public:
 	Object();
-
-	UINT state = DEFAULT;
 
 	template<class ComponentType, typename... Args>
 	void AddComponent(Args&&... params);
 
 	template<class ComponentType>
 	ComponentType& GetComponent();
+
+	void SetDebugFlag(bool flag);
+	bool GetDebugFlag();
 };
 
 template<class ComponentType, typename... Args>

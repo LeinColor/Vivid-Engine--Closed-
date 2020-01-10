@@ -380,7 +380,7 @@ void Renderer::Render()
 		worldMatrix = XMMatrixTranspose(worldMatrix);
 
 		// Draw AABB box
-		if (Scene::objects[i]->state == DEFAULT) {
+		if (Scene::objects[i]->GetDebugFlag() == false) {
 			// AABB transformation by each object matrix
 			AABB aabb = mesh->aabb.Transform(Scene::objects[i]->GetComponent<Transform>().GetWorldMatrix());
 			XMFLOAT3 aabbVertices[8];
@@ -412,7 +412,7 @@ void Renderer::Render()
 		
 		unsigned int stride = sizeof(vertex_PCN_t);
 		unsigned int offset = 0;
-		if (Scene::objects[i]->state == DEFAULT) {
+		if (Scene::objects[i]->GetDebugFlag() == false) {
 			CameraBufferType cbCamera = { mainCamera->GetComponent<Transform>().GetPosition(), 0.0f };
 			dxWrapper->UpdateBuffer(constantBuffers[CONSTANT_BUFFER_CAMERA], &cbCamera, sizeof(cbCamera));
 			dxWrapper->GetContext()->VSSetConstantBuffers(1, 1, &constantBuffers[CONSTANT_BUFFER_CAMERA]);
@@ -429,7 +429,7 @@ void Renderer::Render()
 			dxWrapper->GetContext()->PSSetShader(pixelShaders[1], nullptr, 0);
 			dxWrapper->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		}
-		else if (Scene::objects[i]->state == DEBUG)
+		else if (Scene::objects[i]->GetDebugFlag() == true)
 		{
 			// gizmo drawing (absolute scale)
 			XMVECTOR vk = XMLoadFloat3(&Scene::objects[i]->GetComponent<Transform>().GetPosition());

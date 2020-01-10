@@ -19,9 +19,9 @@ void VividEngine::Start()
 	EditorObject* axisX = new EditorObject();
 	EditorObject* axisY = new EditorObject();
 	EditorObject* axisZ = new EditorObject();
-	axisX->state = DEBUG;
-	axisY->state = DEBUG;
-	axisZ->state = DEBUG;
+	axisX->SetDebugFlag(true);
+	axisY->SetDebugFlag(true);
+	axisZ->SetDebugFlag(true);
 	axisX->AddComponent<Renderer3D>();
 	axisY->AddComponent<Renderer3D>();
 	axisZ->AddComponent<Renderer3D>();

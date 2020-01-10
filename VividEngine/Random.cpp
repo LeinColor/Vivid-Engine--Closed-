@@ -7,7 +7,7 @@ namespace vivid {
 	std::mt19937 mt(rd());
 	uint32_t vivid::getRandom()
 	{
-		std::uniform_int_distribution<uint32_t> dist(0, UINT32_MAX);
+		std::uniform_int_distribution<uint32_t> dist(1, UINT32_MAX);
 		return dist(mt);
 	}
 }

@@ -9,8 +9,6 @@ private:
 
 };
 
-class RaycastHit {
-public:
-	RaycastHit() {}
-private:
+struct RaycastHit {
+	uint32_t entity;
 };
