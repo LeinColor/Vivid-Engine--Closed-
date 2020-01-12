@@ -23,7 +23,7 @@
     <ProjectGuid>{9A8DC1A5-D40D-483E-A695-EBB3030C27DC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>VividEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -166,6 +166,9 @@
     <ClInclude Include="Gizmo.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Label.h" />
+    <ClInclude Include="Loader.h" />
+    <ClInclude Include="Manager.h" />
     <ClInclude Include="Maths.h" />
     <ClInclude Include="Object.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -177,18 +180,18 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Panel.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="Renderer2D.h" />
     <ClInclude Include="Scene.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="OBJ_Loader.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Renderer3D.h" />
     <ClInclude Include="RenderQueue.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -196,6 +199,7 @@
     <ClInclude Include="AppHandle.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="TextField.h" />
     <ClInclude Include="Texture.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
@@ -218,10 +222,12 @@
     <ClCompile Include="Camera.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="ConstantBufferLoader.cpp" />
     <ClCompile Include="Component.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Converter.cpp" />
+    <ClCompile Include="CSLoader.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DirectX11Wrapper.cpp" />
@@ -230,8 +236,15 @@
     </ClCompile>
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Gizmo.cpp" />
+    <ClCompile Include="GSLoader.cpp" />
+    <ClCompile Include="HSLoader.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InputLayoutLoader.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="Loader.cpp" />
+    <ClCompile Include="Manager.cpp" />
     <ClCompile Include="Maths.cpp" />
+    <ClCompile Include="MeshLoader.cpp" />
     <ClCompile Include="Object.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
@@ -240,8 +253,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="PSLoader.cpp" />
     <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="Renderer2D.cpp" />
     <ClCompile Include="Scene.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
@@ -250,10 +266,11 @@
     <ClCompile Include="Renderer3D.cpp" />
     <ClCompile Include="RenderQueue.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="SpriteRenderer.cpp" />
+    <ClCompile Include="TextField.cpp" />
     <ClCompile Include="Texture.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="TextureLoader.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="tiny_obj_loader.cc" />
     <ClCompile Include="Transform.cpp">
@@ -263,6 +280,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="VividEngine.cpp" />
+    <ClCompile Include="VSLoader.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>

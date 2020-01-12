@@ -80,13 +80,6 @@ void Transform::UpdateWorldMatrix()
 		XMMatrixTranslationFromVector(T_local);
 
 	XMStoreFloat4x4(&world, W);
-
-	//XMVECTOR S, R, T;
-	//XMMatrixDecompose(&S, &R, &T, XMLoadFloat4x4(&world));
-	//XMStoreFloat3(&scale, S);
-	//XMStoreFloat4(&rotation, R);
-	//XMStoreFloat3(&position, T);
-
 }
 
 XMMATRIX Transform::GetWorldMatrix() const

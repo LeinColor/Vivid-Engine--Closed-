@@ -6,4 +6,3 @@ vector<Object*> Scene::objects;
 vector<AABB*> Scene::aabbs;
 vector<Mesh*> Scene::meshes;
 vector<Texture*> Scene::textures;
-vector<Shader*> Scene::shaders;

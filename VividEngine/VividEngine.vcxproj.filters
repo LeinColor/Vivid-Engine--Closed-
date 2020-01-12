@@ -29,6 +29,9 @@
     <Filter Include="HLSL">
       <UniqueIdentifier>{fd06d863-286e-4a78-807e-51c10f4c0738}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Loader">
+      <UniqueIdentifier>{179d4f1c-1e7c-430b-8dfa-be8429cce013}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -79,9 +82,6 @@
     <ClInclude Include="Random.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteRenderer.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="Descriptor.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -108,9 +108,6 @@
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="OBJ_Loader.h">
-      <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="tiny_obj_loader.h">
       <Filter>Util</Filter>
@@ -156,6 +153,24 @@
     </ClInclude>
     <ClInclude Include="Physics.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Loader.h">
+      <Filter>Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Label.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="TextField.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer2D.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -207,9 +222,6 @@
     </ClCompile>
     <ClCompile Include="Random.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteRenderer.cpp">
-      <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="Debug.cpp">
       <Filter>Core</Filter>
@@ -276,6 +288,51 @@
     </ClCompile>
     <ClCompile Include="Physics.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="VSLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="InputLayoutLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="PSLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="GSLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="CSLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="HSLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="Loader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Label.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="TextField.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBufferLoader.cpp">
+      <Filter>Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer2D.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

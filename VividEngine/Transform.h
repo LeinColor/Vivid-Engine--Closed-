@@ -23,15 +23,7 @@ public:
 	void Rotate(const float x, const float y, const float z);		// Rotate by eulor angle
 	void RotateQuaternion(const XMFLOAT4&);							// Rotate by quaternion angle
 
-	void LookAt(const XMVECTOR& origin, const XMVECTOR& target, const XMVECTOR& up)
-	{
-		XMVECTOR quat = XMLoadFloat4(&rotation);
-		auto m = XMMatrixLookAtLH(origin, target, up);
-		auto qv = XMQuaternionRotationMatrix(m);
-		XMVECTOR result = XMQuaternionMultiply(XMLoadFloat4(&rotation), qv);
-		result = XMQuaternionNormalize(result);
-		XMStoreFloat4(&rotation, result);
-	}
+	void LookAt(const XMVECTOR& origin, const XMVECTOR& target, const XMVECTOR& up);
 
 	void UpdateWorldMatrix();
 

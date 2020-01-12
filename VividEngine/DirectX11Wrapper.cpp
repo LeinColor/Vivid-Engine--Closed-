@@ -11,6 +11,7 @@
 #include "Debug.h"
 using namespace vivid;
 
+
 DirectX11Wrapper::DirectX11Wrapper(HWND hWnd, bool fullScreenFlag)
 {
 	fullScreen = fullScreenFlag;
@@ -60,7 +61,7 @@ DirectX11Wrapper::DirectX11Wrapper(HWND hWnd, bool fullScreenFlag)
 	swapChainDesc.SampleDesc.Count = 1;	// not multi-sampling
 	swapChainDesc.SampleDesc.Quality = 0;
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapChainDesc.BufferCount = 1;	
+	swapChainDesc.BufferCount = 1;
 	swapChainDesc.OutputWindow = hWnd;
 	swapChainDesc.Windowed = !fullScreen;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
@@ -70,10 +71,10 @@ DirectX11Wrapper::DirectX11Wrapper(HWND hWnd, bool fullScreenFlag)
 	{
 		driverType = driverTypes[driverTypeIndex];
 		hr = D3D11CreateDeviceAndSwapChain(NULL, driverType, NULL, NULL, featureLevels, numFeatureLevels,
-		D3D11_SDK_VERSION, &swapChainDesc, &swapChain, &device, NULL, &deviceContext);
+			D3D11_SDK_VERSION, &swapChainDesc, &swapChain, &device, NULL, &deviceContext);
 
-	if (SUCCEEDED(hr))
-		break;
+		if (SUCCEEDED(hr))
+			break;
 	}
 
 	// Create back buffer
@@ -81,7 +82,7 @@ DirectX11Wrapper::DirectX11Wrapper(HWND hWnd, bool fullScreenFlag)
 
 	// Create render target
 	hr = device->CreateRenderTargetView(backBuffer, NULL, &renderTargetView);
-	
+
 	// Bind the render target view to the output merger stage of the pipeline.
 	deviceContext->OMSetRenderTargets(1, &renderTargetView, NULL);
 

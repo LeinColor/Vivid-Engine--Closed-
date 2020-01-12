@@ -11,7 +11,6 @@
 #include "GUI.h"
 #include "Scene.h"
 #include "Object.h"
-#include "SpriteRenderer.h"
 #include "Camera.h"
 #include "Transform.h"
 #include "Mesh.h"
@@ -21,12 +20,13 @@
 namespace vivid {
 	class Renderer {
 	private:
-		DirectX11Wrapper* dxWrapper = nullptr;
+		static DirectX11Wrapper* graphics;
 
 	public:
 		Object* mainCamera = nullptr;
-		DirectX11Wrapper* GetDevice();
-		void SetDevice(DirectX11Wrapper* value);
+		static DirectX11Wrapper* GetGraphicsInterface();
+		static void SetGraphicsInterface(DirectX11Wrapper* value);
+		Object* GetMainCamera();
 
 		void Initialize();
 		void Render();

@@ -13,7 +13,6 @@
 #include "Component.h"
 #include "Object.h"
 #include "Transform.h"
-#include "SpriteRenderer.h"
 #include "Renderer3D.h"
 #include "Light.h"
 #include "Input.h"

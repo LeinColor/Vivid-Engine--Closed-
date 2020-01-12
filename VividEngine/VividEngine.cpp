@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "VividEngine.h"
+#include "Loader.h"
 #include "Time.h"
 
 using namespace vivid;
@@ -11,9 +12,7 @@ using EditorObject = Object;
 void VividEngine::Start()
 {
 	// 3D
-	GameObject* camera = new GameObject();
-	camera->AddComponent<Camera>();
-	camera->GetComponent<Transform>().SetPosition(0, 0, -3);
+
 
 	// Editor Object
 	EditorObject* axisX = new EditorObject();
@@ -34,6 +33,10 @@ void VividEngine::Start()
 	axisX->GetComponent<Transform>().SetScale(0.015f, 0.033f, 0.015f);
 	axisY->GetComponent<Transform>().SetScale(0.015f, 0.033f, 0.015f);
 	axisZ->GetComponent<Transform>().SetScale(0.015f, 0.033f, 0.015f);
+
+	GameObject* camera = new GameObject();
+	camera->AddComponent<Camera>();
+	camera->GetComponent<Transform>().SetPosition(0, 0, -3);
 
 	GameObject* cube = new GameObject();
 	cube->AddComponent<Renderer3D>();
@@ -58,17 +61,19 @@ void VividEngine::Start()
 
 	cube->GetComponent<Renderer3D>().mesh = Scene::meshes[MESH_CUBE];
 	//sphere->GetComponent<Renderer3D>().mesh = Scene::meshes[MESH_SPHERE];
+
+
 }
 
 void VividEngine::Initialize()
 {
-	if (renderer.GetDevice() == nullptr)
-		renderer.SetDevice(new DirectX11Wrapper(AppHandle::GetWindowHandle(), false));
+	if (Renderer::GetGraphicsInterface() == nullptr)
+		Renderer::SetGraphicsInterface(new DirectX11Wrapper(AppHandle::GetWindowHandle(), false));
 	
 	// initialize renderer to load mesh, shader
 	Time::Initialize();
 	input.Initialize();
-	renderer.Initialize();
+	Loader::Initialize();
 	initialized = true;
 }
 
@@ -101,18 +106,12 @@ void VividEngine::Run()
 		FixedUpdate();	// calculate physics here
 		deltaTimeAccumulator -= targetFrameRateInv;
 	}
-	Update();
+	//Update();
 }
 
 void VividEngine::FixedUpdate()
 {
-	MousePos pos;
-	pos.x = input.GetMouseDx();
-	pos.y = input.GetMouseDy();
-	float z = input.lZ;
-	//char buff[64];
-	//sprintf_s(buff, "x:%ld y:%ld z:%f", pos.x, pos.y, z);
-	//SetWindowTextA(AppHandle::GetWindowHandle(), buff);
+
 }
 
 void VividEngine::Update()
