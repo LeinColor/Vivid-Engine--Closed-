@@ -15,7 +15,7 @@ public:
 	static std::vector<Object*> lights;
 	static std::vector<AABB*> aabbs;
 
-	static XMFLOAT3 ScreenToWorldPoint(const XMFLOAT3& pos);
+	static XMVECTOR ScreenToWorldPoint(const XMFLOAT3& pos);
 public:
 	static Object* GetMainCamera();
 };

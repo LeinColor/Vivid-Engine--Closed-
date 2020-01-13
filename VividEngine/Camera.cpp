@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "Object.h"
+#include "AppHandle.h"
 
 // TODO: Refactoring
 void Camera::Update(int screenWidth, int screenHeight)
@@ -28,6 +29,12 @@ void Camera::Update(int screenWidth, int screenHeight)
 	XMStoreFloat4x4(&view, viewMatrix);
 	XMStoreFloat4x4(&projection, projectionMatrix);
 	XMStoreFloat4x4(&ortho, orthoMatrix);
+
+
+	//char buffer[128];
+	////sprintf_s(buffer, "%f %f %f", test.x, test.y, test.z);
+	//sprintf_s(buffer, "%f %f", projection._11, projection._22);
+	//SetWindowTextA(vivid::AppHandle::GetWindowHandle(), buffer);
 }
 
 XMVECTOR Camera::GetEye() const

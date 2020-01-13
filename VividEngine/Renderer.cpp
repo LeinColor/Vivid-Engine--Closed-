@@ -52,7 +52,7 @@ void Renderer::Render()
 			continue;
 
 		// Get object's world matrix and transpose it to render.
-		auto worldMatrix = Scene::objects[i]->GetComponent<Transform>().GetWorldMatrix();
+		auto& worldMatrix = Scene::objects[i]->GetComponent<Transform>().GetWorldMatrix();
 		worldMatrix = XMMatrixTranspose(worldMatrix);
 
 		auto& material = renderer3D.material;

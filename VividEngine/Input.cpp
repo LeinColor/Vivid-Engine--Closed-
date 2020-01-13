@@ -174,7 +174,10 @@ bool Input::GetKeyUp(BYTE code)
 	return false;
 }
 
-MousePos Input::GetMouseLocation()
+XMFLOAT2 Input::GetMouseLocation()
 {
-	return MousePos{ mouseX,mouseY };
+	POINT p;
+	GetCursorPos(&p);
+	ScreenToClient(AppHandle::GetWindowHandle(), &p);
+	return XMFLOAT2((float)p.x, (float)p.y);
 }

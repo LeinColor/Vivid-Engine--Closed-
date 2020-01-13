@@ -35,7 +35,7 @@ public:
 	LONG GetMouseDx();
 	LONG GetMouseDy();
 	LONG GetMouseDz();
-	MousePos GetMouseLocation();
+	XMFLOAT2 GetMouseLocation();
 	static float lZ;
 private:
 	void ProcessInput();

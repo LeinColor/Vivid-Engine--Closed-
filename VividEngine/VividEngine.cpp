@@ -2,6 +2,8 @@
 #include "VividEngine.h"
 #include "Loader.h"
 #include "Time.h"
+#include "Physics.h"
+#include "Ray.h"
 #include "Manager.h"
 
 #include <unordered_map>
@@ -45,6 +47,8 @@ void VividEngine::Start()
 	cube->AddComponent<Renderer3D>();
 	cube->GetComponent<Renderer3D>().mesh = Manager::meshes[MESH_CUBE];
 	cube->GetComponent<Renderer3D>().material = Manager::materials[MATERIAL_BLINN_PHONG];
+	AABB* aabb = &Manager::meshes[MESH_CUBE]->aabb;
+	Scene::aabbs.push_back(aabb);
 	cube->GetComponent<Transform>().SetPosition(0.11f, 0.22f, -0.21f);
 	cube->GetComponent<Transform>().SetScale(0.1f, 0.1f, 0.1f);
 
@@ -107,16 +111,19 @@ void VividEngine::Run()
 	while (deltaTimeAccumulator >= targetFrameRateInv)
 	{
 		FixedUpdate();	// calculate physics here
+		//Update();
 		deltaTimeAccumulator -= targetFrameRateInv;
 	}
 	Update();
 }
-XMFLOAT3 test = XMFLOAT3(0,0,0);
+XMVECTOR test;
+RaycastHit hit;
+bool isHit;
 void VividEngine::FixedUpdate()
 {
-	char buffer[128];
-	sprintf_s(buffer, "%f %f %f", test.x, test.y, test.z);
-	SetWindowTextA(AppHandle::GetWindowHandle(), buffer);
+	//char buffer[128];
+	//sprintf_s(buffer, "%d", isHit);
+	//SetWindowTextA(AppHandle::GetWindowHandle(), buffer);
 }
 
 void VividEngine::Update()
@@ -148,9 +155,13 @@ void VividEngine::Update()
 		mainCamera->GetComponent<Transform>().Rotate(input.GetMouseDy() * 0.2f, input.GetMouseDx() * 0.2f, 0);
 	}
 
-	test = Scene::ScreenToWorldPoint(XMFLOAT3(0, 0, 0));
+	test = Scene::ScreenToWorldPoint(XMFLOAT3(input.GetMouseLocation().x,input.GetMouseLocation().y, 0));
+
+	isHit = Physics::Raycast(XMLoadFloat3(&mainCamera->GetComponent<Transform>().GetPosition()), test, hit, 0, 1);
+	
 	//test = Scene::ScreenToWorldPoint(XMFLOAT3(input.GetMouseLocation().x, input.GetMouseLocation().y, 0));
 	
+	// Zoom in out
 	XMVECTOR vDir = XMVectorSubtract(mainCamera->GetComponent<Camera>().GetFocus(), mainCamera->GetComponent<Camera>().GetEye());
 	vDir = XMVector3Normalize(vDir);
 	XMFLOAT3 dir;

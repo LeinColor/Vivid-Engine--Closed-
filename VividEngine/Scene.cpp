@@ -10,7 +10,7 @@ using namespace std;
 vector<Object*> Scene::objects;
 vector<AABB*> Scene::aabbs;
 
-XMFLOAT3 Scene::ScreenToWorldPoint(const XMFLOAT3& pos)
+XMVECTOR Scene::ScreenToWorldPoint(const XMFLOAT3& pos)
 {
 	int screenWidth = Renderer::GetScreenWidth();
 	int screenHeight = Renderer::GetScreenHeight();
@@ -19,7 +19,7 @@ XMFLOAT3 Scene::ScreenToWorldPoint(const XMFLOAT3& pos)
 	float pointY = (((2.0f * (float)pos.y) / (float)screenHeight) - 1.0f) * -1.0f;
 
 	auto mainCamera = GetMainCamera();
-	auto cameraComponent = mainCamera->GetComponent<Camera>();
+	auto& cameraComponent = mainCamera->GetComponent<Camera>();
 
 	XMFLOAT3X3 projectionMatrix4;
 	XMStoreFloat3x3(&projectionMatrix4, cameraComponent.GetProjectionMatrix());
@@ -38,12 +38,11 @@ XMFLOAT3 Scene::ScreenToWorldPoint(const XMFLOAT3& pos)
 	direction.y = (pointX * inverseViewMatrix4._12) + (pointY * inverseViewMatrix4._22) + inverseViewMatrix4._32;
 	direction.z = (pointX * inverseViewMatrix4._13) + (pointY * inverseViewMatrix4._23) + inverseViewMatrix4._33;
 
-	XMMATRIX inverseWorldMatrix = XMMatrixInverse(nullptr, mainCamera->GetComponent<Transform>().GetWorldMatrix());
-	XMStoreFloat3(&direction, XMVector3TransformNormal(XMVectorSet(direction.x, direction.y, direction.z, 0.0f), inverseWorldMatrix));
+	//XMMATRIX inverseWorldMatrix = XMMatrixInverse(nullptr, mainCamera->GetComponent<Transform>().GetWorldMatrix());
+	XMStoreFloat3(&direction, XMVector3TransformNormal(XMVectorSet(direction.x, direction.y, direction.z, 0.0f), mainCamera->GetComponent<Transform>().GetWorldMatrix()));
 
-	XMFLOAT3 rayDirection;
-	XMStoreFloat3(&rayDirection, XMVector3Normalize(XMVectorSet(direction.x, direction.y, direction.z, 0.0f)));
-	return rayDirection;
+
+	return XMVector3Normalize(XMVectorSet(direction.x, direction.y, direction.z, 0.0f));
 }
 
 Object* Scene::GetMainCamera()

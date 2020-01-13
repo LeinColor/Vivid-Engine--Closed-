@@ -11,12 +11,10 @@ bool Physics::Raycast(XMVECTOR origin,
 		int layerMask)
 {
 	float distance = 0.0f;
-	XMVECTOR vDir = XMVector3Normalize(XMVectorSubtract(direction, origin));
-
 	XMFLOAT3 org;
 	XMFLOAT3 dirInv;
 	XMStoreFloat3(&org, origin);
-	XMStoreFloat3(&dirInv, vDir);
+	XMStoreFloat3(&dirInv, direction);
 	dirInv.x = 1.0f / dirInv.x;
 	dirInv.y = 1.0f / dirInv.y;
 	dirInv.z = 1.0f / dirInv.z;
@@ -25,6 +23,9 @@ bool Physics::Raycast(XMVECTOR origin,
 		XMFLOAT3& lb = Scene::aabbs[i]->minPos;
 		XMFLOAT3& rt = Scene::aabbs[i]->maxPos;
 
+		char buffer[128];
+		sprintf_s(buffer, "%f %f %f / %f %f %f", lb.x,lb.y,lb.z,rt.x,rt.y,rt.z);
+		SetWindowTextA(vivid::AppHandle::GetWindowHandle(), buffer);
 		float t1 = (lb.x - org.x) * dirInv.x;
 		float t2 = (rt.x - org.x) * dirInv.x;
 		float t3 = (lb.y - org.y) * dirInv.y;
@@ -38,18 +39,18 @@ bool Physics::Raycast(XMVECTOR origin,
 		if (tMax < 0)
 		{
 			distance = tMax;
-			return false;
+			//return false;
 		}
 
 		if (tMin > tMax)
 		{
 			distance = tMax;
-			return false;
+			//return false;
 		}
 
 		if (distance > maxDistance)
 		{
-			return false;
+			//return false;
 		}
 
 		distance = tMin;
