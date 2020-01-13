@@ -32,6 +32,14 @@ void Loader::Initialize()
 	CBSet.push_back(CONSTANT_BUFFER_COLOR);
 	BindShader(SHADER_BLINN_PHONG, VS_BLINN_PHONG, VS_BLINN_PHONG, IL_POS_COLOR_NORMAL, PS_BLINN_PHONG, CBSet);
 	CBSet.clear();
+
+	Loader::Materials();
+}
+
+void Loader::Materials()
+{
+	BindMaterial(SHADER_DEBUG);
+	BindMaterial(SHADER_BLINN_PHONG);
 }
 
 void Loader::BindShader(int num, int VS, int VSBuffer, int inputLayout, int PS, vector<int> CB, int GS, int HS, int DS, int CS)
@@ -45,4 +53,11 @@ void Loader::BindShader(int num, int VS, int VSBuffer, int inputLayout, int PS, 
 	for (int i = 0; i < CB.size(); i++) {
 		shader->constantBuffers.insert(make_pair(CB[i], &Manager::constantBuffers[i]));
 	}
+}
+
+void Loader::BindMaterial(int shaderIndex)
+{
+	Material* material = new Material();
+	material->shader = Manager::shaders[shaderIndex];
+	Manager::materials.push_back(material);
 }

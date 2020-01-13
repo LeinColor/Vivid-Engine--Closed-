@@ -4,7 +4,7 @@
 #include "Debug.h"
 #include "Maths.h"
 #include "Mesh.h"
-#include "Scene.h"
+#include "Manager.h"
 #include "Renderer.h"
 #include "DirectX11Wrapper.h"
 #include <string>
@@ -37,7 +37,7 @@ void Loader::LoadMeshFromObj(const char* fileName)
 	}
 
 	Mesh* mesh = new Mesh();
-	Scene::meshes.push_back(mesh);
+	Manager::meshes.push_back(mesh);
 
 	//TODO: Not showing so should fix this!
 	UINT indexCount = shapes[0].mesh.indices.size();
@@ -170,22 +170,18 @@ void Loader::LoadLine()
 	ID3D11Buffer* lineIndexBuffer = nullptr;
 
 	Mesh* mesh = new Mesh();
-	Scene::meshes.push_back(mesh);
+	Manager::meshes.push_back(mesh);
 
 	//TODO: Not showing so should fix this!
 	UINT indexCount = 2;
-	vertex_PCN_t* vertices = new vertex_PCN_t[indexCount];	 // allocate vertex_t for vertex count
+	vertex_P_t* vertices = new vertex_P_t[indexCount];	 // allocate vertex_t for vertex count
 	unsigned long* indices = new unsigned long[indexCount];  // allocate unsigned long for indices count
 
 	for (int i = 0; i < indexCount; i++) {
 		// vertex position
 		vertices[i].position = XMFLOAT3(0, 0, 0);
-		vertices[i].color = XMFLOAT4(0.0, 0.0, 0.0, 1.0);
-		vertices[i].normal = XMFLOAT3(0, 0, 0);
 		indices[i] = i;
 		mesh->positions.push_back(XMFLOAT3(0, 0, 0));
-		mesh->normals.push_back(XMFLOAT3(0, 0, 0));
-		mesh->texcoords.push_back(XMFLOAT2(0, 0));
 	}
 
 	//*************************************
@@ -195,7 +191,7 @@ void Loader::LoadLine()
 	{
 		D3D11_BUFFER_DESC bd;
 		bd.Usage = D3D11_USAGE_DYNAMIC;
-		bd.ByteWidth = sizeof(vertex_PCN_t) * indexCount;
+		bd.ByteWidth = sizeof(vertex_P_t) * indexCount;
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		bd.MiscFlags = 0;

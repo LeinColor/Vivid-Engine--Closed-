@@ -26,7 +26,8 @@ namespace vivid {
 		Object* mainCamera = nullptr;
 		static DirectX11Wrapper* GetGraphicsInterface();
 		static void SetGraphicsInterface(DirectX11Wrapper* value);
-		Object* GetMainCamera();
+		static inline int GetScreenWidth() { return graphics->GetScreenWidth(); }
+		static inline int GetScreenHeight() { return graphics->GetScreenHeight(); }
 
 		void Initialize();
 		void Render();

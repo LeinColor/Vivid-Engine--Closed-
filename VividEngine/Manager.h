@@ -1,6 +1,9 @@
 #pragma once
 #include <vector>
 class Shader;
+class Mesh;
+class Texture;
+class Material;
 class Manager {
 public:
 	// Shader containers
@@ -11,9 +14,13 @@ public:
 	static std::vector<ID3D11DomainShader*> domainShaders;
 	static std::vector<ID3D11ComputeShader*> computeShaders;
 
+	// Resource containers
 	static std::vector<Shader*> shaders;
+	static std::vector<Mesh*> meshes;
+	static std::vector<Texture*> textures;
+	static std::vector<Material*> materials;
 
-	// Layout container
+	// Buffer containers
 	static std::vector<ID3D10Blob*> vertexShaderBuffers;
 	static std::vector<ID3D11InputLayout*> inputLayouts;
 	static std::vector<ID3D11Buffer*> constantBuffers;

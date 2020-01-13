@@ -38,5 +38,20 @@ using namespace vivid;
 		
 		float deltaTimeAccumulator = 0;
 
+		unordered_map<int, Object*> editorObjects;
+
+		enum EDITOR_OBJECT {
+			EDITOR_CONE_X,
+			EDITOR_CONE_Y,
+			EDITOR_CONE_Z,
+			EDITOR_ROTATION_X,
+			EDITOR_ROTATION_Y,
+			EDITOR_ROTATION_Z,
+			EDITOR_CUBE_X,
+			EDITOR_CUBE_Y,
+			EDITOR_CUBE_Z,
+		};
+
+
 		//TextureShader ts;
 	};
