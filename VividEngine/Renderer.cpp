@@ -41,6 +41,10 @@ void Renderer::Render()
 	projectionMatrix = XMMatrixTranspose(projectionMatrix);
 
 	for (int i = 0; i < Scene::objects.size(); i++) {
+		// if object is not activated, skip immediately
+		if (!Scene::objects[i]->GetActive())
+			continue;
+
 		// if object doesn't have Renderer3D component, skip immediately
 		auto& renderer3D = Scene::objects[i]->GetComponent<Renderer3D>();
 		if (&renderer3D == nullptr)
@@ -69,36 +73,41 @@ void Renderer::Render()
 		{
 			// Draw AABB box
 			// AABB transformation by each object matrix
-			AABB aabb = mesh->aabb.Transform(Scene::objects[i]->GetComponent<Transform>().GetWorldMatrix());
-			XMFLOAT3 aabbVertices[8];
-			for (int i = 0; i < 8; i++) {
-				aabbVertices[i] = aabb.GetVertex(i);
-			}
-			XMFLOAT4 color{ 1,1,1,1 };
-			GizmoLine line[12];
-			line[0] = { aabbVertices[0], aabbVertices[1], color };
-			line[1] = { aabbVertices[0], aabbVertices[4], color };
-			line[2] = { aabbVertices[1], aabbVertices[5], color };
-			line[3] = { aabbVertices[4], aabbVertices[5], color };
-			line[4] = { aabbVertices[0], aabbVertices[3], color };
-			line[5] = { aabbVertices[1], aabbVertices[2], color };
-			line[6] = { aabbVertices[2], aabbVertices[3], color };
-			line[7] = { aabbVertices[4], aabbVertices[7], color };
-			line[8] = { aabbVertices[5], aabbVertices[6], color };
-			line[9] = { aabbVertices[6], aabbVertices[7], color };
-			line[10] = { aabbVertices[3], aabbVertices[7], color };
-			line[11] = { aabbVertices[2], aabbVertices[6], color };
+			//AABB aabb = mesh->aabb.Transform(Scene::objects[i]->GetComponent<Transform>().GetWorldMatrix());
+			//XMFLOAT3 aabbVertices[8];
+			//for (int i = 0; i < 8; i++) {
+			//	aabbVertices[i] = aabb.GetVertex(i);
+			//}
+			//XMFLOAT4 color{ 1,1,1,1 };
+			//GizmoLine line[12];
+			//line[0] = { aabbVertices[0], aabbVertices[1], color };
+			//line[1] = { aabbVertices[0], aabbVertices[4], color };
+			//line[2] = { aabbVertices[1], aabbVertices[5], color };
+			//line[3] = { aabbVertices[4], aabbVertices[5], color };
+			//line[4] = { aabbVertices[0], aabbVertices[3], color };
+			//line[5] = { aabbVertices[1], aabbVertices[2], color };
+			//line[6] = { aabbVertices[2], aabbVertices[3], color };
+			//line[7] = { aabbVertices[4], aabbVertices[7], color };
+			//line[8] = { aabbVertices[5], aabbVertices[6], color };
+			//line[9] = { aabbVertices[6], aabbVertices[7], color };
+			//line[10] = { aabbVertices[3], aabbVertices[7], color };
+			//line[11] = { aabbVertices[2], aabbVertices[6], color };
 
-			for (int i = 0; i < 12; i++) {
-				gizmoLines.push_back(line[i]);
-			}
+			//for (int i = 0; i < 12; i++) {
+			//	gizmoLines.push_back(line[i]);
+			//}
 
 			CameraBufferType cbCamera = { mainCamera->GetComponent<Transform>().GetPosition(), 0.0f };
 			graphics->UpdateBuffer(Manager::constantBuffers[CONSTANT_BUFFER_CAMERA], &cbCamera, sizeof(cbCamera));
 			graphics->GetContext()->VSSetConstantBuffers(1, 1, &Manager::constantBuffers[CONSTANT_BUFFER_CAMERA]);
 
+			ColorBufferType cbColor = { Scene::objects[i]->GetComponent<Renderer3D>().color };
+			graphics->UpdateBuffer(Manager::constantBuffers[CONSTANT_BUFFER_COLOR], &cbColor, sizeof(cbColor));
+			graphics->GetContext()->VSSetConstantBuffers(2, 1, &Manager::constantBuffers[CONSTANT_BUFFER_COLOR]);
+
 			LightBufferType cbLight;
-			auto attrib = Scene::objects[7]->GetComponent<Light>().attrib;
+			auto light = Scene::GetLight();
+			auto& attrib = light->GetComponent<Light>().attrib;
 			cbLight = { attrib.ambientColor, attrib.diffuseColor, attrib.lightDirection, attrib.specularPower, attrib.specularColor };
 			graphics->UpdateBuffer(Manager::constantBuffers[CONSTANT_BUFFER_LIGHT], &cbLight, sizeof(cbLight));
 			graphics->GetContext()->PSSetConstantBuffers(0, 1, &Manager::constantBuffers[CONSTANT_BUFFER_LIGHT]);

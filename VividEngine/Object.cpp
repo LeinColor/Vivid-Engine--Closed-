@@ -6,6 +6,7 @@
 #include "Renderer3D.h"
 #include "Light.h"
 #include "Scene.h"
+#include "AABB.h"
 #include "Random.h"
 
 BD_CLASS(Component, Camera)
@@ -19,14 +20,15 @@ Object::Object()
 
 	AddComponent<Transform>();
 	Scene::objects.push_back(this);
+	//Scene::aabbs.push_back(new AABB());
 }
 
-void Object::SetDebugFlag(bool flag)
+void Object::SetActive(bool flag)
 {
-	entity = 0;
+	active = flag;
 }
 
-bool Object::GetDebugFlag()
+bool Object::GetActive()
 {
-	return (entity == 0) ? true : false;
+	return active;
 }

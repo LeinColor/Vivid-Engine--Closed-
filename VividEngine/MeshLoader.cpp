@@ -59,7 +59,7 @@ void Loader::LoadMeshFromObj(const char* fileName)
 		max = vivid::Max(max, vertices[i].position);
 
 		// vertex color
-		XMFLOAT4 color = XMFLOAT4(1.0, 0.0, 0.0, 1.0);
+		XMFLOAT4 color = XMFLOAT4(1.0, 1.0, 0.0, 1.0);
 		/*
 		if (index.texcoord_index >= 0) {
 			color = XMFLOAT4(

@@ -8,6 +8,7 @@
 class Object {
 private:
 	uint32_t entity = 0;
+	bool active = true;
 	std::vector<std::unique_ptr<Component> > components;
 
 public:
@@ -19,8 +20,8 @@ public:
 	template<class ComponentType>
 	ComponentType& GetComponent();
 
-	void SetDebugFlag(bool flag);
-	bool GetDebugFlag();
+	void SetActive(bool flag);
+	bool GetActive();
 };
 
 template<class ComponentType, typename... Args>

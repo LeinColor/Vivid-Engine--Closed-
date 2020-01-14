@@ -57,7 +57,7 @@ PixelInputType LightVertexMain(VertexInputType input)
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
 
-    output.color = input.color;
+    output.color = debugColor;
 
     output.normal = mul(input.normal, (float3x3)worldMatrix);
 

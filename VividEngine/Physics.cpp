@@ -2,6 +2,10 @@
 #include "Physics.h"
 #include "Ray.h"
 #include "AABB.h"
+#include "Object.h"
+#include "Mesh.h"
+#include "Transform.h"
+#include "Renderer3D.h"
 #include "Scene.h"
 
 bool Physics::Raycast(XMVECTOR origin,
@@ -18,14 +22,19 @@ bool Physics::Raycast(XMVECTOR origin,
 	dirInv.x = 1.0f / dirInv.x;
 	dirInv.y = 1.0f / dirInv.y;
 	dirInv.z = 1.0f / dirInv.z;
+	for (int i = 0; i < Scene::objects.size(); i++) {
+		auto& renderer3D = Scene::objects[i]->GetComponent<Renderer3D>();
+		if (&renderer3D == nullptr)
+			continue;
 
-	for (int i = 0; i < Scene::aabbs.size(); i++) {
-		XMFLOAT3& lb = Scene::aabbs[i]->minPos;
-		XMFLOAT3& rt = Scene::aabbs[i]->maxPos;
+		auto& mesh = renderer3D.mesh;
+		if (mesh == nullptr)
+			continue;
 
-		char buffer[128];
-		sprintf_s(buffer, "%f %f %f / %f %f %f", lb.x,lb.y,lb.z,rt.x,rt.y,rt.z);
-		SetWindowTextA(vivid::AppHandle::GetWindowHandle(), buffer);
+		AABB& aabb = renderer3D.mesh->aabb.Transform(Scene::objects[i]->GetComponent<Transform>().GetWorldMatrix());
+		XMFLOAT3& lb = aabb.minPos;
+		XMFLOAT3& rt = aabb.maxPos;
+
 		float t1 = (lb.x - org.x) * dirInv.x;
 		float t2 = (rt.x - org.x) * dirInv.x;
 		float t3 = (lb.y - org.y) * dirInv.y;
@@ -36,24 +45,12 @@ bool Physics::Raycast(XMVECTOR origin,
 		float tMin = std::max(std::max(std::min(t1, t2), std::min(t3, t4)), std::min(t5, t6));
 		float tMax = std::min(std::min(std::max(t1, t2), std::max(t3, t4)), std::max(t5, t6));
 
-		if (tMax < 0)
+		if (tMax < 0 || tMin > tMax || tMin > maxDistance)
 		{
-			distance = tMax;
-			//return false;
+			continue;
 		}
 
-		if (tMin > tMax)
-		{
-			distance = tMax;
-			//return false;
-		}
-
-		if (distance > maxDistance)
-		{
-			//return false;
-		}
-
-		distance = tMin;
+		hitInfo.index = i;
 		return true;
 	}
 	return false;

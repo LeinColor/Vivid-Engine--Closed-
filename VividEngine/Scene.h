@@ -18,4 +18,5 @@ public:
 	static XMVECTOR ScreenToWorldPoint(const XMFLOAT3& pos);
 public:
 	static Object* GetMainCamera();
+	static Object* GetLight();
 };
