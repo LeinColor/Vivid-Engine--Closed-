@@ -28,18 +28,14 @@ void Renderer::Render()
 {
 	// Set Main Camera
 	mainCamera = Scene::GetMainCamera();
+	auto& cameraComponent = mainCamera->GetComponent<Camera>();
+	cameraComponent.Update(graphics->GetScreenWidth(), graphics->GetScreenHeight());
 
 	// Prepare to render
 	graphics->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
-	mainCamera->GetComponent<Camera>().Update(graphics->GetScreenWidth(), graphics->GetScreenHeight());
-
-	XMMATRIX viewMatrix, projectionMatrix;
-	viewMatrix = mainCamera->GetComponent<Camera>().GetViewMatrix();
-	projectionMatrix = mainCamera->GetComponent<Camera>().GetProjectionMatrix();
-	viewMatrix = XMMatrixTranspose(viewMatrix);
-	projectionMatrix = XMMatrixTranspose(projectionMatrix);
-
+	XMMATRIX V = XMMatrixTranspose(cameraComponent.GetViewMatrix());
+	XMMATRIX P = XMMatrixTranspose(cameraComponent.GetProjectionMatrix());
 	for (int i = 0; i < Scene::objects.size(); i++) {
 		// if object is not activated, skip immediately
 		if (!Scene::objects[i]->GetActive())
@@ -56,8 +52,8 @@ void Renderer::Render()
 			continue;
 
 		// Get object's world matrix and transpose it to render.
-		auto& worldMatrix = Scene::objects[i]->GetComponent<Transform>().GetWorldMatrix();
-		worldMatrix = XMMatrixTranspose(worldMatrix);
+		auto& transform = Scene::objects[i]->GetComponent<Transform>();
+		XMMATRIX W = XMMatrixTranspose(transform.GetWorldMatrix());
 
 		auto& material = renderer3D.material;
 		auto& shader = material->shader;
@@ -65,7 +61,7 @@ void Renderer::Render()
 		unsigned int offset = 0;
 
 		// Lock constant buffer to write description.
-		MatrixBufferType cbMatrix = { worldMatrix, viewMatrix, projectionMatrix };
+		MatrixBufferType cbMatrix = { W, V, P };
 		graphics->UpdateBuffer(Manager::constantBuffers[CONSTANT_BUFFER_WVP], &cbMatrix, sizeof(MatrixBufferType));
 		graphics->GetContext()->VSSetConstantBuffers(0, 1, &Manager::constantBuffers[CONSTANT_BUFFER_WVP]);
 
@@ -97,7 +93,11 @@ void Renderer::Render()
 			//	gizmoLines.push_back(line[i]);
 			//}
 
-			CameraBufferType cbCamera = { mainCamera->GetComponent<Transform>().GetPosition(), 0.0f };
+			CameraBufferType cbCamera =
+			{
+				mainCamera->GetComponent<Transform>().GetPosition(),
+				0.0f
+			};
 			graphics->UpdateBuffer(Manager::constantBuffers[CONSTANT_BUFFER_CAMERA], &cbCamera, sizeof(cbCamera));
 			graphics->GetContext()->VSSetConstantBuffers(1, 1, &Manager::constantBuffers[CONSTANT_BUFFER_CAMERA]);
 
