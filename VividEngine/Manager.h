@@ -4,15 +4,22 @@ class Shader;
 class Mesh;
 class Texture;
 class Material;
+
+struct VertexShader;
+struct PixelShader;
+struct GeometryShader;
+struct HullShader;
+struct DomainShader;
+struct ComputeShader;
 class Manager {
 public:
 	// Shader containers
-	static std::vector<ID3D11VertexShader*> vertexShaders;
-	static std::vector<ID3D11PixelShader*> pixelShaders;
-	static std::vector<ID3D11GeometryShader*> geometryShaders;
-	static std::vector<ID3D11HullShader*> hullShaders;
-	static std::vector<ID3D11DomainShader*> domainShaders;
-	static std::vector<ID3D11ComputeShader*> computeShaders;
+	static std::vector<VertexShader*> vertexShaders;
+	static std::vector<PixelShader*> pixelShaders;
+	static std::vector<GeometryShader*> geometryShaders;
+	static std::vector<HullShader*> hullShaders;
+	static std::vector<DomainShader*> domainShaders;
+	static std::vector<ComputeShader*> computeShaders;
 
 	// Resource containers
 	static std::vector<Shader*> shaders;

@@ -10,7 +10,7 @@
 #include "stdafx.h"
 #include "main.h"
 #include "AppHandle.h"
-#include "VividEngine.h"
+#include "Editor.h"
 using namespace vivid;
 
 #define MAX_LOADSTRING 100
@@ -19,7 +19,7 @@ using namespace vivid;
 HINSTANCE hInst;                                // Instance
 WCHAR szTitle[MAX_LOADSTRING];                  // Title name
 WCHAR szWindowClass[MAX_LOADSTRING];            // Name of window class
-VividEngine vividEngine;
+Editor editor;
 
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -57,7 +57,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
         else {
-            vividEngine.Run();
+            editor.Run();
         }
     }
 
@@ -114,7 +114,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
-   vividEngine.SetWindow(hWnd, hInstance);
+   editor.SetWindow(hWnd, hInstance);
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 

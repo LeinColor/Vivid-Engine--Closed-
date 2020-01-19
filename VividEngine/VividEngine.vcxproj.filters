@@ -29,9 +29,6 @@
     <Filter Include="HLSL">
       <UniqueIdentifier>{fd06d863-286e-4a78-807e-51c10f4c0738}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Loader">
-      <UniqueIdentifier>{179d4f1c-1e7c-430b-8dfa-be8429cce013}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -46,13 +43,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="DirectX11Wrapper.h">
-      <Filter>Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="AppHandle.h">
-      <Filter>Entrance</Filter>
-    </ClInclude>
-    <ClInclude Include="VividEngine.h">
       <Filter>Entrance</Filter>
     </ClInclude>
     <ClInclude Include="GUI.h">
@@ -60,9 +51,6 @@
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI.h">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Component</Filter>
@@ -154,9 +142,6 @@
     <ClInclude Include="Physics.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Loader.h">
-      <Filter>Loader</Filter>
-    </ClInclude>
     <ClInclude Include="Manager.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -171,6 +156,12 @@
     </ClInclude>
     <ClInclude Include="Renderer2D.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsAPI.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>Entrance</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -190,20 +181,11 @@
     <ClCompile Include="main.cpp">
       <Filter>Entrance</Filter>
     </ClCompile>
-    <ClCompile Include="DirectX11Wrapper.cpp">
-      <Filter>Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="AppHandle.cpp">
-      <Filter>Entrance</Filter>
-    </ClCompile>
-    <ClCompile Include="VividEngine.cpp">
       <Filter>Entrance</Filter>
     </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI.cpp">
-      <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Component</Filter>
@@ -289,33 +271,6 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="MeshLoader.cpp">
-      <Filter>Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="VSLoader.cpp">
-      <Filter>Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="InputLayoutLoader.cpp">
-      <Filter>Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="PSLoader.cpp">
-      <Filter>Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="GSLoader.cpp">
-      <Filter>Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="CSLoader.cpp">
-      <Filter>Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="HSLoader.cpp">
-      <Filter>Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureLoader.cpp">
-      <Filter>Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="Loader.cpp">
-      <Filter>Loader</Filter>
-    </ClCompile>
     <ClCompile Include="Manager.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -328,24 +283,27 @@
     <ClCompile Include="TextField.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="ConstantBufferLoader.cpp">
-      <Filter>Loader</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer2D.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="GraphicsAPI.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>Entrance</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BlinnPhong.ps">
+    <None Include="Debug_vs.hlsl">
       <Filter>HLSL</Filter>
     </None>
-    <None Include="BlinnPhong.vs">
+    <None Include="Debug_ps.hlsl">
       <Filter>HLSL</Filter>
     </None>
-    <None Include="Debug.vs">
+    <None Include="BlinnPhong_vs.hlsl">
       <Filter>HLSL</Filter>
     </None>
-    <None Include="Debug.ps">
+    <None Include="BlinnPhong_ps.hlsl">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>

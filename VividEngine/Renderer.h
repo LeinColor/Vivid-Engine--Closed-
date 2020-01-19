@@ -7,38 +7,30 @@
 	@version 1.0 12/20/19
 */
 #pragma once
-#include "DirectX11Wrapper.h"
-#include "GUI.h"
-#include "Scene.h"
-#include "Object.h"
-#include "Camera.h"
-#include "Transform.h"
-#include "Mesh.h"
-#include "Material.h"
-#include "Light.h"
+#include "GraphicsAPI.h"
 
-namespace vivid {
-	class Renderer {
-	private:
-		static DirectX11Wrapper* graphics;
+class Renderer {
+private:
+	GraphicsAPI*			 m_Graphics;
 
-	public:
-		Object* mainCamera = nullptr;
-		static DirectX11Wrapper* GetGraphicsInterface();
-		static void SetGraphicsInterface(DirectX11Wrapper* value);
-		static inline int GetScreenWidth() { return graphics->GetScreenWidth(); }
-		static inline int GetScreenHeight() { return graphics->GetScreenHeight(); }
+	ID3D11Device*			 m_Device;
+	ID3D11DeviceContext*	 m_DeviceContext;
+	ID3D11RenderTargetView*  m_RenderTargetView;
+	ID3D11Texture2D*		 m_DepthStencilBuffer;
+	ID3D11DepthStencilState* m_DepthStencilState;
+	ID3D11DepthStencilView*  m_DepthStencilView;
+	ID3D11RasterizerState*   m_RasterState;
 
-		void Initialize();
-		void Render();
-
-		void LoadMesh(const char* fileName);
-		void LoadShader();
-		void LoadMaterial();
-		void DrawDebug();
-		void LoadLine();
-		void AddGizmoLine(const GizmoLine& line);
-		void AddGizmoCone();
-		void DrawLine(XMFLOAT3 startPoint, XMFLOAT3 endPoint, XMFLOAT4 color);
-	};
-}
+	bool	 m_VSyncEnabled;
+	uint32_t m_ScreenWidth;
+	uint32_t m_ScreenHeight;
+public:
+	Renderer();
+	void Initialize();
+	inline uint32_t GetScreenWidth() { return m_ScreenWidth; }
+	inline uint32_t GetScreenHeight() { return m_ScreenHeight; }
+	
+	void Render();
+	void BeginScene(const float r, const float g, const float b, const float a);
+	void EndScene();
+};
