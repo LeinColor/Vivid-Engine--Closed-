@@ -13,14 +13,6 @@ class Renderer {
 private:
 	GraphicsAPI*			 m_Graphics;
 
-	ID3D11Device*			 m_Device;
-	ID3D11DeviceContext*	 m_DeviceContext;
-	ID3D11RenderTargetView*  m_RenderTargetView;
-	ID3D11Texture2D*		 m_DepthStencilBuffer;
-	ID3D11DepthStencilState* m_DepthStencilState;
-	ID3D11DepthStencilView*  m_DepthStencilView;
-	ID3D11RasterizerState*   m_RasterState;
-
 	bool	 m_VSyncEnabled;
 	uint32_t m_ScreenWidth;
 	uint32_t m_ScreenHeight;
