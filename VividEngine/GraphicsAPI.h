@@ -19,35 +19,35 @@
 // 11.0 우선 작업. 11.1은 추후
 class GraphicsAPI {
 private:
-	ID3D11Device*			 m_Device = nullptr;
-	ID3D11DeviceContext*	 m_DeviceContext = nullptr;
-	D3D_DRIVER_TYPE			 m_DriverType;
-	D3D_FEATURE_LEVEL		 m_FeatureLevel;
-	IDXGISwapChain*			 m_SwapChain = nullptr;
-	ID3D11Texture2D*		 m_BackBuffer = nullptr;
-	ID3D11RenderTargetView*  m_RenderTargetView = nullptr;
+	ID3D11Device*			 device = nullptr;
+	ID3D11DeviceContext*	 deviceContext = nullptr;
+	D3D_DRIVER_TYPE			 driverType;
+	D3D_FEATURE_LEVEL		 featureLevel;
+	IDXGISwapChain*			 swapChain = nullptr;
+	ID3D11Texture2D*		 backBuffer = nullptr;
+	ID3D11RenderTargetView*  renderTargetView = nullptr;
 
-	ID3D11Texture2D*		 m_DepthStencilBuffer = nullptr;
-	ID3D11DepthStencilState* m_DepthStencilState = nullptr;
-	ID3D11DepthStencilView*	 m_DepthStencilView = nullptr;
-	ID3D11RasterizerState*	 m_RasterState = nullptr;
-	ID3D11DepthStencilState* m_DepthDisabledStencilState = nullptr;
+	ID3D11Texture2D*		 depthStencilBuffer = nullptr;
+	ID3D11DepthStencilState* depthStencilState = nullptr;
+	ID3D11DepthStencilView*	 depthStencilView = nullptr;
+	ID3D11RasterizerState*	 rasterState = nullptr;
+	ID3D11DepthStencilState* depthDisabledStencilState = nullptr;
 
-	int m_ScreenWidth;
-	int m_ScreenHeight;
-	bool m_VSyncEnabled = false;
-	bool m_FullScreen = false;
+	int screenWidth;
+	int screenHeight;
+	bool VSyncEnabled = false;
+	bool fullScreen = false;
 
 public:
 	ALIGNED_ALLOC_16
 	GraphicsAPI(HWND hWnd, bool fullScreenFlag);
 	~GraphicsAPI() {}
 
-	inline int GetScreenWidth() const { return m_ScreenWidth; }
-	inline int GetScreenHeight() const { return m_ScreenHeight; }
+	inline int GetScreenWidth() const { return screenWidth; }
+	inline int GetScreenHeight() const { return screenHeight; }
 
-	inline ID3D11Device* GetDevice() const { return m_Device; }
-	inline ID3D11DeviceContext* GetContext() const { return m_DeviceContext; }
+	inline ID3D11Device* GetDevice() const { return device; }
+	inline ID3D11DeviceContext* GetContext() const { return deviceContext; }
 
 	void CreateVertexShader(const wchar_t* fileName, const char* entryPoint);
 	void CreatePixelShader(const wchar_t* fileName, const char* entryPoint);

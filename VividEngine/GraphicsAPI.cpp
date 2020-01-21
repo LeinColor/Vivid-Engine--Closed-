@@ -6,6 +6,7 @@
 	@author Lein
 	@version 1.0 12/20/19
 */
+#define _CRT_SECURE_NO_WARNINGS
 #include "GraphicsAPI.h"
 #include "Debug.h"
 #include "Shader.h"
@@ -15,13 +16,13 @@ using namespace vivid;
 
 GraphicsAPI::GraphicsAPI(HWND hWnd, bool fullScreenFlag)
 {
-	m_FullScreen = fullScreenFlag;
+	fullScreen = fullScreenFlag;
 
 	// Get screen size of the window to store in width, height variable.
 	RECT rect = RECT();
 	GetClientRect(hWnd, &rect);
-	m_ScreenWidth = rect.right - rect.left;
-	m_ScreenHeight = rect.bottom - rect.top;
+	screenWidth = rect.right - rect.left;
+	screenHeight = rect.bottom - rect.top;
 
 	// declare HRESULT to store function return value.
 	HRESULT hr = E_FAIL;
@@ -47,8 +48,8 @@ GraphicsAPI::GraphicsAPI(HWND hWnd, bool fullScreenFlag)
 	// Describe about buffer
 	DXGI_MODE_DESC bufferDesc;
 	ZeroMemory(&bufferDesc, sizeof(DXGI_MODE_DESC));
-	bufferDesc.Width = m_ScreenWidth;
-	bufferDesc.Height = m_ScreenHeight;
+	bufferDesc.Width = screenWidth;
+	bufferDesc.Height = screenHeight;
 	bufferDesc.RefreshRate.Numerator = 60;
 	bufferDesc.RefreshRate.Denominator = 1;
 	bufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -64,34 +65,34 @@ GraphicsAPI::GraphicsAPI(HWND hWnd, bool fullScreenFlag)
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	swapChainDesc.BufferCount = 1;
 	swapChainDesc.OutputWindow = hWnd;
-	swapChainDesc.Windowed = !m_FullScreen;
+	swapChainDesc.Windowed = !fullScreen;
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
 	// Create swap chain
 	for (UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++)
 	{
-		m_DriverType = driverTypes[driverTypeIndex];
-		hr = D3D11CreateDeviceAndSwapChain(NULL, m_DriverType, NULL, NULL, featureLevels, numFeatureLevels,
-			D3D11_SDK_VERSION, &swapChainDesc, &m_SwapChain, &m_Device, NULL, &m_DeviceContext);
+		driverType = driverTypes[driverTypeIndex];
+		hr = D3D11CreateDeviceAndSwapChain(NULL, driverType, NULL, NULL, featureLevels, numFeatureLevels,
+			D3D11_SDK_VERSION, &swapChainDesc, &swapChain, &device, NULL, &deviceContext);
 
 		if (SUCCEEDED(hr))
 			break;
 	}
 
 	// Create back buffer
-	hr = m_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&m_BackBuffer);
+	hr = swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&backBuffer);
 
 	// Create render target
-	hr = m_Device->CreateRenderTargetView(m_BackBuffer, NULL, &m_RenderTargetView);
+	hr = device->CreateRenderTargetView(backBuffer, NULL, &renderTargetView);
 
 	// Bind the render target view to the output merger stage of the pipeline.
-	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, NULL);
+	deviceContext->OMSetRenderTargets(1, &renderTargetView, NULL);
 
 	// depthBufferDesc
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
 	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
-	depthBufferDesc.Width = m_ScreenWidth;
-	depthBufferDesc.Height = m_ScreenHeight;
+	depthBufferDesc.Width = screenWidth;
+	depthBufferDesc.Height = screenHeight;
 	depthBufferDesc.MipLevels = 1;
 	depthBufferDesc.ArraySize = 1;
 	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -101,7 +102,7 @@ GraphicsAPI::GraphicsAPI(HWND hWnd, bool fullScreenFlag)
 	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 	depthBufferDesc.CPUAccessFlags = 0;
 	depthBufferDesc.MiscFlags = 0;
-	hr = m_Device->CreateTexture2D(&depthBufferDesc, NULL, &m_DepthStencilBuffer);
+	hr = device->CreateTexture2D(&depthBufferDesc, NULL, &depthStencilBuffer);
 
 	// depthStencilDesc
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
@@ -120,8 +121,8 @@ GraphicsAPI::GraphicsAPI(HWND hWnd, bool fullScreenFlag)
 	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
 	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-	hr = m_Device->CreateDepthStencilState(&depthStencilDesc, &m_DepthStencilState);
-	m_DeviceContext->OMSetDepthStencilState(m_DepthStencilState, 1);
+	hr = device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState);
+	deviceContext->OMSetDepthStencilState(depthStencilState, 1);
 
 	// depthStencilView Desc
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
@@ -129,8 +130,8 @@ GraphicsAPI::GraphicsAPI(HWND hWnd, bool fullScreenFlag)
 	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
-	hr = m_Device->CreateDepthStencilView(m_DepthStencilBuffer, &depthStencilViewDesc, &m_DepthStencilView);
-	m_DeviceContext->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
+	hr = device->CreateDepthStencilView(depthStencilBuffer, &depthStencilViewDesc, &depthStencilView);
+	deviceContext->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
 
 	// rasterDesc
 	D3D11_RASTERIZER_DESC rasterDesc;
@@ -144,18 +145,18 @@ GraphicsAPI::GraphicsAPI(HWND hWnd, bool fullScreenFlag)
 	rasterDesc.MultisampleEnable = false;
 	rasterDesc.ScissorEnable = false;
 	rasterDesc.SlopeScaledDepthBias = 0.0f;
-	m_Device->CreateRasterizerState(&rasterDesc, &m_RasterState);
-	m_DeviceContext->RSSetState(m_RasterState);
+	device->CreateRasterizerState(&rasterDesc, &rasterState);
+	deviceContext->RSSetState(rasterState);
 
 	// viewport
 	D3D11_VIEWPORT viewport;
-	viewport.Width = (float)m_ScreenWidth;
-	viewport.Height = (float)m_ScreenHeight;
+	viewport.Width = (float)screenWidth;
+	viewport.Height = (float)screenHeight;
 	viewport.MinDepth = 0.0f;
 	viewport.MaxDepth = 1.0f;
 	viewport.TopLeftX = 0.0f;
 	viewport.TopLeftY = 0.0f;
-	m_DeviceContext->RSSetViewports(1, &viewport);
+	deviceContext->RSSetViewports(1, &viewport);
 
 	// depthStencil Z-buffer off
 	D3D11_DEPTH_STENCIL_DESC depthDisabledStencilDesc;
@@ -174,7 +175,7 @@ GraphicsAPI::GraphicsAPI(HWND hWnd, bool fullScreenFlag)
 	depthDisabledStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
 	depthDisabledStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 	depthDisabledStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-	hr = m_Device->CreateDepthStencilState(&depthDisabledStencilDesc, &m_DepthDisabledStencilState);
+	hr = device->CreateDepthStencilState(&depthDisabledStencilDesc, &depthDisabledStencilState);
 
 	MessageBox(hWnd, L"Device Created", L"Notice", MB_OK);
 }
@@ -183,20 +184,20 @@ void GraphicsAPI::UpdateBuffer(const ID3D11Buffer* buffer, const void* data, int
 {
 	// Lock constant buffer to write description.
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	HRESULT hr = m_DeviceContext->Map((ID3D11Resource*)buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	HRESULT hr = deviceContext->Map((ID3D11Resource*)buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 	if (!SUCCEEDED(hr)) {
 		Debug::Log("problem occured while updating buffer!");
 	}
 	memcpy(mappedResource.pData, data, dataLength);
-	m_DeviceContext->Unmap((ID3D11Resource*)buffer, 0);
+	deviceContext->Unmap((ID3D11Resource*)buffer, 0);
 }
 
 void GraphicsAPI::BeginScene(float red, float green, float blue, float alpha)
 {
 	float color[4] = { red, green, blue, alpha };
 
-	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView, color);
-	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	deviceContext->ClearRenderTargetView(renderTargetView, color);
+	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
 void GraphicsAPI::CompileShaderFromFile(ShaderType type, const wchar_t* fileName, const char* entryPoint, ID3D10Blob** ppBlob)
@@ -232,38 +233,38 @@ void GraphicsAPI::CompileShaderFromFile(ShaderType type, const wchar_t* fileName
 	}
 }
 
-void GraphicsAPI::CreateVertexShader(const wchar_t* fileName, const char* entryPoint)
-{
-	VertexShader* vs = new VertexShader();
-	ID3D10Blob* blob = nullptr;
-
-	CompileShaderFromFile(ShaderType::VS, fileName, entryPoint, &blob);
-	m_Device->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &vs->Get());
-	Manager::vertexShaders.push_back(vs);
-
-	blob->Release();
-}
-
-void GraphicsAPI::CreatePixelShader(const wchar_t* fileName, const char* entryPoint)
-{
-	PixelShader* ps = new PixelShader();
-	ID3D10Blob* blob = nullptr;
-
-	CompileShaderFromFile(ShaderType::PS, fileName, entryPoint, &blob);
-	m_Device->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &ps->Get());
-	Manager::pixelShaders.push_back(ps);
-
-	blob->Release();
-}
+//void GraphicsAPI::CreateVertexShader(const wchar_t* fileName, const char* entryPoint)
+//{
+//	VertexShader* vs = new VertexShader();
+//	ID3D10Blob* blob = nullptr;
+//
+//	CompileShaderFromFile(ShaderType::VS, fileName, entryPoint, &blob);
+//	Device->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &vs->Get());
+//	Manager::vertexShaders.push_back(vs);
+//
+//	blob->Release();
+//}
+//
+//void GraphicsAPI::CreatePixelShader(const wchar_t* fileName, const char* entryPoint)
+//{
+//	PixelShader* ps = new PixelShader();
+//	ID3D10Blob* blob = nullptr;
+//
+//	CompileShaderFromFile(ShaderType::PS, fileName, entryPoint, &blob);
+//	Device->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &ps->Get());
+//	Manager::pixelShaders.push_back(ps);
+//
+//	blob->Release();
+//}
 
 void GraphicsAPI::EndScene()
 {
-	if (m_VSyncEnabled)
+	if (VSyncEnabled)
 	{
-		m_SwapChain->Present(1, 0);
+		swapChain->Present(1, 0);
 	}
 	else
 	{
-		m_SwapChain->Present(0, 0);
+		swapChain->Present(0, 0);
 	}
 }

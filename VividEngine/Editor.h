@@ -9,6 +9,7 @@
 #pragma once
 #include "AppHandle.h"
 #include "Input.h"
+#include "Time.h"
 #include "Renderer.h"
 
 using namespace vivid;
@@ -25,9 +26,10 @@ using namespace vivid;
 		void FixedUpdate();
 
 	private:
-		Input m_Input;
-		Renderer m_Renderer;
-		bool m_Initialized = false;
+		Input	 input;
+		Time	 time;
+		Renderer renderer;
+		bool	 initialized = false;
 		
-		float m_DeltaTimeAccumulator = 0;
+		float	 deltaTimeAccumulator = 0;
 	};

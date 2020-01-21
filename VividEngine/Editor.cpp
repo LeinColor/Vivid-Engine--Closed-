@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "GraphicsAPI.h"
 #include "Renderer.h"
 #include "Editor.h"
 #include "Time.h"
@@ -14,43 +15,42 @@ void Editor::Start()
 
 void Editor::Initialize()
 {
-	m_Renderer.Initialize();
-
 	// initialize renderer to load mesh, shader
-	Time::Initialize();
-	m_Input.Initialize();
-	m_Initialized = true;
+	time.Initialize();
+	input.Initialize();
+	renderer.Initialize();
+	initialized = true;
 }
 
 void Editor::Run()
 {
-	if (!m_Initialized) {
+	if (!initialized) {
 		Initialize();
 		Start();
 	}
 
-	Time::deltaTime = float(std::max(0.0, Time::Elapsed() / 1000.0));
-	Time::Record();
-
-	m_DeltaTimeAccumulator += Time::deltaTime;
-	if (m_DeltaTimeAccumulator > 10)
+	time.deltaTime = float(std::max(0.0, time.Elapsed() / 1000.0));
+	time.Record();
+	
+	deltaTimeAccumulator += time.deltaTime;
+	if (deltaTimeAccumulator > 10)
 	{
-		m_DeltaTimeAccumulator = 0;
+		deltaTimeAccumulator = 0;
 	}
 
 	const float targetFrameRateInv = 1.0f / 60.0f;
 
 	// call function for frame per second
-	if (m_DeltaTimeAccumulator >= targetFrameRateInv)
+	if (deltaTimeAccumulator >= targetFrameRateInv)
 	{
-		m_Renderer.Render();
+		renderer.Render();
 	}
 	// call function for frame per second, but if lag occurred it will be calculated for skipped time line.
-	while (m_DeltaTimeAccumulator >= targetFrameRateInv)
+	while (deltaTimeAccumulator >= targetFrameRateInv)
 	{
 		FixedUpdate();	// calculate physics here
 		//Update();
-		m_DeltaTimeAccumulator -= targetFrameRateInv;
+		deltaTimeAccumulator -= targetFrameRateInv;
 	}
 	Update();
 }

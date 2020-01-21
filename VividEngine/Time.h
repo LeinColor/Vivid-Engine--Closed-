@@ -4,7 +4,7 @@ class Time {
 public:
 	Time() {}
 	Time(const Time&) {}
-	~Time();
+	~Time() {}
 
 	static void Initialize();
 	static double TotalTime();

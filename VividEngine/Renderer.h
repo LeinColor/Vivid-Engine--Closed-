@@ -11,18 +11,21 @@
 
 class Renderer {
 private:
-	GraphicsAPI*			 m_Graphics;
+	GraphicsAPI* graphics;
 
-	bool	 m_VSyncEnabled;
-	uint32_t m_ScreenWidth;
-	uint32_t m_ScreenHeight;
+	bool	 VSyncEnabled;
+	uint32_t screenWidth;
+	uint32_t screenHeight;
 public:
-	Renderer();
+	Renderer() {}
+	~Renderer() {}
 	void Initialize();
-	inline uint32_t GetScreenWidth() { return m_ScreenWidth; }
-	inline uint32_t GetScreenHeight() { return m_ScreenHeight; }
-	
+	void Shutdown();
 	void Render();
+	inline GraphicsAPI* GetGraphicsAPI() { return graphics; }
+	inline uint32_t GetScreenWidth() { return screenWidth; }
+	inline uint32_t GetScreenHeight() { return screenHeight; }
+	
 	void BeginScene(const float r, const float g, const float b, const float a);
 	void EndScene();
 };

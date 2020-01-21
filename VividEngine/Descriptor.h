@@ -48,34 +48,6 @@ enum MATERIAL_ENUM {
 	MATERIAL_BLINN_PHONG,
 };
 
-enum VSType {
-	VS_DEBUG,
-	VS_BLINN_PHONG,
-};
-
-enum PSType {
-	PS_DEBUG,
-	PS_BLINN_PHONG,
-};
-
-enum GSType {};
-enum HSType {};
-enum DSType {};
-enum CSType {};
-
-enum ILType {
-	IL_POS,
-	IL_POS_COLOR_NORMAL,
-	IL_POS_TEX_NORMAL,
-};
-
-enum CBType {
-	CBTYPE_WVP,
-	CBTYPE_CAMERA,
-	CBTYPE_LIGHT,
-	CBTYPE_COLOR,
-	CBTYPE_DEFAULT_COUNT
-};
 
 struct GizmoLine {
 	XMFLOAT3 startPoint = XMFLOAT3(0, 0, 0);
