@@ -2,6 +2,7 @@
 #include "GraphicsAPI.h"
 #include "Renderer.h"
 #include "Editor.h"
+#include "Shader.h"
 #include "Time.h"
 #include "Input.h"
 
@@ -10,7 +11,8 @@ using namespace vivid;
 
 void Editor::Start()
 {
-
+	Shader* sha1 = new Shader("right");
+	Shader* sha2 = new Shader("bite");
 }
 
 void Editor::Initialize()

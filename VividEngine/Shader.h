@@ -7,37 +7,46 @@
 class Shader {
 private:
 	struct Blobs {
-		ID3D10Blob* vsBlob;
-		ID3D10Blob* psBlob;
-		ID3D10Blob* gsBlob;
-		ID3D10Blob* hsBlob;
-		ID3D10Blob* dsBlob;
-		ID3D10Blob* csBlob;
+		ID3D10Blob* vsBlob = nullptr;
+		ID3D10Blob* psBlob = nullptr;
+		ID3D10Blob* gsBlob = nullptr;
+		ID3D10Blob* hsBlob = nullptr;
+		ID3D10Blob* dsBlob = nullptr;
+		ID3D10Blob* csBlob = nullptr;
 	};
 
 	struct SubShaders {
-		ID3D11VertexShader*	  vs;
-		ID3D11PixelShader*	  ps;
-		ID3D11GeometryShader* gs;
-		ID3D11HullShader*	  hs;
-		ID3D11DomainShader*	  ds;
-		ID3D11ComputeShader*  cs;
+		ID3D11VertexShader*	  vs = nullptr;
+		ID3D11PixelShader*	  ps = nullptr;
+		ID3D11GeometryShader* gs = nullptr;
+		ID3D11HullShader*	  hs = nullptr;
+		ID3D11DomainShader*	  ds = nullptr;
+		ID3D11ComputeShader*  cs = nullptr;
 	};
 
-	enum SHADER_FLAG {
+	enum SHADER_TYPE {
 		VERTEX_SHADER	= 1 << 0,
 		PIXEL_SHADER	= 1 << 1,
 		GEOMETRY_SHADER = 1 << 2,
 		HULL_SHADER		= 1 << 3,
 		DOMAIN_SHADER	= 1 << 4,
 		COMPUTE_SHADER	= 1 << 5,
-		SHADER_STAGE_COUNT = 6,
+		SHADER_STAGE_COUNT   = 6,
 	};
 
-	ID3D11InputLayout* inputLayout;
+	Blobs	   blobs;
+	SubShaders subShaders;
+
+	ID3D11InputLayout*		   inputLayout;
+	int32_t					   inputLayoutType;
 	std::vector<ID3D11Buffer*> constantBuffers;
-	BYTE GetSubShaderFlag(const char* fileName);
+
+	BYTE GetSubShaderFlag(const wchar_t* fileName);
+	void CompileFromFile(const wchar_t* fileName, SHADER_TYPE subShaderType);
+	void CreateSubShader(SHADER_TYPE subShaderType);
+	void CreateInputLayout(INPUT_LAYOUT type);
+
 public:
-	Shader(const char* fileName);
+	Shader(const wchar_t* fileName, INPUT_LAYOUT inputLayoutTypeValue);
 
 };

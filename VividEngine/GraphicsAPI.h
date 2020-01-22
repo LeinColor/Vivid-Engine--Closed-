@@ -49,10 +49,6 @@ public:
 	inline ID3D11Device* GetDevice() const { return device; }
 	inline ID3D11DeviceContext* GetContext() const { return deviceContext; }
 
-	void CreateVertexShader(const wchar_t* fileName, const char* entryPoint);
-	void CreatePixelShader(const wchar_t* fileName, const char* entryPoint);
-
-	void CompileShaderFromFile(ShaderType, const wchar_t* fileName, const char* entryPoint, ID3D10Blob** ppBlob);
 	void UpdateBuffer(const ID3D11Buffer* buffer, const void* data, int dataLength);
 
 	void BeginScene(float, float, float, float);

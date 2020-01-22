@@ -16,8 +16,8 @@ public:
 	Transform();
 
 	void SetPosition(const float x, const float y, const float z);
-	void SetRotation(float, float, float, float);
-	void SetScale(float, float, float);
+	void SetRotation(const float x, const float y, const float z, const float w);
+	void SetScale(const float x, const float y, const float z);
 
 	void Translate(const float x, const float y, const float z);
 	void Rotate(const float x, const float y, const float z);		// Rotate by eulor angle

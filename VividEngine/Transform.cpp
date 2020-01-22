@@ -20,7 +20,7 @@ void Transform::SetPosition(const float x, const float y, const float z)
 	UpdateWorldMatrix();
 }
 
-void Transform::SetRotation(float x, float y, float z, float w)
+void Transform::SetRotation(const float x, const float y, const float z, const float w)
 {
 	rotation.x = x;
 	rotation.y = y;
@@ -29,7 +29,7 @@ void Transform::SetRotation(float x, float y, float z, float w)
 	UpdateWorldMatrix();
 }
 
-void Transform::SetScale(float x, float y, float z)
+void Transform::SetScale(const float x, const float y, const float z)
 {
 	scale.x = x;
 	scale.y = y;

@@ -19,6 +19,13 @@ enum OBJECT_STATE {
 	DEBUG,
 };
 
+enum INPUT_LAYOUT {
+	UNDEFINED,
+	DEFAULT,
+	POS_COLOR,
+	POS_TEX_NORMAL,
+};
+
 enum MESH_ENUM {
 	MESH_CUBE,
 	MESH_SPHERE,
@@ -27,15 +34,6 @@ enum MESH_ENUM {
 	MESH_CYLINDER,
 	MESH_LINE,
 	MESH_DEFAULT_COUNT
-};
-
-enum ShaderType {
-	VS,
-	PS,
-	GS,
-	HS,
-	DS,
-	CS,
 };
 
 enum SHADER_ID {

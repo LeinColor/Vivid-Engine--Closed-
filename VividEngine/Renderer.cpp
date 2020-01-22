@@ -13,7 +13,7 @@
 using namespace vivid;
 using namespace std;
 
-
+GraphicsAPI* Renderer::graphics;
 void Renderer::Initialize()
 {
 	graphics = new GraphicsAPI(AppHandle::GetWindowHandle(), false);

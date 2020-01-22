@@ -200,63 +200,6 @@ void GraphicsAPI::BeginScene(float red, float green, float blue, float alpha)
 	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
-void GraphicsAPI::CompileShaderFromFile(ShaderType type, const wchar_t* fileName, const char* entryPoint, ID3D10Blob** ppBlob)
-{
-	char target[7] = {};
-
-	switch (type) {
-	case VS:
-		strcpy(target, "vs_5_0");
-		break;
-	case PS:
-		strcpy(target, "ps_5_0");
-		break;
-	case GS:
-		strcpy(target, "gs_5_0");
-		break;
-	case HS:
-		strcpy(target, "hs_5_0");
-		break;
-	case DS:
-		strcpy(target, "ds_5_0");
-		break;
-	case CS:
-		strcpy(target, "cs_5_0");
-		break;
-	}
-
-	HRESULT hr = D3DCompileFromFile(fileName, nullptr, nullptr, entryPoint, target, D3D10_SHADER_ENABLE_STRICTNESS, 0, ppBlob, nullptr);
-	if (FAILED(hr))
-	{
-		Debug::Log("Shader compile failed!: %s", fileName);
-		return;
-	}
-}
-
-//void GraphicsAPI::CreateVertexShader(const wchar_t* fileName, const char* entryPoint)
-//{
-//	VertexShader* vs = new VertexShader();
-//	ID3D10Blob* blob = nullptr;
-//
-//	CompileShaderFromFile(ShaderType::VS, fileName, entryPoint, &blob);
-//	Device->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &vs->Get());
-//	Manager::vertexShaders.push_back(vs);
-//
-//	blob->Release();
-//}
-//
-//void GraphicsAPI::CreatePixelShader(const wchar_t* fileName, const char* entryPoint)
-//{
-//	PixelShader* ps = new PixelShader();
-//	ID3D10Blob* blob = nullptr;
-//
-//	CompileShaderFromFile(ShaderType::PS, fileName, entryPoint, &blob);
-//	Device->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &ps->Get());
-//	Manager::pixelShaders.push_back(ps);
-//
-//	blob->Release();
-//}
-
 void GraphicsAPI::EndScene()
 {
 	if (VSyncEnabled)

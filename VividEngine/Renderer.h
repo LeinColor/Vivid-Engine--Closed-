@@ -11,7 +11,7 @@
 
 class Renderer {
 private:
-	GraphicsAPI* graphics;
+	static GraphicsAPI* graphics;
 
 	bool	 VSyncEnabled;
 	uint32_t screenWidth;
@@ -22,7 +22,7 @@ public:
 	void Initialize();
 	void Shutdown();
 	void Render();
-	inline GraphicsAPI* GetGraphicsAPI() { return graphics; }
+	inline static GraphicsAPI* GetGraphicsAPI() { return graphics; }
 	inline uint32_t GetScreenWidth() { return screenWidth; }
 	inline uint32_t GetScreenHeight() { return screenHeight; }
 	
