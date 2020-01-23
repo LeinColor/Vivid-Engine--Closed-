@@ -1,19 +1,14 @@
 #pragma once
 
 class Object;
-class Component;
-
-class Transform : public Component {
-public:
-	static const uint32_t type = TRANSFORM;
-	virtual bool IsSameType(const uint32_t value) const override;
+class TransformComponent {
 private:
 	XMFLOAT3	position;
 	XMFLOAT4	rotation;		// this is quaternion so it has 4 values (x,y,z,w)
 	XMFLOAT3	scale;
 	XMFLOAT4X4	world;
 public:
-	Transform();
+	TransformComponent();
 
 	void SetPosition(const float x, const float y, const float z);
 	void SetRotation(const float x, const float y, const float z, const float w);

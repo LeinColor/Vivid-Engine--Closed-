@@ -1,4 +1,3 @@
 #include "stdafx.h"
-#include "Component.h"
-#include "Light.h"
+#include "LightComponent.h"
 #include "Descriptor.h"

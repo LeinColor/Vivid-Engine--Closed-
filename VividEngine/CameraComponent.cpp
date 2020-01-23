@@ -1,16 +1,11 @@
 #include "stdafx.h"
-#include "Object.h"
-#include "Component.h"
-#include "Transform.h"
-#include "Camera.h"
-#include "Object.h"
+#include "TransformComponent.h"
+#include "CameraComponent.h"
 #include "AppHandle.h"
 
 // TODO: Refactoring
-void Camera::Update(int screenWidth, int screenHeight)
+void CameraComponent::Update(int screenWidth, int screenHeight)
 {
-	auto transform = owner->GetComponent<Transform>();
-
 	XMMATRIX rot = XMMatrixRotationQuaternion(XMLoadFloat4(&transform.GetRotation()));
 	XMVECTOR vEye = XMLoadFloat3(&transform.GetPosition());
 	XMVECTOR vFocus = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
@@ -29,45 +24,39 @@ void Camera::Update(int screenWidth, int screenHeight)
 	XMStoreFloat4x4(&view, viewMatrix);
 	XMStoreFloat4x4(&projection, projectionMatrix);
 	XMStoreFloat4x4(&ortho, orthoMatrix);
-
-
-	//char buffer[128];
-	////sprintf_s(buffer, "%f %f %f", test.x, test.y, test.z);
-	//sprintf_s(buffer, "%f %f", projection._11, projection._22);
-	//SetWindowTextA(vivid::AppHandle::GetWindowHandle(), buffer);
 }
 
-XMVECTOR Camera::GetEye() const
+XMVECTOR CameraComponent::GetEye() const
 {
 	return XMLoadFloat3(&eye);
 }
 
-XMVECTOR Camera::GetFocus() const
+XMVECTOR CameraComponent::GetFocus() const
 {
 	return XMLoadFloat3(&focus);
 }
 
-XMVECTOR Camera::GetUp() const
+XMVECTOR CameraComponent::GetUp() const
 {
 	return XMLoadFloat3(&up);
 }
 
-XMMATRIX Camera::GetViewMatrix() const
+XMMATRIX CameraComponent::GetViewMatrix() const
 {
 	return XMLoadFloat4x4(&view);
 }
 
-XMMATRIX Camera::GetProjectionMatrix() const
+XMMATRIX CameraComponent::GetProjectionMatrix() const
 {
 	return XMLoadFloat4x4(&projection);
 }
 
-XMMATRIX Camera::GetViewProjectionMatrix() const
+XMMATRIX CameraComponent::GetViewProjectionMatrix() const
 {
 	return XMMatrixMultiply(XMLoadFloat4x4(&view), XMLoadFloat4x4(&projection));
 }
 
-XMMATRIX Camera::GetOrthoMatrix() const
+XMMATRIX CameraComponent::GetOrthoMatrix() const
 {
 	return XMLoadFloat4x4(&ortho);
 }

@@ -52,15 +52,6 @@
     <ClInclude Include="Button.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="DDSTextureLoader.h">
       <Filter>Util</Filter>
     </ClInclude>
@@ -91,9 +82,6 @@
     <ClInclude Include="Importer.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer3D.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -102,9 +90,6 @@
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Core</Filter>
@@ -142,9 +127,6 @@
     <ClInclude Include="Physics.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Manager.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="Panel.h">
       <Filter>GUI</Filter>
     </ClInclude>
@@ -154,14 +136,20 @@
     <ClInclude Include="TextField.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer2D.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicsAPI.h">
       <Filter>Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Editor.h">
       <Filter>Entrance</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="LightComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -187,15 +175,6 @@
     <ClCompile Include="Button.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="DDSTextureLoader.cpp">
       <Filter>Util</Filter>
     </ClCompile>
@@ -220,9 +199,6 @@
     <ClCompile Include="Importer.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer3D.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -231,9 +207,6 @@
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Core</Filter>
@@ -271,9 +244,6 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Manager.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="Panel.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
@@ -283,14 +253,20 @@
     <ClCompile Include="TextField.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer2D.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="GraphicsAPI.cpp">
       <Filter>Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Editor.cpp">
       <Filter>Entrance</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="LightComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformComponent.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

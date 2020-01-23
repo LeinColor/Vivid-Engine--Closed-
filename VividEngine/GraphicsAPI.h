@@ -50,6 +50,7 @@ public:
 	inline ID3D11DeviceContext* GetContext() const { return deviceContext; }
 
 	void UpdateBuffer(const ID3D11Buffer* buffer, const void* data, int dataLength);
+	void BindVertexBufer();
 
 	void BeginScene(float, float, float, float);
 	void EndScene();

@@ -1,10 +1,9 @@
 #include "stdafx.h"
-#include "Component.h"
-#include "Transform.h"
+#include "TransformComponent.h"
 #include "AABB.h"
 #include "Time.h"
 
-Transform::Transform()
+TransformComponent::TransformComponent()
 {
 	position = XMFLOAT3(0, 0, 0);
 	rotation = XMFLOAT4(0, 0, 0, 1);
@@ -12,7 +11,7 @@ Transform::Transform()
 	world = IDENTITYMATRIX;
 }
 
-void Transform::SetPosition(const float x, const float y, const float z)
+void TransformComponent::SetPosition(const float x, const float y, const float z)
 {
 	position.x = x;
 	position.y = y;
@@ -20,7 +19,7 @@ void Transform::SetPosition(const float x, const float y, const float z)
 	UpdateWorldMatrix();
 }
 
-void Transform::SetRotation(const float x, const float y, const float z, const float w)
+void TransformComponent::SetRotation(const float x, const float y, const float z, const float w)
 {
 	rotation.x = x;
 	rotation.y = y;
@@ -29,7 +28,7 @@ void Transform::SetRotation(const float x, const float y, const float z, const f
 	UpdateWorldMatrix();
 }
 
-void Transform::SetScale(const float x, const float y, const float z)
+void TransformComponent::SetScale(const float x, const float y, const float z)
 {
 	scale.x = x;
 	scale.y = y;
@@ -37,7 +36,7 @@ void Transform::SetScale(const float x, const float y, const float z)
 	UpdateWorldMatrix();
 }
 
-void Transform::Translate(const float x, const float y, const float z)
+void TransformComponent::Translate(const float x, const float y, const float z)
 {
 	position.x += x;
 	position.y += y;
@@ -45,7 +44,7 @@ void Transform::Translate(const float x, const float y, const float z)
 	UpdateWorldMatrix();
 }
 
-void Transform::Rotate(const float x, const float y, const float z)
+void TransformComponent::Rotate(const float x, const float y, const float z)
 {
 	XMVECTOR quat = XMLoadFloat4(&rotation);
 	XMVECTOR xx = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(x), 0, 0);
@@ -61,7 +60,7 @@ void Transform::Rotate(const float x, const float y, const float z)
 	UpdateWorldMatrix();
 }
 
-void Transform::RotateQuaternion(const XMFLOAT4& quaternion)
+void TransformComponent::RotateQuaternion(const XMFLOAT4& quaternion)
 {
 	XMVECTOR result = XMQuaternionMultiply(XMLoadFloat4(&rotation), XMLoadFloat4(&quaternion));
 	result = XMQuaternionNormalize(result);
@@ -69,7 +68,7 @@ void Transform::RotateQuaternion(const XMFLOAT4& quaternion)
 	UpdateWorldMatrix();
 }
 
-void Transform::UpdateWorldMatrix()
+void TransformComponent::UpdateWorldMatrix()
 {
 	XMVECTOR S_local = XMLoadFloat3(&scale);
 	XMVECTOR R_local = XMLoadFloat4(&rotation);
@@ -82,41 +81,41 @@ void Transform::UpdateWorldMatrix()
 	XMStoreFloat4x4(&world, W);
 }
 
-XMMATRIX Transform::GetWorldMatrix() const
+XMMATRIX TransformComponent::GetWorldMatrix() const
 {
 	return XMLoadFloat4x4(&world);
 }
 
-XMFLOAT3 Transform::GetPosition() const
+XMFLOAT3 TransformComponent::GetPosition() const
 {
 	return *((XMFLOAT3*)&world._41);
 }
 
-XMFLOAT4 Transform::GetRotation() const
+XMFLOAT4 TransformComponent::GetRotation() const
 {
 	XMFLOAT4 rotation;
 	XMStoreFloat4(&rotation, GetRotationVector());
 	return rotation;
 }
 
-XMFLOAT3 Transform::GetScale() const
+XMFLOAT3 TransformComponent::GetScale() const
 {
 	XMFLOAT3 scale;
 	XMStoreFloat3(&scale, GetScaleVector());
 	return scale;
 }
 
-XMVECTOR Transform::GetPositionVector() const
+XMVECTOR TransformComponent::GetPositionVector() const
 {
 	return XMLoadFloat3((XMFLOAT3*)&world._41);
 }
-XMVECTOR Transform::GetRotationVector() const
+XMVECTOR TransformComponent::GetRotationVector() const
 {
 	XMVECTOR S, R, T;
 	XMMatrixDecompose(&S, &R, &T, XMLoadFloat4x4(&world));
 	return R;
 }
-XMVECTOR Transform::GetScaleVector() const
+XMVECTOR TransformComponent::GetScaleVector() const
 {
 	XMVECTOR S, R, T;
 	XMMatrixDecompose(&S, &R, &T, XMLoadFloat4x4(&world));

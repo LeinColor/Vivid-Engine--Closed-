@@ -11,6 +11,11 @@
 using namespace vivid;
 using namespace std;
 
+void Shader::Initialize()
+{
+
+}
+
 Shader::Shader(const wchar_t* fileName, INPUT_LAYOUT inputLayoutTypeValue)
 {
 	BYTE flag = GetSubShaderFlag(fileName);
@@ -46,8 +51,11 @@ Shader::Shader(const wchar_t* fileName, INPUT_LAYOUT inputLayoutTypeValue)
 		CreateSubShader(SHADER_TYPE::COMPUTE_SHADER);
 	}
 	CreateInputLayout(inputLayoutTypeValue);
+
+
 }
 
+// TODO: support all of layout using shader reflection later.
 void Shader::CreateInputLayout(INPUT_LAYOUT inputLayoutTypeValue)
 {
 	HRESULT hr = E_FAIL;
@@ -60,16 +68,14 @@ void Shader::CreateInputLayout(INPUT_LAYOUT inputLayoutTypeValue)
 		// SemanticName, SemanticIndex, Format, InputSlot, AlignedByteOffset, InputSlotClass, InstanceDataStepRate
 		D3D11_INPUT_ELEMENT_DESC inputElementDesc[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "COLOR"   , 0, DXGI_FORMAT_R32G32B32A32_FLOAT , 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "TEXTURE" , 0, DXGI_FORMAT_R32G32_FLOAT		, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "NORMAL"	, 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 		graphics->GetDevice()->CreateInputLayout(inputElementDesc, ARRAYSIZE(inputElementDesc), blobs.vsBlob->GetBufferPointer(), blobs.vsBlob->GetBufferSize(), &inputLayout);
 		break;
-	case POS_COLOR:
+	case POS:
 		D3D11_INPUT_ELEMENT_DESC inputElementDesc[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "COLOR"   , 0, DXGI_FORMAT_R32G32B32A32_FLOAT , 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 		graphics->GetDevice()->CreateInputLayout(inputElementDesc, ARRAYSIZE(inputElementDesc), blobs.vsBlob->GetBufferPointer(), blobs.vsBlob->GetBufferSize(), &inputLayout);
 		break;

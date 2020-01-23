@@ -1,13 +1,11 @@
 #pragma once
-class Object;
-class Component;
+class TransformComponent;
 
-class Camera : public Component
+class CameraComponent
 {
-public:
-	static const uint32_t type = CAMERA;
-	virtual bool IsSameType(const uint32_t value) const override;
 private:
+	TransformComponent transform;
+
 	XMFLOAT3 eye;
 	XMFLOAT3 focus;
 	XMFLOAT3 up;
@@ -19,12 +17,13 @@ private:
 	XMFLOAT4X4	projection;
 	XMFLOAT4X4	ortho;
 
+
 public:
 	ALIGNED_ALLOC_16;
 
-	Camera() {}
-	Camera(const Camera&) {}
-	~Camera() {}
+	CameraComponent() {}
+	CameraComponent(const CameraComponent&) {}
+	~CameraComponent() {}
 
 	void Update(int screenWidth, int screenHeight);
 

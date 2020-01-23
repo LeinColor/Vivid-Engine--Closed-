@@ -49,4 +49,6 @@ private:
 public:
 	Shader(const wchar_t* fileName, INPUT_LAYOUT inputLayoutTypeValue);
 
+	static void Initialize();
+
 };

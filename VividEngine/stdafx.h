@@ -35,13 +35,6 @@ using namespace DirectX::PackedVector;
 #define SAFE_DELETE_ARRAY(a) { delete[] (a); (a) = nullptr; }
 #define NOMINMAX
 
-#define BD_CLASS(parent, child)							\
-bool child::IsSameType(const uint32_t value) const {	\
-	if (child::type == value)							\
-		return true;									\
-	return parent::IsSameType(value);					\
-}														\
-
 static const XMFLOAT4X4 IDENTITYMATRIX = XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 static const XMVECTOR axisX = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
 static const XMVECTOR axisY = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
