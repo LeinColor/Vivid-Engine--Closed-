@@ -10,9 +10,9 @@
 #include "GraphicsAPI.h"
 #include "Debug.h"
 #include "Shader.h"
-#include "Manager.h"
+#include "MeshComponent.h"
+#include "Resources.h"
 using namespace vivid;
-
 
 GraphicsAPI::GraphicsAPI(HWND hWnd, bool fullScreenFlag)
 {
@@ -180,7 +180,33 @@ GraphicsAPI::GraphicsAPI(HWND hWnd, bool fullScreenFlag)
 	MessageBox(hWnd, L"Device Created", L"Notice", MB_OK);
 }
 
-void GraphicsAPI::UpdateBuffer(const ID3D11Buffer* buffer, const void* data, int dataLength)
+void GraphicsAPI::CreateVertexBuffer(ID3D11Buffer* vertexBuffer, D3D11_SUBRESOURCE_DATA& vertexData, UINT byteWidth)
+{
+	D3D11_BUFFER_DESC vertexBufferDesc;
+	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	vertexBufferDesc.ByteWidth = byteWidth;
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.CPUAccessFlags = 0;
+	vertexBufferDesc.MiscFlags = 0;
+	vertexBufferDesc.StructureByteStride = 0;
+
+	device->CreateBuffer(&vertexBufferDesc, &vertexData, &vertexBuffer);
+}
+
+void GraphicsAPI::CreateIndexBuffer(ID3D11Buffer* indexBuffer, D3D11_SUBRESOURCE_DATA& indexData, UINT byteWidth)
+{
+	D3D11_BUFFER_DESC indexBufferDesc;
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.ByteWidth = byteWidth;
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = 0;
+	indexBufferDesc.MiscFlags = 0;
+	indexBufferDesc.StructureByteStride = 0;
+
+	device->CreateBuffer(&indexBufferDesc, &indexData, &indexBuffer);
+}
+
+void GraphicsAPI::UpdateConstantBuffer(const ID3D11Buffer* buffer, const void* data, int dataLength)
 {
 	// Lock constant buffer to write description.
 	D3D11_MAPPED_SUBRESOURCE mappedResource;

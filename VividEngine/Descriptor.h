@@ -3,30 +3,15 @@
 
 using namespace DirectX;
 // Define enum here
-enum TYPE {
-	UNKNOWN,
-	OBJECT,
-	COMPONENT,
-	TRANSFORM,
-	CAMERA,
-	SPRITE_RENDERER,
-	RENDERER_3D,
-	LIGHT,
-};
-
-enum OBJECT_STATE {
-	DEFAULT,
-	DEBUG,
-};
-
-enum INPUT_LAYOUT {
-	UNDEFINED,
+enum INPUT_LAYOUT_TYPE {
+	UNDEFINED_INPUT_LAYOUT = -1,
 	DEFAULT,
 	POS,
 	POS_TEX_NORMAL,
 };
 
-enum MESH_ENUM {
+enum MESH_ID {
+	UNDEFINED_MESH = -1,
 	MESH_CUBE,
 	MESH_SPHERE,
 	MESH_CONE,
@@ -37,15 +22,16 @@ enum MESH_ENUM {
 };
 
 enum SHADER_ID {
+	UNDEFINED_SHADER = -1,
 	SHADER_DEBUG,
 	SHADER_BLINN_PHONG,
 };
 
-enum MATERIAL_ENUM {
+enum MATERIAL_ID {
+	UNDEFINED_MATERIAL = -1,
 	MATERIAL_DEBUG,
 	MATERIAL_BLINN_PHONG,
 };
-
 
 struct GizmoLine {
 	XMFLOAT3 startPoint = XMFLOAT3(0, 0, 0);
@@ -53,31 +39,20 @@ struct GizmoLine {
 	XMFLOAT4 color = XMFLOAT4(1, 1, 1, 1);
 };
 
-// Define struct here
-struct vertex_P_t {		// Position
-	XMFLOAT3 position;
+struct VertexDefault {
+	XMFLOAT3 positions;
+	XMFLOAT2 texcoords;
+	XMFLOAT3 normals;
 };
 
-struct vertex_PC_t {	// Position,  Color
-	XMFLOAT3 position;
-	XMFLOAT4 color;
+struct VertexPos {
+	XMFLOAT3 positions;
 };
 
-struct vertex_PT_t {	// Position, Texture
-	XMFLOAT3 position;
-	XMFLOAT2 texture;
-};
-
-struct vertex_PCN_t {	// Position, Color, Normal
-	XMFLOAT3 position;
-	XMFLOAT4 color;
-	XMFLOAT3 normal;
-};
-
-struct vertex_PTN_t {	// Position, Texture, Normal
-	XMFLOAT3 position;
-	XMFLOAT2 texture;
-	XMFLOAT3 normal;
+struct VertexPosTexNor {
+	XMFLOAT3 positions;
+	XMFLOAT2 texcoords;
+	XMFLOAT3 normals;
 };
 
 struct MatrixBufferType {

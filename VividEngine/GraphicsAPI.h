@@ -17,6 +17,9 @@
 // 3. Input Layout 처리
 // 4. Constant Buffer 처리
 // 11.0 우선 작업. 11.1은 추후
+
+class MeshComponent;
+
 class GraphicsAPI {
 private:
 	ID3D11Device*			 device = nullptr;
@@ -49,8 +52,10 @@ public:
 	inline ID3D11Device* GetDevice() const { return device; }
 	inline ID3D11DeviceContext* GetContext() const { return deviceContext; }
 
-	void UpdateBuffer(const ID3D11Buffer* buffer, const void* data, int dataLength);
-	void BindVertexBufer();
+	void CreateVertexBuffer(ID3D11Buffer* vertexBuffer, D3D11_SUBRESOURCE_DATA& vertexData, UINT byteWidth);
+	void CreateIndexBuffer(ID3D11Buffer* indexBuffer, D3D11_SUBRESOURCE_DATA& indexData, UINT byteWidth);
+
+	void UpdateConstantBuffer(const ID3D11Buffer* buffer, const void* data, int dataLength);
 
 	void BeginScene(float, float, float, float);
 	void EndScene();

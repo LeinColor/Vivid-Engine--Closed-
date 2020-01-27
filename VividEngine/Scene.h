@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-
 #include <vector>
 #include <unordered_map>
 
@@ -14,6 +13,7 @@ public:
 	static std::vector<Object*> objects;
 	static std::vector<Object*> lights;
 	static std::vector<AABB*> aabbs;
+	static std::vector<Shader*> shaders;
 
 	static XMVECTOR ScreenToWorldPoint(const XMFLOAT3& pos);
 public:

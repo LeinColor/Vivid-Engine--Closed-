@@ -70,9 +70,6 @@
     <ClInclude Include="Debug.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -92,9 +89,6 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Time.h">
@@ -151,6 +145,21 @@
     <ClInclude Include="TransformComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ECS.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VividEngine.rc">
@@ -187,9 +196,6 @@
     <ClCompile Include="Debug.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -209,9 +215,6 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Time.cpp">
@@ -268,18 +271,30 @@
     <ClCompile Include="TransformComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Debug_vs.hlsl">
+    <None Include="HLSL\BlinnPhong_ps.hlsl">
       <Filter>HLSL</Filter>
     </None>
-    <None Include="Debug_ps.hlsl">
+    <None Include="HLSL\BlinnPhong_vs.hlsl">
       <Filter>HLSL</Filter>
     </None>
-    <None Include="BlinnPhong_vs.hlsl">
+    <None Include="HLSL\Debug_ps.hlsl">
       <Filter>HLSL</Filter>
     </None>
-    <None Include="BlinnPhong_ps.hlsl">
+    <None Include="HLSL\Debug_vs.hlsl">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>

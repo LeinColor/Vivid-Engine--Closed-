@@ -41,13 +41,13 @@ private:
 	int32_t					   inputLayoutType;
 	std::vector<ID3D11Buffer*> constantBuffers;
 
-	BYTE GetSubShaderFlag(const wchar_t* fileName);
-	void CompileFromFile(const wchar_t* fileName, SHADER_TYPE subShaderType);
+	BYTE GetSubShaderFlag(const std::string& fileName);
+	void CompileFromFile(const std::string& fileName, SHADER_TYPE subShaderType);
 	void CreateSubShader(SHADER_TYPE subShaderType);
-	void CreateInputLayout(INPUT_LAYOUT type);
+	void CreateInputLayout(INPUT_LAYOUT_TYPE type);
 
 public:
-	Shader(const wchar_t* fileName, INPUT_LAYOUT inputLayoutTypeValue);
+	Shader(const std::string& fileName, INPUT_LAYOUT_TYPE inputLayoutTypeValue);
 
 	static void Initialize();
 

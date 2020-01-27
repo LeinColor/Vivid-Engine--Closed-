@@ -11,8 +11,6 @@ using namespace vivid;
 
 void Editor::Start()
 {
-	Shader* sha1 = new Shader("right");
-	Shader* sha2 = new Shader("bite");
 }
 
 void Editor::Initialize()

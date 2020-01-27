@@ -1,6 +1,6 @@
 #include "Scene.h"
 #include "Object.h"
-#include "Camera.h"
+#include "CameraComponent.h"
 #include "Renderer.h"
 #include "Debug.h"
 #include <vector>
