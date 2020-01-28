@@ -3,9 +3,6 @@
 
 class CameraComponent
 {
-private:
-	TransformComponent transform;
-
 	XMFLOAT3 eye;
 	XMFLOAT3 focus;
 	XMFLOAT3 up;
@@ -20,6 +17,8 @@ private:
 
 public:
 	ALIGNED_ALLOC_16;
+
+	TransformComponent transform;
 
 	CameraComponent() {}
 	CameraComponent(const CameraComponent&) {}

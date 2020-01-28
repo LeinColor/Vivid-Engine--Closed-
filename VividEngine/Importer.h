@@ -1,5 +1,9 @@
 #pragma once
-#include "MeshComponent.h"
+#include "Scene.h"
+#include "Components.h"
+
 class Importer {
-	static void LoadObjFile(MeshComponent& mesh);
+public:
+	static MeshComponent& LoadObjFile(const char* fileName, Scene* scene);
+	static ShaderComponent& LoadShaderFile(const std::string& fileName, INPUT_LAYOUT_TYPE inputLayoutTypeValue, Scene* scene);
 };

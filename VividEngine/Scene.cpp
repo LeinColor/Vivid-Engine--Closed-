@@ -7,9 +7,6 @@
 using namespace vivid;
 using namespace std;
 
-vector<Object*> Scene::objects;
-vector<AABB*> Scene::aabbs;
-
 //XMVECTOR Scene::ScreenToWorldPoint(const XMFLOAT3& pos)
 //{
 //	int screenWidth = Renderer::GetScreenWidth();

@@ -24,10 +24,10 @@ cbuffer TransformConstants : register( b0 )
 	matrix projectionMatrix;
 };
 
-cbuffer ColorBuffer
-{
-    float4 debugColor;
-}
+//cbuffer ColorBuffer
+//{
+//    float4 debugColor;
+//}
 
 PSIn VSMain(VSIn input)
 {
@@ -39,7 +39,7 @@ PSIn VSMain(VSIn input)
     output.position = mul(output.position, viewMatrix);
     output.position = mul(output.position, projectionMatrix);
 
-    output.color = debugColor;
+    output.color = float4(1.0f, 1.0f, 0.0f, 1.0f);
     
     return output;
 }

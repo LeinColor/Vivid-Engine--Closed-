@@ -52,8 +52,14 @@ public:
 	inline ID3D11Device* GetDevice() const { return device; }
 	inline ID3D11DeviceContext* GetContext() const { return deviceContext; }
 
-	void CreateVertexBuffer(ID3D11Buffer* vertexBuffer, D3D11_SUBRESOURCE_DATA& vertexData, UINT byteWidth);
-	void CreateIndexBuffer(ID3D11Buffer* indexBuffer, D3D11_SUBRESOURCE_DATA& indexData, UINT byteWidth);
+	void CreateBuffer(D3D11_BUFFER_DESC* pDesc, D3D11_SUBRESOURCE_DATA* pInitialData, ID3D11Buffer** ppBuffer);
+	void CreateInputLayout(const D3D11_INPUT_ELEMENT_DESC* pInputElementDescs, UINT numElements, const void* pShaderByteCode , SIZE_T byteCodeLength, ID3D11InputLayout** ppInputLayout);
+	void CreateVertexShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11VertexShader** ppVertexShader);
+	void CreatePixelShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11PixelShader** ppPixelShader);
+	void CreateGeometryShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11GeometryShader** ppGeometryShader);
+	void CreateHullShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11HullShader** ppHullShader);
+	void CreateDomainShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11DomainShader** ppDomainShader);
+	void CreateComputeShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11ComputeShader** ppComputeShader);
 
 	void UpdateConstantBuffer(const ID3D11Buffer* buffer, const void* data, int dataLength);
 

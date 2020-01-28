@@ -8,6 +8,8 @@
 */
 #pragma once
 #include "GraphicsAPI.h"
+#include "Scene.h"
+#include "Components.h"
 
 class Renderer {
 private:
@@ -16,12 +18,25 @@ private:
 	bool	 VSyncEnabled;
 	uint32_t screenWidth;
 	uint32_t screenHeight;
+
+	Scene* scene;
+
 public:
 	Renderer() {}
 	~Renderer() {}
 	void Initialize();
 	void Shutdown();
 	void Render();
+
+	inline void SetScene(Scene* value) { scene = value; }
+
+	void InitializeConstantBuffers();
+	void UpdateVertexBuffer(MeshComponent& mesh);
+	void UpdateIndexBuffer(MeshComponent& mesh);
+	void UpdateInputLayout(ShaderComponent& shader);
+	void UpdateShader(ShaderComponent& shader);
+	void Apply();
+
 	inline static GraphicsAPI* GetGraphicsAPI() { return graphics; }
 	inline uint32_t GetScreenWidth() { return screenWidth; }
 	inline uint32_t GetScreenHeight() { return screenHeight; }

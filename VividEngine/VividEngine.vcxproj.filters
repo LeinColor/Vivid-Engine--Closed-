@@ -85,9 +85,6 @@
     <ClInclude Include="tiny_obj_loader.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -148,9 +145,6 @@
     <ClInclude Include="Object.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Resources.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="MeshComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -159,6 +153,15 @@
     </ClInclude>
     <ClInclude Include="ObjectComponent.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBufferStructs.h">
+      <Filter>Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -210,9 +213,6 @@
     </ClCompile>
     <ClCompile Include="tiny_obj_loader.cc">
       <Filter>Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Core</Filter>
@@ -274,13 +274,13 @@
     <ClCompile Include="Object.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Resources.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="MeshComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="ObjectComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>

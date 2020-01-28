@@ -1,22 +1,22 @@
 #pragma once
 #include "stdafx.h"
-#include <vector>
-#include <unordered_map>
+#include "ECS.h"
 
-class Object;
-class Mesh;
-class Shader;
-class AABB;
-class Texture;
+#include <vector>
+
+class ObjectComponent;
+class TransformComponent;
+class CameraComponent;
+class LightComponent;
+class MeshComponent;
+class ShaderComponent;
+
 class Scene {
 public:
-	static std::vector<Object*> objects;
-	static std::vector<Object*> lights;
-	static std::vector<AABB*> aabbs;
-	static std::vector<Shader*> shaders;
-
-	static XMVECTOR ScreenToWorldPoint(const XMFLOAT3& pos);
-public:
-	static Object* GetMainCamera();
-	static Object* GetLight();
+	ComponentManager<ObjectComponent> objects;
+	ComponentManager<TransformComponent> transforms;
+	ComponentManager<CameraComponent> cameras;
+	ComponentManager<LightComponent> lights;
+	ComponentManager<MeshComponent> meshes;
+	ComponentManager<ShaderComponent> shaders;
 };

@@ -26,6 +26,7 @@
 #include <dinput.h>
 #include "AppHandle.h"
 #include "Descriptor.h"
+#include "ConstantBufferStructs.h"
 using namespace DirectX;
 using namespace DirectX::PackedVector;
 

@@ -9,9 +9,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "GraphicsAPI.h"
 #include "Debug.h"
-#include "Shader.h"
 #include "MeshComponent.h"
-#include "Resources.h"
 using namespace vivid;
 
 GraphicsAPI::GraphicsAPI(HWND hWnd, bool fullScreenFlag)
@@ -180,30 +178,44 @@ GraphicsAPI::GraphicsAPI(HWND hWnd, bool fullScreenFlag)
 	MessageBox(hWnd, L"Device Created", L"Notice", MB_OK);
 }
 
-void GraphicsAPI::CreateVertexBuffer(ID3D11Buffer* vertexBuffer, D3D11_SUBRESOURCE_DATA& vertexData, UINT byteWidth)
+void GraphicsAPI::CreateBuffer(D3D11_BUFFER_DESC* pDesc, D3D11_SUBRESOURCE_DATA* pInitialData, ID3D11Buffer** ppBuffer)
 {
-	D3D11_BUFFER_DESC vertexBufferDesc;
-	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = byteWidth;
-	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertexBufferDesc.CPUAccessFlags = 0;
-	vertexBufferDesc.MiscFlags = 0;
-	vertexBufferDesc.StructureByteStride = 0;
-
-	device->CreateBuffer(&vertexBufferDesc, &vertexData, &vertexBuffer);
+	device->CreateBuffer(pDesc, pInitialData, ppBuffer);
 }
 
-void GraphicsAPI::CreateIndexBuffer(ID3D11Buffer* indexBuffer, D3D11_SUBRESOURCE_DATA& indexData, UINT byteWidth)
+void GraphicsAPI::CreateInputLayout(const D3D11_INPUT_ELEMENT_DESC* pInputElementDescs, UINT numElements, const void* pShaderByteCode, SIZE_T byteCodeLength, ID3D11InputLayout** ppInputLayout)
 {
-	D3D11_BUFFER_DESC indexBufferDesc;
-	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = byteWidth;
-	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	indexBufferDesc.CPUAccessFlags = 0;
-	indexBufferDesc.MiscFlags = 0;
-	indexBufferDesc.StructureByteStride = 0;
+	device->CreateInputLayout(pInputElementDescs, numElements, pShaderByteCode, byteCodeLength, ppInputLayout);
+}
 
-	device->CreateBuffer(&indexBufferDesc, &indexData, &indexBuffer);
+void GraphicsAPI::CreateVertexShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11VertexShader** ppVertexShader)
+{
+	device->CreateVertexShader(pShaderByteCode, byteCodeLength, nullptr, ppVertexShader);
+}
+
+void GraphicsAPI::CreatePixelShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11PixelShader** ppPixelShader)
+{
+	device->CreatePixelShader(pShaderByteCode, byteCodeLength, nullptr, ppPixelShader);
+}
+
+void GraphicsAPI::CreateGeometryShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11GeometryShader** ppGeometryShader)
+{
+	device->CreateGeometryShader(pShaderByteCode, byteCodeLength, nullptr, ppGeometryShader);
+}
+
+void GraphicsAPI::CreateHullShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11HullShader** ppHullShader)
+{
+	device->CreateHullShader(pShaderByteCode, byteCodeLength, nullptr, ppHullShader);
+}
+
+void GraphicsAPI::CreateDomainShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11DomainShader** ppDomainShader)
+{
+	device->CreateDomainShader(pShaderByteCode, byteCodeLength, nullptr, ppDomainShader);
+}
+
+void GraphicsAPI::CreateComputeShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11ComputeShader** ppComputeShader)
+{
+	device->CreateComputeShader(pShaderByteCode, byteCodeLength, nullptr, ppComputeShader);
 }
 
 void GraphicsAPI::UpdateConstantBuffer(const ID3D11Buffer* buffer, const void* data, int dataLength)

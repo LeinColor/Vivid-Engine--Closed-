@@ -23,7 +23,7 @@
     <ProjectGuid>{9A8DC1A5-D40D-483E-A695-EBB3030C27DC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>VividEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -154,6 +154,8 @@
     <ClInclude Include="CameraComponent.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Components.h" />
+    <ClInclude Include="ConstantBufferStructs.h" />
     <ClInclude Include="Converter.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="Debug.h" />
@@ -178,14 +180,13 @@
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Ray.h" />
-    <ClInclude Include="Resources.h" />
     <ClInclude Include="Scene.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderQueue.h" />
-    <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderComponent.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -235,14 +236,13 @@
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Ray.cpp" />
-    <ClCompile Include="Resources.cpp" />
     <ClCompile Include="Scene.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderQueue.cpp" />
-    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderComponent.cpp" />
     <ClCompile Include="TextField.cpp" />
     <ClCompile Include="Texture.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
