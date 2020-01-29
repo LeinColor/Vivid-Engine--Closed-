@@ -31,12 +31,12 @@ MeshComponent& Importer::LoadObjFile(const char* fileName, Scene* scene)
 	for (int i = 0; i < shapes[0].mesh.indices.size(); i++) {
 		auto& index = shapes[0].mesh.indices[i];
 
-		//if (index.vertex_index != 0) {
+
 			mesh.positions.push_back(XMFLOAT3(
 				attrib.vertices[index.vertex_index * 3 + 0],
 				attrib.vertices[index.vertex_index * 3 + 1],
 				attrib.vertices[index.vertex_index * 3 + 2]));
-		//}
+
 
 		if (index.texcoord_index != 0) {
 			mesh.texcoords.push_back(XMFLOAT2(
