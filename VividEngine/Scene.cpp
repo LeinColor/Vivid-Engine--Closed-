@@ -1,5 +1,4 @@
 #include "Scene.h"
-#include "Object.h"
 #include "CameraComponent.h"
 #include "Renderer.h"
 #include "Debug.h"

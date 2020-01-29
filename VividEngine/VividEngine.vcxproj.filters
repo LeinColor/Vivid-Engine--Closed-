@@ -142,9 +142,6 @@
     <ClInclude Include="TransformComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="MeshComponent.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -271,9 +268,6 @@
     <ClCompile Include="TransformComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="MeshComponent.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -295,6 +289,9 @@
       <Filter>HLSL</Filter>
     </None>
     <None Include="HLSL\Debug_vs.hlsl">
+      <Filter>HLSL</Filter>
+    </None>
+    <None Include="CommonInclude.hlsl">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>

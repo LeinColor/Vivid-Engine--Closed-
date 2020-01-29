@@ -2,7 +2,6 @@
 #include "Physics.h"
 #include "Ray.h"
 #include "AABB.h"
-#include "Object.h"
 #include "MeshComponent.h"
 #include "TransformComponent.h"
 #include "Scene.h"

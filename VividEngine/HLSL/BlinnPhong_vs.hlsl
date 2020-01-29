@@ -31,7 +31,8 @@ cbuffer TransformConstants : register(b0)
 
 cbuffer CameraConstants
 {
-    float3 cameraPosition;
+	float4x4 
+	float3 g_CameraPosition;
     float padding;
 };
 

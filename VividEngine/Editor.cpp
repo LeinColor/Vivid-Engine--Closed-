@@ -43,9 +43,6 @@ void Editor::Start()
 	objCube.meshEntity = scene->meshes.GetEntity(0);
 	objCube.shaderEntity = scene->shaders.GetEntity(0);
 
-	char buf[128];
-	sprintf_s(buf, "%ld %ld", objCube.meshEntity, objCube.shaderEntity);
-	SetWindowTextA(AppHandle::GetWindowHandle(), buf);
 
 	//=======================================
 
