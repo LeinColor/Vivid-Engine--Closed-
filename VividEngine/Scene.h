@@ -19,4 +19,8 @@ public:
 	ComponentManager<LightComponent> lights;
 	ComponentManager<MeshComponent> meshes;
 	ComponentManager<ShaderComponent> shaders;
+
+	virtual void Start() {};
+	virtual void Update() {};
+	virtual void FixedUpdate() {};
 };

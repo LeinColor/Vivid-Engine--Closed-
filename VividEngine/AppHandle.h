@@ -10,15 +10,13 @@
 #pragma once
 #include "stdafx.h"
 
-namespace vivid {
-	class AppHandle {
-	public:
-		static HWND GetWindowHandle();
-		static HINSTANCE GetInstanceHandle();
-		static void SetWindowHandle(HWND handle);
-		static void SetInstanceHandle(HINSTANCE handle);
-	private:
-		static HWND hWnd;
-		static HINSTANCE hInstance;
-	};
-}
+class AppHandle {
+public:
+	static HWND GetWindowHandle();
+	static HINSTANCE GetInstanceHandle();
+	static void SetWindowHandle(HWND handle);
+	static void SetInstanceHandle(HINSTANCE handle);
+private:
+	static HWND hWnd;
+	static HINSTANCE hInstance;
+};

@@ -43,9 +43,13 @@ void Renderer::InitializeConstantBuffers()
 
 void Renderer::Render()
 {
-	graphics->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+	if (scene->cameras.GetCount() == 0)
+		return;
 
 	CameraComponent& camera = scene->cameras[0];
+
+	graphics->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+
 	camera.Update(graphics->GetScreenWidth(), graphics->GetScreenHeight());
 	
 	XMMATRIX view = XMMatrixTranspose(camera.GetViewMatrix());

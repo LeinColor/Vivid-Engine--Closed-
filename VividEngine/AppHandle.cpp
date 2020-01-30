@@ -8,7 +8,6 @@
 */
 
 #include "AppHandle.h"
-using namespace vivid;
 
 // Forward declaration for static member variable
 HWND AppHandle::hWnd;

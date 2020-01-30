@@ -33,7 +33,7 @@
     <ClInclude Include="Entrance.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="01. Drawing a Triangle.h">
+    <ClInclude Include="SAMPLE01_DrawingTriangle.h">
       <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -57,7 +57,7 @@
     <ClCompile Include="Entrance.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="01. Drawing a Triangle.cpp">
+    <ClCompile Include="SAMPLE01_DrawingTriangle.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>

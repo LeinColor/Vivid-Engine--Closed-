@@ -11,6 +11,7 @@
 #include "../VividEngine/Input.h"
 #include "../VividEngine/Time.h"
 #include "../VividEngine/Renderer.h"
+#include "../VividEngine/Scene.h"
 
 using namespace vivid;
 
@@ -29,6 +30,7 @@ private:
 	Input	 input;
 	Time	 time;
 	Renderer renderer;
+	Scene*   currentScene;
 	bool	 initialized = false;
 
 	float	 deltaTimeAccumulator = 0;

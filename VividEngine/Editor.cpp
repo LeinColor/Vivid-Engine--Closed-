@@ -18,31 +18,6 @@ void Editor::Start()
 	Scene* scene = new Scene();
 	renderer.SetScene(scene);
 
-	//=======================================
-	// Mesh
-	MeshComponent& meshCube = Importer::LoadObjFile("../VividEngine/Obj/cube.obj", scene);
-	//=======================================
-	// Shader
-	ShaderComponent& shader = Importer::LoadShaderFile("Debug", INPUT_LAYOUT_TYPE::POS, scene);
-	//=======================================
-	// Camera
-	Entity cameraEntity = ECS::CreateEntity();
-	ObjectComponent& objCamera = scene->objects.Create(cameraEntity);
-	TransformComponent& tfCamera = scene->transforms.Create(cameraEntity);
-	tfCamera.SetPosition(0.0f, 0.0f, -5.0f);
-
-	CameraComponent& camera = scene->cameras.Create(cameraEntity);
-	camera.transform = tfCamera;
-	//=======================================
-	// Cube
-	Entity cubeEntity = ECS::CreateEntity();
-	ObjectComponent& objCube = scene->objects.Create(cubeEntity);
-	TransformComponent& tfCube = scene->transforms.Create(cubeEntity);
-	tfCube.SetPosition(0.0f, 0.0f, 0.0f);
-
-	objCube.meshEntity = scene->meshes.GetEntity(0);
-	objCube.shaderEntity = scene->shaders.GetEntity(0);
-
 
 	//=======================================
 
