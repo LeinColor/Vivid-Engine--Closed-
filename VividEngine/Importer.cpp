@@ -2,20 +2,19 @@
 #include "Importer.h"
 #include "tiny_obj_loader.h"
 #include "Debug.h"
-#include "Components.h"
+#include "Resources.h"
 
-#include "ECS.h"
-#include "Scene.h"
+#include "Mesh.h"
+#include "Shader.h"
 
 #include <fstream>
 #include <vector>
 #include <string>
 using namespace std;
 
-MeshComponent& Importer::LoadObjFile(const char* fileName, Scene* scene)
+uint32_t Importer::LoadObjFile(const std::string name, const char* fileName)
 {
-	Entity entity = ECS::CreateEntity();
-	MeshComponent& mesh = scene->meshes.Create(entity);
+	Mesh mesh;
 
 	tinyobj::attrib_t attrib;
 	vector<tinyobj::shape_t> shapes;
@@ -32,19 +31,19 @@ MeshComponent& Importer::LoadObjFile(const char* fileName, Scene* scene)
 		auto& index = shapes[0].mesh.indices[i];
 
 
-			mesh.positions.push_back(XMFLOAT3(
-				attrib.vertices[index.vertex_index * 3 + 0],
-				attrib.vertices[index.vertex_index * 3 + 1],
-				attrib.vertices[index.vertex_index * 3 + 2]));
+		mesh.positions.push_back(XMFLOAT3(
+			attrib.vertices[index.vertex_index * 3 + 0],
+			attrib.vertices[index.vertex_index * 3 + 1],
+			attrib.vertices[index.vertex_index * 3 + 2]));
 
 
-		if (index.texcoord_index != 0) {
+		if (index.texcoord_index >= 0) {
 			mesh.texcoords.push_back(XMFLOAT2(
 				attrib.texcoords[index.texcoord_index * 2 + 0],
 				attrib.texcoords[index.texcoord_index * 2 + 1]));
 		}
 
-		if (index.normal_index != 0) {
+		if (index.normal_index >= 0) {
 			mesh.normals.push_back(XMFLOAT3(
 				attrib.normals[index.normal_index * 3 + 0],
 				attrib.normals[index.normal_index * 3 + 1],
@@ -52,13 +51,16 @@ MeshComponent& Importer::LoadObjFile(const char* fileName, Scene* scene)
 		}
 	}
 
-	return mesh;
+	Resources::meshLookUp[name] = Resources::meshes.size();
+	Resources::meshes.push_back(mesh);
+
+	return Resources::meshes.size() - 1;
 }
 
-ShaderComponent& Importer::LoadShaderFile(const std::string& fileName, INPUT_LAYOUT_TYPE inputLayoutTypeValue, Scene* scene)
+uint32_t Importer::LoadShaderFile(const std::string name, const std::string& fileName, const INPUT_LAYOUT_TYPE inputLayoutTypeValue)
 {
-	Entity entity = ECS::CreateEntity();
-	ShaderComponent& shader = scene->shaders.Create(entity);
+	Shader shader;
+
 	shader.inputLayoutType = inputLayoutTypeValue;
 
 	BYTE flag = 0;
@@ -130,5 +132,8 @@ ShaderComponent& Importer::LoadShaderFile(const std::string& fileName, INPUT_LAY
 		vivid::Debug::Log("Cannot compile shader!");
 	}
 
-	return shader;
+	Resources::shaderLookUp[name] = Resources::shaders.size();
+	Resources::shaders.push_back(shader);
+
+	return Resources::shaders.size() - 1;
 }

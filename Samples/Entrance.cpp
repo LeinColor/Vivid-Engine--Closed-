@@ -6,7 +6,6 @@
 #include "../VividEngine/Importer.h"
 
 #include "../VividEngine/Scene.h"
-#include "../VividEngine/ECS.h"
 #include "../VividEngine/Components.h"
 
 #include "SAMPLE01_DrawingTriangle.h"
@@ -17,12 +16,19 @@ using namespace vivid;
 
 void Entrance::Start()
 {
-	Scene* sample01 = new SAMPLE01_DrawingTriangleScene();
+	// Load meshes
+	Importer::LoadObjFile("Cube", "../VividEngine/Obj/cube.obj");
+
+	// Load shaders
+	Importer::LoadShaderFile("Debug", "Debug", INPUT_LAYOUT_TYPE::POS);
+	
+	// Initilize scenes
+	Scene* sampleScene01 = new SAMPLE01_DrawingTriangleScene();
 
 
 
 	//=======================================
-	currentScene = sample01;
+	currentScene = sampleScene01;
 	currentScene->Start();
 
 	renderer.SetScene(currentScene);

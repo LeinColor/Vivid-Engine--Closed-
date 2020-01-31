@@ -17,9 +17,6 @@
     <Filter Include="GUI">
       <UniqueIdentifier>{2aaf552c-ec01-4eae-bec8-5d05fa88cb37}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component">
-      <UniqueIdentifier>{4228e4e3-d446-4318-878a-f26a86dd4d0f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{4cda8154-6b8b-4832-8e1d-12d58efc049b}</UniqueIdentifier>
     </Filter>
@@ -28,6 +25,15 @@
     </Filter>
     <Filter Include="HLSL">
       <UniqueIdentifier>{fd06d863-286e-4a78-807e-51c10f4c0738}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{0dc93c9d-a379-4fe6-9ed1-bae3d0dca99f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\3D">
+      <UniqueIdentifier>{fa71b5ae-8313-4a9f-8a25-e9d75702c66d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{4228e4e3-d446-4318-878a-f26a86dd4d0f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -133,32 +139,23 @@
     <ClInclude Include="Editor.h">
       <Filter>Entrance</Filter>
     </ClInclude>
-    <ClInclude Include="CameraComponent.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="LightComponent.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="TransformComponent.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshComponent.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="ECS.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectComponent.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="Components.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderComponent.h">
-      <Filter>Component</Filter>
+      <Filter>ECS</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBufferStructs.h">
       <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="BehaviourSystem.h">
+      <Filter>ECS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -259,23 +256,17 @@
     <ClCompile Include="Editor.cpp">
       <Filter>Entrance</Filter>
     </ClCompile>
-    <ClCompile Include="CameraComponent.cpp">
-      <Filter>Component</Filter>
+    <ClCompile Include="Resources.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="LightComponent.cpp">
-      <Filter>Component</Filter>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="TransformComponent.cpp">
-      <Filter>Component</Filter>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="MeshComponent.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectComponent.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderComponent.cpp">
-      <Filter>Component</Filter>
+    <ClCompile Include="BehaviourSystem.cpp">
+      <Filter>ECS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

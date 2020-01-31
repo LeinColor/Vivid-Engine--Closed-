@@ -1,8 +1,8 @@
 #include "../VividEngine/Importer.h"
 #include "../VividEngine/AppHandle.h"
+#include "../VividEngine/Resources.h"
 
 #include "../ThirdParty/entt/entt.hpp"
-#include "../VividEngine/MeshComponent.h"
 
 #include "SAMPLE01_DrawingTriangle.h"
 

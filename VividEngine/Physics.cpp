@@ -2,8 +2,6 @@
 #include "Physics.h"
 #include "Ray.h"
 #include "AABB.h"
-#include "MeshComponent.h"
-#include "TransformComponent.h"
 #include "Scene.h"
 //
 //bool Physics::Raycast(XMVECTOR origin,

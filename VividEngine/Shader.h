@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-class ShaderComponent {
+class Shader {
 	friend class Importer;
 	friend class Renderer;
 private:
@@ -33,11 +33,4 @@ private:
 	ID3D11InputLayout*		   inputLayout;
 	int32_t					   inputLayoutType;
 	std::vector<ID3D11Buffer*> constantBuffers;
-
-	BYTE GetSubShaderFlag(const std::string& fileName);
-	void CompileFromFile(const std::string& fileName, SHADER_TYPE subShaderType);
-	void CreateSubShader(SHADER_TYPE subShaderType);
-	void CreateInputLayout(INPUT_LAYOUT_TYPE type);
-
-public:
 };

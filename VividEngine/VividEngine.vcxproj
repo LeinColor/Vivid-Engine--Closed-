@@ -149,10 +149,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AABB.h" />
+    <ClInclude Include="BehaviourSystem.h" />
     <ClInclude Include="Button.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="CameraComponent.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <None Include="CommonInclude.hlsl">
@@ -164,7 +162,6 @@
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="Descriptor.h" />
-    <ClInclude Include="ECS.h" />
     <ClInclude Include="GraphicsAPI.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="Gizmo.h" />
@@ -176,20 +173,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Importer.h" />
-    <ClInclude Include="LightComponent.h" />
     <ClInclude Include="Material.h" />
-    <ClInclude Include="MeshComponent.h" />
-    <ClInclude Include="ObjectComponent.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="Resources.h" />
     <ClInclude Include="Scene.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderQueue.h" />
-    <ClInclude Include="ShaderComponent.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -203,18 +199,13 @@
     </ClInclude>
     <ClInclude Include="Time.h" />
     <ClInclude Include="tiny_obj_loader.h" />
-    <ClInclude Include="TransformComponent.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="Editor.h" />
     <ClInclude Include="WICTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB.cpp" />
+    <ClCompile Include="BehaviourSystem.cpp" />
     <ClCompile Include="Button.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="CameraComponent.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Converter.cpp" />
@@ -230,30 +221,26 @@
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="Maths.cpp" />
     <ClCompile Include="Importer.cpp" />
-    <ClCompile Include="LightComponent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
-    <ClCompile Include="MeshComponent.cpp" />
-    <ClCompile Include="ObjectComponent.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="Resources.cpp" />
     <ClCompile Include="Scene.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderQueue.cpp" />
-    <ClCompile Include="ShaderComponent.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="TextField.cpp" />
     <ClCompile Include="Texture.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="tiny_obj_loader.cc" />
-    <ClCompile Include="TransformComponent.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="WICTextureLoader.cpp" />
   </ItemGroup>

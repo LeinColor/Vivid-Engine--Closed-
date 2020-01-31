@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-class MeshComponent {
+class Mesh {
 	friend class GraphicsAPI;
 public:
 	std::vector<XMFLOAT3> positions;
@@ -20,7 +20,4 @@ public:
 	ID3D11Buffer* vertexBufferTex = nullptr;
 	ID3D11Buffer* vertexBufferNor = nullptr;
 	ID3D11Buffer* indexBuffer = nullptr;
-
-	UINT		  stride = 0;
-	UINT		  offset = 0;
 };

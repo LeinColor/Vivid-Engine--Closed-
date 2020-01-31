@@ -9,7 +9,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "GraphicsAPI.h"
 #include "Debug.h"
-#include "MeshComponent.h"
 using namespace vivid;
 
 GraphicsAPI::GraphicsAPI(HWND hWnd, bool fullScreenFlag)
