@@ -23,3 +23,8 @@ struct Camera {
 struct Light {
 
 };
+
+struct Renderer3D {
+	uint32_t meshID;
+	uint32_t shaderID;
+};

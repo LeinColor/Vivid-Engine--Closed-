@@ -139,9 +139,6 @@
     <ClInclude Include="Editor.h">
       <Filter>Entrance</Filter>
     </ClInclude>
-    <ClInclude Include="Components.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
     <ClInclude Include="ConstantBufferStructs.h">
       <Filter>Graphics</Filter>
     </ClInclude>
@@ -156,6 +153,9 @@
     </ClInclude>
     <ClInclude Include="BehaviourSystem.h">
       <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Components.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

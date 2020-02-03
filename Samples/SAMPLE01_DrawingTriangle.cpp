@@ -1,57 +1,38 @@
 #include "../VividEngine/Importer.h"
 #include "../VividEngine/AppHandle.h"
 #include "../VividEngine/Resources.h"
+#include "../VividEngine/Components.h"
 
 #include "../ThirdParty/entt/entt.hpp"
 
 #include "SAMPLE01_DrawingTriangle.h"
 
-struct velocity {
-	float dx;
-	float dy;
-};
 void SAMPLE01_DrawingTriangleScene::Start()
 {
+	// Camera
+	auto enttCamera = registry.create();
+	registry.assign<Transform>(enttCamera,
+		XMFLOAT3(0.0f, 0.0f, 0.0f),			// Position
+		XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f),	// Rotation
+		XMFLOAT3(1.0f, 1.0f, 1.0),			// Scale
+		IDENTITY_MATRIX);					// World
+
+	registry.assign<Camera>(enttCamera);
+
+	// Cube
+	auto enttCube = registry.create();
+	registry.assign<Transform>(enttCube,
+		XMFLOAT3(0.0f, 0.0f, -5.0f),		// Position
+		XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f),	// Rotation
+		XMFLOAT3(1.0f, 1.0f, 1.0),			// Scale
+		IDENTITY_MATRIX);					// World
+
+	registry.assign<Renderer3D>(enttCube,
+		Resources::GetMeshID("Cube"),
+		Resources::GetShaderID("Debug"));
+
 	// Set Window Title
 	SetWindowTextA(AppHandle::GetWindowHandle(), "SAMPLE01: Drawing a Triangle");
-
-
-
-	entt::registry registry;
-	auto entityMeshCube = registry.create();
-	registry.assign<velocity>(entityMeshCube, 1.f, 2.f);
-	auto view = registry.view<velocity>();
-	for (auto entity : view) {
-		auto& mesh = view.get<velocity>(entity);
-		char buf[128];
-		sprintf_s(buf, "xdxdxd");
-		SetWindowTextA(AppHandle::GetWindowHandle(), buf);
-
-	}
-	//=======================================
-	// Mesh
-	MeshComponent& meshCube = Importer::LoadObjFile("../VividEngine/Obj/cube.obj", this);
-	//=======================================
-	// Shader
-	ShaderComponent& shader = Importer::LoadShaderFile("Debug", INPUT_LAYOUT_TYPE::POS, this);
-	//=======================================
-	// Camera
-	Entity cameraEntity = ECS::CreateEntity();
-	ObjectComponent& objCamera = objects.Create(cameraEntity);
-	TransformComponent& tfCamera = transforms.Create(cameraEntity);
-	tfCamera.SetPosition(0.0f, 0.0f, -5.0f);
-
-	CameraComponent& camera = cameras.Create(cameraEntity);
-	camera.transform = tfCamera;
-	//=======================================
-	// Cube
-	Entity cubeEntity = ECS::CreateEntity();
-	ObjectComponent& objCube = objects.Create(cubeEntity);
-	TransformComponent& tfCube = transforms.Create(cubeEntity);
-	tfCube.SetPosition(0.0f, 0.0f, 0.0f);
-
-	objCube.meshEntity = meshes.GetEntity(0);
-	objCube.shaderEntity = shaders.GetEntity(0);
 }
 
 void SAMPLE01_DrawingTriangleScene::Update()

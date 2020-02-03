@@ -10,6 +10,8 @@
 #include "Renderer.h"
 #include "Components.h"
 #include "Debug.h"
+
+#include "../ThirdParty/entt/entt.hpp"
 using namespace vivid;
 using namespace std;
 
@@ -43,6 +45,8 @@ void Renderer::InitializeConstantBuffers()
 
 void Renderer::Render()
 {
+	entt::registry& registry = scene->registry;
+
 	if (scene->cameras.GetCount() == 0)
 		return;
 

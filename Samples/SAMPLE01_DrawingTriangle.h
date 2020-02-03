@@ -1,4 +1,5 @@
 #pragma once
+#include "../VividEngine/Renderer.h"
 #include "../VividEngine/Scene.h"
 
 class SAMPLE01_DrawingTriangleScene : public Scene

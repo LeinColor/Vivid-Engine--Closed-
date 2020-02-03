@@ -39,6 +39,7 @@ public:
 	void Render();
 
 	inline void SetScene(Scene* value) { scene = value; }
+	inline void SetMainCamera(entt::entity entity) { entityMainCamera = entity; }
 
 	void InitializeConstantBuffers();
 	void UpdateVertexBuffer(Mesh& mesh);
