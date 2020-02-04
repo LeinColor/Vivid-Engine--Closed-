@@ -13,6 +13,8 @@ class Resources {
 public:
 	inline static uint32_t GetMeshID(const std::string& name)   { return meshLookUp[name]; }
 	inline static uint32_t GetShaderID(const std::string& name) { return shaderLookUp[name]; }
+	inline static size_t   GetMeshCount() { return meshes.size(); }
+	inline static size_t   GetShaderCount() { return shaders.size(); }
 	inline static Mesh&    GetMesh(uint32_t id) { return meshes[id]; }
 	inline static Shader&  GetShader(uint32_t id) { return shaders[id]; }
 private:

@@ -7,7 +7,6 @@
 #include "Importer.h"
 
 #include "Scene.h"
-#include "ECS.h"
 #include "Components.h"
 
 #include <unordered_map>

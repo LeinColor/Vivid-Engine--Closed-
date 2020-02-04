@@ -8,6 +8,7 @@
 */
 #include "stdafx.h"
 #include "Renderer.h"
+#include "ComponentSystem.h"
 #include "Components.h"
 #include "Debug.h"
 
@@ -47,49 +48,47 @@ void Renderer::Render()
 {
 	entt::registry& registry = scene->registry;
 
-	if (scene->cameras.GetCount() == 0)
+	if (registry.view<Transform, Camera>().empty())
 		return;
 
-	CameraComponent& camera = scene->cameras[0];
+	enttMainCamera = scene->enttMainCamera;
+
+	auto& camera = registry.view<Transform, Camera>().get<Camera>(enttMainCamera);
+	ComponentSystem::Update(camera);
+
+	view = XMMatrixTranspose(XMLoadFloat4x4(&camera.view));
+	projection = XMMatrixTranspose(XMLoadFloat4x4(&camera.projection));
 
 	graphics->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
-	camera.Update(graphics->GetScreenWidth(), graphics->GetScreenHeight());
-	
-	XMMATRIX view = XMMatrixTranspose(camera.GetViewMatrix());
-	XMMATRIX projection = XMMatrixTranspose(camera.GetProjectionMatrix());
+	auto entityObjects = registry.view<Transform, Renderer3D>();
 
+	for (auto entity : entityObjects) {
+		auto& transform = entityObjects.get<Transform>(entity);
+		auto& renderer3D = entityObjects.get<Renderer3D>(entity);
 
-	for (int i = 0; i < scene->objects.GetCount(); i++)
-	{
-		auto& object = scene->objects[i];
+		if (renderer3D.meshID == INVALID_MESH_ID || renderer3D.shaderID == INVALID_SHADER_ID)
+			return;
 
-		const MeshComponent* mesh = scene->meshes.GetComponent(object.meshEntity);
-		if (mesh == nullptr)
-			continue;
-
-		const ShaderComponent* shader = scene->shaders.GetComponent(object.shaderEntity);
-		if (shader == nullptr)
-			continue;
-
-		const TransformComponent& transform = scene->transforms[i];
+		Mesh& mesh = Resources::GetMesh(renderer3D.meshID);
+		Shader& shader = Resources::GetShader(renderer3D.shaderID);
 
 		UINT stride = 0;
 		UINT offset = 0;
 
-		switch (shader->inputLayoutType) {
+		switch (shader.inputLayoutType) {
 		case POS:
 			stride = sizeof(XMFLOAT3);
-			graphics->GetContext()->IASetVertexBuffers(0, 1, &mesh->vertexBufferPos, &stride, &offset);
+			graphics->GetContext()->IASetVertexBuffers(0, 1, &mesh.vertexBufferPos, &stride, &offset);
 			break;
 		}
 
-		graphics->GetContext()->IASetIndexBuffer(mesh->indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+		graphics->GetContext()->IASetIndexBuffer(mesh.indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 		graphics->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		graphics->GetContext()->IASetInputLayout(shader->inputLayout);
+		graphics->GetContext()->IASetInputLayout(shader.inputLayout);
 
 
-		XMMATRIX world = XMMatrixTranspose(transform.GetWorldMatrix());
+		world = XMMatrixTranspose(XMLoadFloat4x4(&transform.world));
 
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		graphics->GetContext()->Map(transformCB, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
@@ -104,15 +103,14 @@ void Renderer::Render()
 		graphics->GetContext()->VSSetConstantBuffers(0, 1, &transformCB);
 
 
-		graphics->GetContext()->VSSetShader(shader->subShaders.vs, NULL, 0);
-		graphics->GetContext()->PSSetShader(shader->subShaders.ps, NULL, 0);
-		graphics->GetContext()->DrawIndexed(mesh->positions.size(), 0, 0);
+		graphics->GetContext()->VSSetShader(shader.subShaders.vs, NULL, 0);
+		graphics->GetContext()->PSSetShader(shader.subShaders.ps, NULL, 0);
+		graphics->GetContext()->DrawIndexed(mesh.positions.size(), 0, 0);
 	}
-
 	graphics->EndScene();
 }
 
-void Renderer::UpdateVertexBuffer(MeshComponent& mesh)
+void Renderer::UpdateVertexBuffer(Mesh& mesh)
 {
 	UINT indexCount = mesh.positions.size();
 
@@ -189,7 +187,7 @@ void Renderer::UpdateVertexBuffer(MeshComponent& mesh)
 	}
 }
 
-void Renderer::UpdateIndexBuffer(MeshComponent& mesh)
+void Renderer::UpdateIndexBuffer(Mesh& mesh)
 {
 	UINT indexCount = mesh.positions.size();
 
@@ -219,7 +217,7 @@ void Renderer::UpdateIndexBuffer(MeshComponent& mesh)
 }
 
 // TODO: support all of layout using shader reflection later.
-void Renderer::UpdateInputLayout(ShaderComponent& shader)
+void Renderer::UpdateInputLayout(Shader& shader)
 {
 	HRESULT hr = E_FAIL;
 
@@ -259,7 +257,7 @@ void Renderer::UpdateInputLayout(ShaderComponent& shader)
 	}
 }
 
-void Renderer::UpdateShader(ShaderComponent& shader)
+void Renderer::UpdateShader(Shader& shader)
 {
 	if (shader.shaderFlag & VERTEX_SHADER)
 	{
@@ -290,16 +288,16 @@ void Renderer::UpdateShader(ShaderComponent& shader)
 void Renderer::Apply()
 {
 	// update all of mesh's vertex buffer and index buffer
-	for (size_t i = 0; i < scene->meshes.GetCount(); i++) {
-		auto& mesh = scene->meshes[i];
+	for (size_t i = 0; i < Resources::GetMeshCount(); i++) {
+		auto& mesh = Resources::GetMesh(i);
 
 		UpdateVertexBuffer(mesh);
 		UpdateIndexBuffer(mesh);
 	}
 
 	// update all of shader's input layout
-	for (size_t i = 0; i < scene->shaders.GetCount(); i++) {
-		auto& shader = scene->shaders[i];
+	for (size_t i = 0; i < Resources::GetShaderCount(); i++) {
+		auto& shader = Resources::GetShader(i);
 
 		UpdateInputLayout(shader);
 		UpdateShader(shader);

@@ -35,6 +35,9 @@
     <Filter Include="ECS">
       <UniqueIdentifier>{4228e4e3-d446-4318-878a-f26a86dd4d0f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{beb47b0a-84a6-4122-9d8f-2b289572a72a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -151,11 +154,14 @@
     <ClInclude Include="Mesh.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="BehaviourSystem.h">
-      <Filter>ECS</Filter>
-    </ClInclude>
     <ClInclude Include="Components.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentSystem.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\entt\entt.hpp">
+      <Filter>ThirdParty</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -265,7 +271,7 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="BehaviourSystem.cpp">
+    <ClCompile Include="ComponentSystem.cpp">
       <Filter>ECS</Filter>
     </ClCompile>
   </ItemGroup>

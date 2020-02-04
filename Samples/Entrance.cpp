@@ -29,7 +29,6 @@ void Entrance::Start()
 
 	//=======================================
 	currentScene = sampleScene01;
-	currentScene->renderer = &renderer;
 	currentScene->Start();
 
 	renderer.SetScene(currentScene);

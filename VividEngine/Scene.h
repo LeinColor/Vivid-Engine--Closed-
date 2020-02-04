@@ -12,4 +12,5 @@ public:
 	virtual void FixedUpdate() {};
 
 	entt::registry registry;
+	entt::entity enttMainCamera;
 };

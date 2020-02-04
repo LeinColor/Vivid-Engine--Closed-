@@ -25,11 +25,11 @@ private:
 	uint32_t screenWidth;
 	uint32_t screenHeight;
 
-	entt::entity entityMainCamera;
+	entt::entity enttMainCamera;
 
-
-	
 	Scene* scene;
+
+	XMMATRIX world, view, projection;
 
 public:
 	Renderer() {}
@@ -39,7 +39,9 @@ public:
 	void Render();
 
 	inline void SetScene(Scene* value) { scene = value; }
-	inline void SetMainCamera(entt::entity entity) { entityMainCamera = entity; }
+	inline void SetMainCamera(entt::entity entity) { enttMainCamera = entity; }
+
+	void UpdatePipeline(Transform& transform, Renderer3D& renderer3D);
 
 	void InitializeConstantBuffers();
 	void UpdateVertexBuffer(Mesh& mesh);
