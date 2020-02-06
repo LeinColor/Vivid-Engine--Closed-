@@ -50,6 +50,8 @@ public:
 	void UpdateShader(Shader& shader);
 	void Apply();
 
+	void UpdateConstantBuffers(TransformConstants& transform);
+
 	inline static GraphicsAPI* GetGraphicsAPI() { return graphics; }
 	inline uint32_t GetScreenWidth() { return screenWidth; }
 	inline uint32_t GetScreenHeight() { return screenHeight; }

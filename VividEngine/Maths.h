@@ -1,6 +1,6 @@
 #pragma once
 
-namespace vivid
+namespace viMath
 {
 	inline XMFLOAT3 Max(const XMFLOAT3& a, const XMFLOAT3& b)
 	{

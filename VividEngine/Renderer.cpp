@@ -54,7 +54,8 @@ void Renderer::Render()
 	enttMainCamera = scene->enttMainCamera;
 
 	auto& camera = registry.view<Transform, Camera>().get<Camera>(enttMainCamera);
-	ComponentSystem::Update(camera);
+	auto& cameraTransform = registry.view<Transform, Camera>().get<Transform>(enttMainCamera);
+	ComponentSystem::Update(cameraTransform, camera);
 
 	view = XMMatrixTranspose(XMLoadFloat4x4(&camera.view));
 	projection = XMMatrixTranspose(XMLoadFloat4x4(&camera.projection));
@@ -69,6 +70,10 @@ void Renderer::Render()
 
 		if (renderer3D.meshID == INVALID_MESH_ID || renderer3D.shaderID == INVALID_SHADER_ID)
 			return;
+
+		ComponentSystem::Update(transform);
+
+		world = XMMatrixTranspose(XMLoadFloat4x4(&transform.world));
 
 		Mesh& mesh = Resources::GetMesh(renderer3D.meshID);
 		Shader& shader = Resources::GetShader(renderer3D.shaderID);
@@ -87,21 +92,9 @@ void Renderer::Render()
 		graphics->GetContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		graphics->GetContext()->IASetInputLayout(shader.inputLayout);
 
-
-		world = XMMatrixTranspose(XMLoadFloat4x4(&transform.world));
-
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		graphics->GetContext()->Map(transformCB, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
-		TransformConstants* data = (TransformConstants*)mappedResource.pData;
-
-		data->worldMatrix = world;
-		data->viewMatrix = view;
-		data->projectionMatrix = projection;
-
-		graphics->GetContext()->Unmap(transformCB, 0);
-
+		TransformConstants tc = { world, view, projection };
+		UpdateConstantBuffers(tc);
 		graphics->GetContext()->VSSetConstantBuffers(0, 1, &transformCB);
-
 
 		graphics->GetContext()->VSSetShader(shader.subShaders.vs, NULL, 0);
 		graphics->GetContext()->PSSetShader(shader.subShaders.ps, NULL, 0);
@@ -302,4 +295,19 @@ void Renderer::Apply()
 		UpdateInputLayout(shader);
 		UpdateShader(shader);
 	}
+}
+
+
+void Renderer::UpdateConstantBuffers(TransformConstants& transform)
+{
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+
+	graphics->GetContext()->Map(transformCB, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+	TransformConstants* data = (TransformConstants*)mappedResource.pData;
+
+	data->worldMatrix = transform.worldMatrix;
+	data->viewMatrix = transform.viewMatrix;
+	data->projectionMatrix = transform.projectionMatrix;
+
+	graphics->GetContext()->Unmap(transformCB, 0);
 }

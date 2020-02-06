@@ -161,12 +161,14 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="SAMPLE02_DrawingCube.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SAMPLE01_DrawingTriangle.cpp" />
     <ClCompile Include="Entrance.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SAMPLE02_DrawingCube.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Samples.rc" />

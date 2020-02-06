@@ -7,10 +7,6 @@
 
 #include "SAMPLE01_DrawingTriangle.h"
 
-struct position {
-	float x;
-	float y;
-};
 void SAMPLE01_DrawingTriangleScene::Start()
 {
 	// Set Window Title
@@ -20,32 +16,22 @@ void SAMPLE01_DrawingTriangleScene::Start()
 	enttMainCamera = registry.create();
 	registry.assign<Transform>(enttMainCamera,
 		XMFLOAT3(0.0f, 0.0f, 0.0f),			// Position
-		XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f),	// Rotation
+		XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f),	// Rotation (Quaternion)
 		XMFLOAT3(1.0f, 1.0f, 1.0),			// Scale
 		IDENTITY_MATRIX);					// World
 
-	registry.assign<Camera>(enttMainCamera,
-		XMFLOAT3(0.0f, 0.0f, 0.0f),
-		XMFLOAT3(0.0f, 0.0f, 0.0f),
-		XMFLOAT3(0.0f, 0.0f, 0.0f),
-		IDENTITY_MATRIX,
-		IDENTITY_MATRIX,
-		IDENTITY_MATRIX,
-		800.0f,
-		0.001f,
-		3.141592654f / 4.0f
-		);
+	registry.assign<Camera>(enttMainCamera);
 
-	// Cube
-	auto enttCube = registry.create();
-	registry.assign<Transform>(enttCube,
-		XMFLOAT3(0.0f, 0.0f, -5.0f),		// Position
-		XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f),	// Rotation
-		XMFLOAT3(1.0f, 1.0f, 1.0),			// Scale
+	// Triangle
+	auto enttTriangle = registry.create();
+	registry.assign<Transform>(enttTriangle,
+		XMFLOAT3(0.0f, 0.0f, 5.0f),			// Position
+		XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f),	// Rotation (Quaternion)
+		XMFLOAT3(1.0f, 1.0f, 1.0f),			// Scale
 		IDENTITY_MATRIX);					// World
 
-	registry.assign<Renderer3D>(enttCube,
-		Resources::GetMeshID("Cube"),		// Mesh
+	registry.assign<Renderer3D>(enttTriangle,
+		Resources::GetMeshID("Triangle"),	// Mesh
 		Resources::GetShaderID("Debug"));	// Shader
 }
 
@@ -58,7 +44,7 @@ void SAMPLE01_DrawingTriangleScene::FixedUpdate()
 {
 
 }
-void SAMPLE01_DrawingTriangleScene::SetTitle(LPCSTR text)
+void SAMPLE01_DrawingTriangleScene::SetTitle(const LPCSTR text)
 {
 	SetWindowTextA(AppHandle::GetWindowHandle(), text);
 }

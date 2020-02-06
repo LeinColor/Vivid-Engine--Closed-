@@ -1,9 +1,12 @@
 #pragma once
 #include "Components.h"
 
+#include "../ThirdParty/entt/entt.hpp"
+
 namespace ComponentSystem
 {
-	void Update(Camera& camera);
+	void Update(Transform& transform, Camera& camera);
+	void Update(Transform& transform);
 }
 
 //class TransformComponent {

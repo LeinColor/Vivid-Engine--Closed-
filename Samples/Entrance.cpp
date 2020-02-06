@@ -9,6 +9,7 @@
 #include "../VividEngine/Components.h"
 
 #include "SAMPLE01_DrawingTriangle.h"
+#include "SAMPLE02_DrawingCube.h"
 
 #include "Entrance.h"
 #include <unordered_map>
@@ -17,6 +18,7 @@ using namespace vivid;
 void Entrance::Start()
 {
 	// Load meshes
+	Importer::LoadObjFile("Triangle", "../VividEngine/Obj/triangle.obj");
 	Importer::LoadObjFile("Cube", "../VividEngine/Obj/cube.obj");
 
 	// Load shaders
@@ -24,11 +26,12 @@ void Entrance::Start()
 	
 	// Initilize scenes
 	Scene* sampleScene01 = new SAMPLE01_DrawingTriangleScene();
+	Scene* sampleScene02 = new SAMPLE02_DrawingCubeScene();
 
 
 
 	//=======================================
-	currentScene = sampleScene01;
+	currentScene = sampleScene02;
 	currentScene->Start();
 
 	renderer.SetScene(currentScene);

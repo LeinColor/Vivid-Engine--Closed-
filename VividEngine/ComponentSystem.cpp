@@ -127,12 +127,12 @@
 namespace ComponentSystem
 {
 	// Camera matrix update
-	void Update(Camera& camera)
+	void Update(Transform& transform, Camera& camera)
 	{
 		XMFLOAT4 zero = XMFLOAT4(0, 0, 0, 0);
 		XMFLOAT3 zero3 = XMFLOAT3(0, 0, 0);
 		XMMATRIX rot = XMMatrixRotationQuaternion(XMLoadFloat4(&zero));
-		XMVECTOR vEye = XMLoadFloat3(&zero3);
+		XMVECTOR vEye = XMLoadFloat3(&transform.position);
 		XMVECTOR vFocus = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 		XMVECTOR vUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
@@ -151,6 +151,18 @@ namespace ComponentSystem
 		XMStoreFloat4x4(&camera.ortho, orthoMatrix);
 	}
 
+	void Update(Transform& transform)
+	{
+		XMVECTOR S_local = XMLoadFloat3(&transform.scale);
+		XMVECTOR R_local = XMLoadFloat4(&transform.rotation);
+		XMVECTOR T_local = XMLoadFloat3(&transform.position);
+		XMMATRIX W =
+			XMMatrixScalingFromVector(S_local) *
+			XMMatrixRotationQuaternion(R_local) *
+			XMMatrixTranslationFromVector(T_local);
+
+		XMStoreFloat4x4(&transform.world, W);
+	}
 }
 
 

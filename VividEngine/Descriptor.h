@@ -43,6 +43,11 @@ enum MATERIAL_ID {
 	MATERIAL_BLINN_PHONG,
 };
 
+enum CONSTANT_BUFFER_ID {
+	CBUFFER_TRANSFORM,
+	CBUFFER_CAMERA,
+};
+
 struct GizmoLine {
 	XMFLOAT3 startPoint = XMFLOAT3(0, 0, 0);
 	XMFLOAT3 endPoint = XMFLOAT3(0, 0, 0);;

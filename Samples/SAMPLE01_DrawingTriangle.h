@@ -9,5 +9,5 @@ public:
 	void Update() override;
 	void FixedUpdate() override;
 
-	void SetTitle(LPCSTR pText);
+	void SetTitle(const LPCSTR pText);
 };
