@@ -7,7 +7,6 @@
 
 #include "SAMPLE02_DrawingCube.h"
 
-entt::entity enttCube;
 void SAMPLE02_DrawingCubeScene::Start()
 {
 	// Set Window Title
@@ -24,7 +23,7 @@ void SAMPLE02_DrawingCubeScene::Start()
 	registry.assign<Camera>(enttMainCamera);
 
 	// Cube
-	enttCube = registry.create();
+	auto enttCube = registry.create();
 	registry.assign<Transform>(enttCube,
 		XMFLOAT3(0.0f, 0.0f, 5.0f),			// Position
 		XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f),	// Rotation (Quaternion)

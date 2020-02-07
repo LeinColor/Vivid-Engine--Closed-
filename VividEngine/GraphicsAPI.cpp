@@ -217,6 +217,11 @@ void GraphicsAPI::CreateComputeShader(const void *pShaderByteCode, SIZE_T byteCo
 	device->CreateComputeShader(pShaderByteCode, byteCodeLength, nullptr, ppComputeShader);
 }
 
+void GraphicsAPI::CreateSamplerState(const D3D11_SAMPLER_DESC* pSamplerDesc, ID3D11SamplerState** ppSamplerState)
+{
+	device->CreateSamplerState(pSamplerDesc, ppSamplerState);
+}
+
 void GraphicsAPI::UpdateConstantBuffer(const ID3D11Buffer* buffer, const void* data, int dataLength)
 {
 	// Lock constant buffer to write description.

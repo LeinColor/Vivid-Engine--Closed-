@@ -39,6 +39,9 @@
     <ClInclude Include="SAMPLE02_DrawingCube.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="SAMPLE03_Texture.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Samples.rc">
@@ -64,6 +67,9 @@
       <Filter>Scenes</Filter>
     </ClCompile>
     <ClCompile Include="SAMPLE02_DrawingCube.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SAMPLE03_Texture.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>

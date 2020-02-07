@@ -18,12 +18,14 @@ using namespace std;
 
 GraphicsAPI* Renderer::graphics;
 
+ID3D11SamplerState* sampleState;
 ID3D11Buffer* transformCB;
 
 void Renderer::Initialize()
 {
 	graphics = new GraphicsAPI(AppHandle::GetWindowHandle(), false);
 
+	InitializeSampleStates();
 	InitializeConstantBuffers();
 }
 
@@ -41,6 +43,27 @@ void Renderer::InitializeConstantBuffers()
 		bd.MiscFlags = 0;
 		bd.StructureByteStride = 0;
 		graphics->CreateBuffer(&bd, nullptr, &transformCB);
+	}
+}
+
+void Renderer::InitializeSampleStates()
+{
+	{
+		D3D11_SAMPLER_DESC samplerDesc;
+		samplerDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.MipLODBias = 0.0f;
+		samplerDesc.MaxAnisotropy = 1;
+		samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+		samplerDesc.BorderColor[0] = 0;
+		samplerDesc.BorderColor[1] = 0;
+		samplerDesc.BorderColor[2] = 0;
+		samplerDesc.BorderColor[3] = 0;
+		samplerDesc.MinLOD = 0;
+		samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
+		graphics->CreateSamplerState(&samplerDesc, &sampleState);
 	}
 }
 
@@ -77,14 +100,42 @@ void Renderer::Render()
 
 		Mesh& mesh = Resources::GetMesh(renderer3D.meshID);
 		Shader& shader = Resources::GetShader(renderer3D.shaderID);
-
-		UINT stride = 0;
-		UINT offset = 0;
+		Texture& texture = Resources::GetTexture(renderer3D.textureID);
 
 		switch (shader.inputLayoutType) {
-		case POS:
-			stride = sizeof(XMFLOAT3);
-			graphics->GetContext()->IASetVertexBuffers(0, 1, &mesh.vertexBufferPos, &stride, &offset);
+			case POS:
+			{
+				ID3D11Buffer* vbs[] = {
+					mesh.vertexBufferPos,
+				};
+				UINT strides[] = {
+					sizeof(XMFLOAT3),
+				};
+				UINT offsets[] = {
+					0,
+				};
+				graphics->GetContext()->IASetVertexBuffers(0, ARRAYSIZE(vbs), vbs, strides, offsets);
+			}
+			break;
+
+			case POS_TEX:
+			{
+				ID3D11Buffer* vbs[] = {
+					mesh.vertexBufferPos,
+					mesh.vertexBufferTex,
+				};
+				UINT strides[] = {
+					sizeof(XMFLOAT3),
+					sizeof(XMFLOAT2),
+				};
+				UINT offsets[] = {
+					0,
+					0,
+				};
+				graphics->GetContext()->IASetVertexBuffers(0, ARRAYSIZE(vbs), vbs, strides, offsets);
+				graphics->GetContext()->PSSetSamplers(0, 1, &sampleState);
+				graphics->GetContext()->PSSetShaderResources(0, 1, texture.GetData());
+			}
 			break;
 		}
 

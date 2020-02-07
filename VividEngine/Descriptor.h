@@ -7,6 +7,7 @@ enum INPUT_LAYOUT_TYPE {
 	UNDEFINED_INPUT_LAYOUT = -1,
 	DEFAULT,
 	POS,
+	POS_TEX,
 	POS_TEX_NORMAL,
 };
 
@@ -62,6 +63,11 @@ struct VertexDefault {
 
 struct VertexPos {
 	XMFLOAT3 positions;
+};
+
+struct VertexPosTex {
+	XMFLOAT3 positions;
+	XMFLOAT2 texcoords;
 };
 
 struct VertexPosTexNor {

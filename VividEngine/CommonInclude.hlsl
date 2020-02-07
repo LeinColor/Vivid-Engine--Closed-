@@ -1,5 +1,5 @@
-#pragma once
-cbuffer PerObject : register(b0)
+
+cbuffer perObject : register(b0)
 {
 	float4x4 View;
 	float4x4 ViewProjection;

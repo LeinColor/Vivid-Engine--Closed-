@@ -14,10 +14,12 @@
 #include "Resources.h"
 #include "Mesh.h"
 #include "Shader.h"
+#include "Texture.h"
 
 #include "../ThirdParty/entt/entt.hpp"
 
 class Renderer {
+	friend class Importer;
 private:
 	static GraphicsAPI* graphics;
 
@@ -43,6 +45,7 @@ public:
 
 	void UpdatePipeline(Transform& transform, Renderer3D& renderer3D);
 
+	void InitializeSampleStates();
 	void InitializeConstantBuffers();
 	void UpdateVertexBuffer(Mesh& mesh);
 	void UpdateIndexBuffer(Mesh& mesh);

@@ -10,6 +10,7 @@
 
 #include "SAMPLE01_DrawingTriangle.h"
 #include "SAMPLE02_DrawingCube.h"
+#include "SAMPLE03_Texture.h"
 
 #include "Entrance.h"
 #include <unordered_map>
@@ -23,15 +24,19 @@ void Entrance::Start()
 
 	// Load shaders
 	Importer::LoadShaderFile("Debug", "Debug", INPUT_LAYOUT_TYPE::POS);
+	Importer::LoadShaderFile("Texture", "Texture", INPUT_LAYOUT_TYPE::POS_TEX);
+
+	// Load textures
+	Importer::LoadTextureFile("test", L"../VividEngine/image/dd.png");
 	
 	// Initilize scenes
 	Scene* sampleScene01 = new SAMPLE01_DrawingTriangleScene();
 	Scene* sampleScene02 = new SAMPLE02_DrawingCubeScene();
-
+	Scene* sampleScene03 = new SAMPLE03_TextureScene();
 
 
 	//=======================================
-	currentScene = sampleScene02;
+	currentScene = sampleScene03;
 	currentScene->Start();
 
 	renderer.SetScene(currentScene);

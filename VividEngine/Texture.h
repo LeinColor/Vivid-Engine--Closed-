@@ -2,16 +2,13 @@
 
 class Texture
 {
+	friend class Importer;
 public:
-	Texture() {}
-	Texture(const Texture&) {}
-	~Texture() {}
-
 	bool Initialize(ID3D11Device* device, WCHAR* fileName);
 
-	ID3D11ShaderResourceView* GetTexture();
+	inline ID3D11ShaderResourceView** GetData() { return &resourceView; }
 
 
 private:
-	ID3D11ShaderResourceView* textureView = nullptr;
+	ID3D11ShaderResourceView* resourceView = nullptr;
 };

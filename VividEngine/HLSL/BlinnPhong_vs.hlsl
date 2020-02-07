@@ -29,12 +29,12 @@ cbuffer TransformConstants : register(b0)
 	matrix projectionMatrix;
 };
 
-cbuffer CameraConstants
-{
-	float4x4 
-	float3 g_CameraPosition;
-    float padding;
-};
+//cbuffer CameraConstants
+//{
+//	float4x4 
+//	float3 cameraPosition;
+//    float padding;
+//};
 
 cbuffer ColorBuffer
 {
@@ -58,7 +58,7 @@ PSIn VSMain(VSIn input)
     output.normal = normalize(output.normal);
 
     float4 worldPosition = mul(input.position, worldMatrix);
-    output.viewDirection = cameraPosition.xyz - worldPosition.xyz;
+ //   output.viewDirection = cameraPosition.xyz - worldPosition.xyz;
     output.viewDirection = normalize(output.viewDirection);
     
     return output;

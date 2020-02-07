@@ -6,6 +6,7 @@
 	@author Lein
 	@version 1.0 01/19/20
 */
+
 struct PSIn
 {
     float4 position : SV_POSITION;

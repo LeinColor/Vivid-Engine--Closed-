@@ -162,6 +162,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="SAMPLE02_DrawingCube.h" />
+    <ClInclude Include="SAMPLE03_Texture.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +170,7 @@
     <ClCompile Include="Entrance.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SAMPLE02_DrawingCube.cpp" />
+    <ClCompile Include="SAMPLE03_Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Samples.rc" />

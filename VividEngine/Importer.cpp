@@ -4,8 +4,11 @@
 #include "Debug.h"
 #include "Resources.h"
 
+#include "Renderer.h"
 #include "Mesh.h"
 #include "Shader.h"
+
+#include "WICTextureLoader.h"
 
 #include <fstream>
 #include <vector>
@@ -136,4 +139,21 @@ uint32_t Importer::LoadShaderFile(const std::string name, const std::string& fil
 	Resources::shaders.push_back(shader);
 
 	return Resources::shaders.size() - 1;
+}
+
+uint32_t Importer::LoadTextureFile(const std::string name, const WCHAR* fileName)
+{
+	Texture texture;
+
+	if (Renderer::graphics == nullptr) {
+		vivid::Debug::Log("Cannot find the graphics API!");
+		return INVALID_TEXTURE_ID;
+	}
+
+	CreateWICTextureFromFile(Renderer::graphics->GetDevice(), fileName, nullptr, &texture.resourceView);
+
+	Resources::textureLookUp[name] = Resources::textures.size();
+	Resources::textures.push_back(texture);
+
+	return Resources::textures.size() - 1;
 }

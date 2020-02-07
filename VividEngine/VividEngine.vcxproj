@@ -199,6 +199,12 @@
     <ClInclude Include="Texture.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
+    <None Include="Texture_ps.hlsl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Texture_vs.hlsl">
+      <FileType>Document</FileType>
+    </None>
     <ClInclude Include="Time.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Editor.h" />

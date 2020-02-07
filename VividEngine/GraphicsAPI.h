@@ -60,6 +60,7 @@ public:
 	void CreateHullShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11HullShader** ppHullShader);
 	void CreateDomainShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11DomainShader** ppDomainShader);
 	void CreateComputeShader(const void *pShaderByteCode, SIZE_T byteCodeLength, ID3D11ComputeShader** ppComputeShader);
+	void CreateSamplerState(const D3D11_SAMPLER_DESC* pSamplerDesc, ID3D11SamplerState** ppSamplerState);
 
 	void UpdateConstantBuffer(const ID3D11Buffer* buffer, const void* data, int dataLength);
 
