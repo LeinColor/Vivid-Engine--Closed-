@@ -271,7 +271,7 @@ void Renderer::UpdateInputLayout(Shader& shader)
 		// SemanticName, SemanticIndex, Format, InputSlot, AlignedByteOffset, InputSlotClass, InstanceDataStepRate
 		D3D11_INPUT_ELEMENT_DESC inputElementDesc[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXTURE" , 0, DXGI_FORMAT_R32G32_FLOAT		, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD" , 0, DXGI_FORMAT_R32G32_FLOAT		, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "NORMAL"	, 0, DXGI_FORMAT_R32G32B32_FLOAT	, 2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 		graphics->CreateInputLayout(inputElementDesc, ARRAYSIZE(inputElementDesc), shader.blobs.vs->GetBufferPointer(), shader.blobs.vs->GetBufferSize(), &shader.inputLayout);
@@ -285,11 +285,20 @@ void Renderer::UpdateInputLayout(Shader& shader)
 		graphics->CreateInputLayout(inputElementDesc, ARRAYSIZE(inputElementDesc), shader.blobs.vs->GetBufferPointer(), shader.blobs.vs->GetBufferSize(), &shader.inputLayout);
 		break;
 	}
+	case POS_TEX:
+	{
+		D3D11_INPUT_ELEMENT_DESC inputElementDesc[] = {
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD" , 0, DXGI_FORMAT_R32G32_FLOAT		, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		};
+		graphics->CreateInputLayout(inputElementDesc, ARRAYSIZE(inputElementDesc), shader.blobs.vs->GetBufferPointer(), shader.blobs.vs->GetBufferSize(), &shader.inputLayout);
+		break;
+	}
 	case POS_TEX_NORMAL:
 	{
 		D3D11_INPUT_ELEMENT_DESC inputElementDesc[] = {
 			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXTURE" , 0, DXGI_FORMAT_R32G32_FLOAT		, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TEXCOORD" , 0, DXGI_FORMAT_R32G32_FLOAT		, 1, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "NORMAL"	, 0, DXGI_FORMAT_R32G32B32_FLOAT	, 2, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		};
 		graphics->CreateInputLayout(inputElementDesc, ARRAYSIZE(inputElementDesc), shader.blobs.vs->GetBufferPointer(), shader.blobs.vs->GetBufferSize(), &shader.inputLayout);

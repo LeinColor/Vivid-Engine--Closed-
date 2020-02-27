@@ -291,10 +291,10 @@
     <None Include="CommonInclude.hlsl">
       <Filter>HLSL</Filter>
     </None>
-    <None Include="Texture_ps.hlsl">
+    <None Include="HLSL\Texture_ps.hlsl">
       <Filter>HLSL</Filter>
     </None>
-    <None Include="Texture_vs.hlsl">
+    <None Include="HLSL\Texture_vs.hlsl">
       <Filter>HLSL</Filter>
     </None>
   </ItemGroup>

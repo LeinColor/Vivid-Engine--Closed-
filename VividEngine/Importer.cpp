@@ -40,11 +40,13 @@ uint32_t Importer::LoadObjFile(const std::string name, const char* fileName)
 			attrib.vertices[index.vertex_index * 3 + 2]));
 
 
-		if (index.texcoord_index >= 0) {
-			mesh.texcoords.push_back(XMFLOAT2(
+		XMFLOAT2 tex = XMFLOAT2(0, 0);
+		if (index.texcoord_index >= 0 && !attrib.texcoords.empty()) {
+			tex = XMFLOAT2(
 				attrib.texcoords[index.texcoord_index * 2 + 0],
-				attrib.texcoords[index.texcoord_index * 2 + 1]));
+				attrib.texcoords[index.texcoord_index * 2 + 1]);
 		}
+		mesh.texcoords.push_back(tex);
 
 		if (index.normal_index >= 0) {
 			mesh.normals.push_back(XMFLOAT3(

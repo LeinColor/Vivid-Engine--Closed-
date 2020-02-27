@@ -199,12 +199,6 @@
     <ClInclude Include="Texture.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
-    <None Include="Texture_ps.hlsl">
-      <FileType>Document</FileType>
-    </None>
-    <None Include="Texture_vs.hlsl">
-      <FileType>Document</FileType>
-    </None>
     <ClInclude Include="Time.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Editor.h" />
@@ -278,6 +272,16 @@
     <None Include="HLSL\Debug_vs.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VSMain</EntryPointName>
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HLSL\Texture_ps.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </None>
+    <None Include="HLSL\Texture_vs.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <FileType>Document</FileType>
     </None>
   </ItemGroup>
